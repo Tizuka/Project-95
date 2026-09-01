@@ -1,0 +1,2330 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --green: #39ff14;
+  --green-dim: #75b94b;
+  --green-dark: #10220d;
+  --black: #020602;
+  --panel: rgba(4, 13, 4, .92);
+  --line: #3f8f22;
+  --orange: #ff6a00;
+--warning-yellow: #c9a83e;
+--warning-yellow-dim: #8f792f;
+}
+
+* {
+  box-sizing: border-box;
+}
+.modal-header h2,
+.modal-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000;
+  color: var(--green);
+  font-family: "Share Tech Mono", monospace;
+  overflow-x: hidden;
+}
+
+
+/* =========================
+   GLOBAL CRT EFFECT
+========================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.025) 0px,
+      rgba(255,255,255,.025) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+
+  mix-blend-mode: screen;
+  opacity: .55;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 101;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 50%,
+      rgba(0,0,0,.5) 100%
+    );
+}
+
+
+/* =========================
+   CRT CONTAINER
+========================= */
+
+.crt {
+  width: min(1800px, 100%);
+  margin: auto;
+  padding: 12px;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(50,255,20,.05),
+      transparent 35%
+    ),
+    #020602;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr
+    .8fr
+    .5fr;
+
+  gap: 12px;
+
+  align-items: stretch;
+
+  border: 1px solid var(--green);
+
+  padding: 12px;
+
+  background: var(--panel);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.vaultBoy {
+  width: 134px;
+  height: 134px;
+
+  object-fit: cover;
+
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(60deg)
+    saturate(4);
+}
+
+.scientist {
+  font-size: 14px;
+
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(60deg)
+    saturate(4);
+}
+
+.scientist-image {
+  width: 234px;
+  height: 234px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 4px;
+
+  font-family: "VT323", monospace;
+
+  font-size:
+    clamp(38px, 4vw, 62px);
+
+  letter-spacing: 2px;
+
+  text-shadow:
+    0 0 8px rgba(57,255,20,.5);
+}
+
+.brand p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.lab-status,
+.clock {
+  border: 1px solid var(--line);
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lab-status strong,
+.clock strong {
+  margin-top: 5px;
+  font-size: 17px;
+}
+
+.clock span {
+  margin-top: 2px;
+
+  font-size: 12px;
+
+  opacity: .8;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav {
+  display: flex;
+
+  gap: 8px;
+
+  margin: 10px 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: var(--green);
+
+  background: #020802;
+
+  border: 1px solid var(--green);
+
+  padding: 9px 13px;
+
+  cursor: pointer;
+
+  transition: .15s ease;
+}
+
+button:hover,
+button.active {
+  color: #020602;
+
+  background: var(--green);
+
+  box-shadow:
+    0 0 12px rgba(57,255,20,.35);
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+  display: block;
+}
+
+
+/* =========================
+   PAGES
+========================= */
+
+.page {
+  display: none;
+}
+
+.page.active-page {
+  display: block;
+}
+
+.live-panel.active-page {
+  display: block;
+}
+
+
+/* =========================
+   GENERAL PANEL
+========================= */
+
+.panel {
+  border: 1px solid var(--green);
+
+  background: var(--panel);
+
+  padding: 10px;
+
+  min-width: 0;
+}
+
+.panel-title {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 9px;
+}
+
+.panel-title h2 {
+  font-family: "VT323", monospace;
+
+  font-size: 27px;
+
+  margin: 0;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   ADD BUTTON
+========================= */
+
+.add-btn {
+  font-size: 14px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   EXPERIMENT CARDS
+========================= */
+
+.experiment-card,
+.machine-card {
+  border: 1px solid var(--line);
+
+  padding: 10px;
+
+  margin-bottom: 9px;
+
+  background:
+    rgba(0, 20, 0, .45);
+}
+
+.card-head {
+  display: flex;
+
+  justify-content: space-between;
+
+  font-size: 13px;
+}
+
+.experiment-card h3 {
+  font-family: "VT323", monospace;
+
+  font-size: 25px;
+
+  margin: 5px 0 7px;
+}
+
+.status {
+  border: 1px solid var(--green);
+
+  padding: 4px 7px;
+}
+
+.alert {
+  color: var(--orange);
+
+  border-color: var(--orange);
+}
+
+
+/* =========================
+   EXPERIMENT CONTENT
+========================= */
+
+.experiment-content {
+  display: grid;
+
+  grid-template-columns:
+    85px
+    1fr
+    1.25fr;
+
+  gap: 8px;
+
+  align-items: center;
+}
+
+.vault-figure {
+  height: 100px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 1px dashed var(--line);
+
+  font-size: 43px;
+
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(60deg)
+    saturate(4);
+}
+
+.vault-figure small {
+  display: block;
+
+  font-size: 10px;
+}
+
+
+/* =========================
+   TELEMETRY
+========================= */
+
+.telemetry {
+  border: 1px solid #286b18;
+
+  padding: 7px;
+
+  font-size: 13px;
+}
+
+.telemetry span,
+.mini-telemetry span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  opacity: .8;
+}
+
+.telemetry p {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin: 4px 0;
+}
+
+
+/* =========================
+   CHART
+========================= */
+
+.chart {
+  height: 100px;
+
+  border: 1px solid #286b18;
+
+  position: relative;
+
+  padding: 8px;
+
+  overflow: hidden;
+}
+
+.chart-line {
+  position: absolute;
+
+  inset:
+    35px
+    8px
+    20px;
+
+  background:
+    linear-gradient(
+      165deg,
+
+      transparent 0 12%,
+
+      var(--green) 13% 14%,
+
+      transparent 15% 24%,
+
+      var(--green) 25% 26%,
+
+      transparent 27% 39%,
+
+      var(--green) 40% 41%,
+
+      transparent 42% 53%,
+
+      var(--green) 54% 55%,
+
+      transparent 56% 65%,
+
+      var(--green) 66% 67%,
+
+      transparent 68% 76%,
+
+      var(--green) 77% 78%,
+
+      transparent 79%
+    );
+}
+
+.chart small {
+  position: absolute;
+
+  bottom: 3px;
+
+  left: 8px;
+
+  font-size: 9px;
+}
+
+.chart.blue .chart-line {
+  filter: hue-rotate(90deg);
+}
+
+.chart.red .chart-line {
+  filter: hue-rotate(145deg);
+}
+
+
+/* =========================
+   EXPERIMENT META
+========================= */
+
+.meta {
+  font-size: 11px;
+
+  margin: 7px 0;
+}
+
+
+/* =========================
+   EXPERIMENT ACTIONS
+========================= */
+
+.actions {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.actions button {
+  flex: 0 0 auto;
+
+  width: auto;
+
+  font-size: 11px;
+
+  padding: 9px 13px;
+}
+
+.danger {
+  color: var(--orange);
+
+  border-color: var(--orange);
+}
+
+.danger:hover {
+  color: #020602;
+  background: var(--orange);
+  box-shadow: 0 0 12px rgba(255, 106, 0, .35);
+}
+
+.warning {
+  color: var(--orange);
+
+  border: 1px solid var(--orange);
+
+  padding: 8px;
+
+  font-size: 12px;
+}
+
+.online {
+  border: 1px solid var(--green);
+
+  padding: 5px 8px;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   MACHINES
+========================= */
+/* =========================
+   MACHINES
+========================= */
+
+/*
+   MACHINES PAGE
+   2 machines per row
+*/
+
+.machines-page.active-page {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+/*
+   PAGE TITLE
+   Occupies the entire width
+*/
+
+.machines-page .panel-title {
+  grid-column: 1 / -1;
+}
+
+
+/*
+   MACHINE CARD
+*/
+
+.machine-card {
+  display: grid;
+
+  grid-template-columns:
+    70px
+    minmax(0, 1fr)
+    105px;
+
+  gap: 8px;
+
+  align-items: center;
+
+  border: 1px solid var(--line);
+
+  padding: 8px;
+
+  margin-bottom: 0;
+
+  background:
+    rgba(0, 20, 0, .45);
+}
+
+
+/*
+   MACHINE ICON
+*/
+
+.machine-art {
+  height: 82px;
+
+  border: 1px dashed var(--line);
+
+  display: grid;
+
+  place-items: center;
+
+  font-size: 38px;
+
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(60deg)
+    saturate(4);
+}
+
+
+.machine-art.cold {
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(140deg)
+    saturate(4);
+}
+
+
+.danger-art {
+  color: var(--orange);
+  filter: none;
+}
+
+
+/*
+   MACHINE INFORMATION
+*/
+
+.machine-info {
+  min-width: 0;
+}
+
+
+.machine-info h3 {
+  font-family: "VT323", monospace;
+
+  font-size: 25px;
+
+  margin: 0;
+}
+
+
+.machine-info span {
+  font-size: 10px;
+}
+
+
+.machine-info p {
+  font-size: 10px;
+
+  line-height: 1.3;
+
+  margin: 5px 0 0;
+}
+
+
+.machine-info i {
+  font-style: normal;
+}
+
+
+.idle {
+  color: #7db5ff;
+}
+
+
+.alert-text,
+.orange {
+  color: var(--orange);
+}
+
+
+/*
+   MACHINE TELEMETRY
+*/
+
+.mini-telemetry {
+  border: 1px solid #286b18;
+
+  padding: 6px;
+
+  font-size: 10px;
+
+  line-height: 1.6;
+
+  min-width: 0;
+}
+
+
+.mini-telemetry span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  opacity: .8;
+}
+
+
+.mini-telemetry b {
+  display: block;
+
+  font-size: 11px;
+}
+
+
+/*
+   MAINTENANCE
+   Stays underneath all machines
+*/
+
+.machines-page .maintenance {
+  grid-column: 1 / -1;
+
+  margin-top: 0;
+}
+
+
+/* =========================
+   MACHINES RESPONSIVE
+========================= */
+
+/*
+   When the screen gets smaller,
+   return to one machine per row.
+*/
+
+@media (max-width: 900px) {
+
+  .machines-page.active-page {
+    grid-template-columns: 1fr;
+  }
+
+  .machines-page .panel-title,
+  .machines-page .maintenance {
+    grid-column: auto;
+  }
+
+  .machine-card {
+    grid-template-columns:
+      70px
+      minmax(0, 1fr)
+      105px;
+  }
+
+}
+
+
+/*
+   MOBILE
+*/
+
+@media (max-width: 600px) {
+
+  .machine-card {
+    grid-template-columns:
+      60px
+      1fr;
+  }
+
+  .machine-art {
+    height: 75px;
+    font-size: 34px;
+  }
+
+  .mini-telemetry {
+    grid-column: 1 / -1;
+  }
+
+}   
+
+/* =========================
+   HISTORY
+========================= */
+
+.search {
+  width: 100%;
+
+  color: var(--green);
+
+  background: #020802;
+
+  border: 1px solid var(--line);
+
+  padding: 10px;
+
+  outline: none;
+
+  margin-bottom: 8px;
+}
+
+.search:focus {
+  box-shadow:
+    0 0 10px rgba(57,255,20,.2);
+}
+
+.filters {
+  display: flex;
+
+  gap: 6px;
+
+  margin-bottom: 10px;
+}
+
+.filters button {
+  flex: 1;
+
+  font-size: 11px;
+}
+
+.history-list {
+  border: 1px solid var(--line);
+
+  font-size: 11px;
+}
+
+.history-list > div {
+  display: grid;
+
+  grid-template-columns:
+    .8fr
+    1.5fr
+    .9fr
+    .9fr
+    1.2fr;
+
+  gap: 7px;
+
+  padding: 8px 5px;
+
+  border-bottom:
+    1px solid #163b0d;
+
+  align-items: center;
+}
+
+.history-head {
+  color: var(--green-dim);
+}
+
+.completed {
+  color: var(--green);
+}
+
+.stopped {
+  color: #e0bd27;
+}
+
+.failed {
+  color: var(--orange);
+}
+
+.lab-log {
+  border: 1px solid var(--line);
+
+  margin-top: 10px;
+
+  padding: 10px;
+
+  font-size: 11px;
+}
+
+.lab-log h3 {
+  font-family: "VT323", monospace;
+
+  font-size: 24px;
+
+  margin-bottom: 8px;
+}
+
+.lab-log p {
+  margin: 5px 0;
+}
+
+.log-warning {
+  color: var(--orange);
+}
+
+
+/* =========================================================
+   GUIDE PAGE
+========================================================= */
+
+.guide-page {
+  width: 100%;
+
+  max-width: none;
+
+  margin: 0;
+}
+
+
+/* =========================
+   GUIDE TWO-COLUMN LAYOUT
+========================= */
+
+.guide-grid {
+  display: grid;
+
+  grid-template-columns:
+    24%
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  width: 100%;
+
+  /*
+    All three columns stretch to the height
+    of the tallest content column.
+  */
+  align-items: stretch;
+}
+.guide-column {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  /*
+    Forces the column to occupy the
+    complete height of the Guide.
+  */
+  height: 100%;
+}
+
+
+/* =========================
+   GUIDE INTRO
+========================= */
+
+.guide-intro {
+  display: grid;
+
+  grid-template-columns:
+    180px
+    1fr;
+
+  gap: 16px;
+
+  border: 1px solid var(--line);
+
+  padding: 14px;
+
+  background:
+    rgba(0, 20, 0, .45);
+
+  min-height: 190px;
+}
+
+.guide-character {
+  width: 100%;
+
+  /*
+    The character panel fills the same
+    vertical space as the instructions.
+  */
+  height: 100%;
+
+  min-height: 0;
+
+  border: 1px dashed var(--line);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  background:
+    rgba(0, 10, 0, .35);
+
+  /*
+    Makes the panel stretch with the
+    entire Guide content.
+  */
+  flex: 1;
+}
+
+.scientist-image {
+  width: 100%;
+
+  height: 100%;
+
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(60deg)
+    saturate(4)
+    contrast(1.1);
+}
+
+.guide-intro-text {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+/* =========================
+   GUIDE TITLES
+========================= */
+
+.guide-intro h3,
+.guide-section h3,
+.guide-final h3 {
+  font-family: "VT323", monospace;
+
+    margin: 0 0 12px 0;
+
+  font-size: 28px;
+
+  letter-spacing: 1px;
+
+  margin: 0 0 8px;
+
+  color: var(--green);
+}
+
+
+/* =========================
+   GUIDE TEXT
+========================= */
+
+.guide-intro p,
+.guide-section p,
+.guide-final p {
+  font-size: 13px;
+margin: 0 0 10px 0;
+  line-height: 1.55;
+
+  margin: 0 0 9px;
+}
+
+.guide-intro p:last-child,
+.guide-section p:last-child,
+.guide-final p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================
+   GUIDE SECTIONS
+========================= */
+
+
+.guide-section {
+    border: none;
+    border-bottom: 1px dashed #39ff14;
+
+    padding: 0 0 18px 0;
+    margin: 0 0 18px 0;
+
+    background: transparent;
+    box-shadow: none;
+}
+
+.guide-column .guide-section:last-child {
+    border-bottom: none;
+}
+
+
+/* Terminal-style divider */
+
+.guide-section::after {
+  content: "";
+
+  display: block;
+
+  width: 100%;
+
+  height: 1px;
+
+  margin-top: 11px;
+
+  background:
+    repeating-linear-gradient(
+      to right,
+
+      var(--line) 0 4px,
+
+      transparent 4px 8px
+    );
+
+  opacity: .45;
+}
+
+.guide-section:last-child::after {
+  display: none;
+}
+
+.guide-section strong {
+  color: var(--green);
+}
+
+
+/* =========================
+   GUIDE WARNINGS
+========================= */
+
+.guide-warning {
+  color: var(--orange) !important;
+
+  border-left:
+    2px solid var(--orange);
+
+  padding-left: 9px;
+}
+
+.guide-note {
+  opacity: .72;
+
+  font-style: italic;
+
+  font-size: 12px !important;
+}
+
+
+/* =========================
+   GUIDE TELEMETRY
+========================= */
+
+.guide-readings {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 6px;
+
+  margin: 10px 0;
+}
+
+.guide-readings span {
+  border: 1px solid var(--line);
+
+  padding: 8px 5px;
+
+  text-align: center;
+
+  font-size: 11px;
+
+  background:
+    rgba(20, 70, 10, .2);
+}
+
+
+/* =========================
+   GUIDE BIG WARNING
+========================= */
+
+.big-warning {
+  border: 1px solid var(--orange);
+
+  color: var(--orange);
+
+  padding: 10px;
+
+  margin-top: 10px;
+
+  text-align: center;
+
+  font-family: "VT323", monospace;
+
+  font-size: 22px !important;
+
+  line-height: 1.1 !important;
+
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 6px rgba(255, 106, 0, .35);
+
+  background:
+    rgba(255, 106, 0, .03);
+}
+
+
+/* =========================
+   GUIDE FINAL RULE
+========================= */
+/* =========================
+   FINAL RULE — WARNING
+========================= */
+
+.guide-final {
+      border: none;
+    background: transparent;
+    box-shadow: none;
+
+    padding: 0;
+    margin: 0;
+  background:
+    rgba(0, 20, 0, .45);
+
+  color: var(--green);
+
+  position: relative;
+
+  box-shadow:
+    0 0 5px rgba(57, 255, 20, .12);
+}
+
+/* =========================
+   FINAL RULE TITLE
+========================= */
+
+.guide-final h3 {
+  font-family:
+    "VT323",
+    monospace;
+
+  font-size: 28px;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 12px;
+
+  color: var(--green);
+
+  text-shadow:
+    0 0 5px rgba(57, 255, 20, .18);
+}
+
+/* =========================
+   FINAL RULE TEXT
+========================= */
+
+.guide-final p {
+  padding-left: 10px;
+
+  border-left:
+    1px solid var(--line);
+
+  color: var(--green);
+
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  margin-bottom: 9px;
+}
+
+
+/* =========================
+   IMPORTANT WARNING TEXT
+========================= */
+
+.guide-final strong {
+
+  color:   var(--green);
+
+  font-weight: bold;
+
+  text-decoration: underline;
+}
+
+
+/* =========================
+   SCIENTIST SIGNATURE
+========================= */
+
+.guide-final .scientist-signature {
+  border-top:
+    1px dashed var(--line);
+
+  margin-top: 14px;
+
+  padding-top: 10px;
+
+  text-align: right;
+
+  font-family:
+    "VT323",
+    monospace;
+
+  font-size: 21px;
+
+  color: var(--green);
+}
+
+.guide-final .final-rule {
+    margin-bottom: 12px;
+}
+
+.guide-final .scientist-signature small {
+  font-family:
+    "Share Tech Mono",
+    monospace;
+
+  font-size: 10px;
+
+  opacity: .7;
+
+  color: var(--green-dim);
+}
+
+/*
+   No additional CRT layer here.
+
+   The entire website already receives
+   scanlines from body::before.
+*/
+
+
+/* =========================
+   SETTINGS / PLACEHOLDER
+========================= */
+
+.placeholder-page {
+  min-height: 420px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  display: grid;
+
+  grid-template-columns:
+    .8fr
+    2fr
+    1.2fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  border: 1px solid var(--green);
+
+  padding: 10px;
+
+  margin-top: 10px;
+
+  font-size: 14px;
+}
+
+.footer-nav {
+  display: flex;
+
+  gap: 5px;
+}
+
+.footer-nav button {
+  flex: 1;
+
+  padding: 8px 5px;
+
+  font-size: 11px;
+}
+
+.meters {
+  text-align: right;
+}
+
+.meters span {
+  letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1200px) {
+
+  .dashboard {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .history-panel {
+    grid-column: 1 / -1;
+  }
+
+}
+
+
+/* =========================
+   GUIDE TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+  .guide-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+  .topbar {
+    grid-template-columns:
+      1fr;
+  }
+
+  .dashboard {
+    grid-template-columns:
+      1fr;
+  }
+
+  .history-panel {
+    grid-column: auto;
+  }
+
+  .experiment-content {
+    grid-template-columns:
+      70px
+      1fr;
+  }
+
+  .chart {
+    grid-column: 1 / -1;
+  }
+
+  .machine-card {
+    grid-template-columns:
+      70px
+      1fr;
+  }
+
+  .mini-telemetry {
+    grid-column: 1 / -1;
+  }
+
+  .footer {
+    grid-template-columns:
+      1fr;
+  }
+
+  .meters {
+    text-align: left;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+  }
+
+}
+
+
+/* =========================
+   GUIDE MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+  .guide-intro {
+    grid-template-columns:
+      1fr;
+  }
+
+  .guide-character {
+    width: 100%;
+
+    height: 180px;
+  }
+
+  .guide-readings {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .guide-intro p,
+  .guide-section p,
+  .guide-final p {
+    font-size: 15px;
+  }
+
+}
+
+
+/* =========================================================
+   ADD EXPERIMENT MODAL
+========================================================= */
+
+
+/* =========================
+   MODAL OVERLAY
+========================= */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, .82);
+
+    z-index: 200;
+
+}
+
+
+/* When JavaScript adds this class */
+
+.modal-overlay.active {
+
+    display: flex;
+
+}
+
+
+/* =========================
+   MODAL WINDOW
+========================= */
+
+.experiment-modal {
+
+    width: min(900px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border: 1px solid var(--green);
+
+    background:
+        rgba(2, 10, 2, .98);
+
+    box-shadow:
+        0 0 25px rgba(57, 255, 20, .18);
+
+}
+
+
+/* =========================
+   MODAL HEADER
+========================= */
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding: 18px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.modal-header h2 {
+
+    margin: 0 0 5px;
+
+    font-family: "VT323", monospace;
+
+    font-size: 32px;
+
+    color: var(--green);
+
+    letter-spacing: 1px;
+
+}
+
+
+.modal-header p {
+
+    margin: 0;
+
+    font-size: 15px;
+
+    opacity: .75;
+
+}
+
+
+.modal-close {
+
+    width: 38px;
+
+    height: 38px;
+
+    padding: 0;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+}
+
+
+/* =========================
+   MODAL CONTENT
+========================= */
+
+.modal-content {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 0;
+
+    margin: 16px;
+
+    border: 1px solid var(--line);
+
+}
+
+
+.modal-section {
+
+    padding: 16px;
+
+    min-width: 0;
+
+}
+
+
+.modal-section + .modal-section {
+
+    border-left: 1px solid var(--line);
+
+}
+
+
+.modal-section h3 {
+
+    margin: 0 0 8px;
+
+    font-family: "VT323", monospace;
+
+    font-size: 25px;
+
+    color: var(--green);
+
+}
+
+
+.modal-description {
+
+    margin-bottom: 14px;
+
+    font-size: 15px;
+
+    opacity: .75;
+
+    line-height: 1.4;
+
+}
+
+
+/* =========================
+   MACHINE OPTIONS
+========================= */
+
+.machine-selection {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.machine-option {
+
+    display: block;
+
+    cursor: pointer;
+
+}
+
+
+.machine-option input {
+
+    display: none;
+
+}
+
+
+.machine-option-content {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border: 1px solid var(--line);
+
+    background:
+        rgba(0, 20, 0, .35);
+
+    transition: .15s ease;
+
+}
+
+
+.machine-option-content:hover {
+
+    background:
+        rgba(57, 255, 20, .08);
+
+}
+
+
+.machine-option input:checked
++ .machine-option-content {
+
+    border-color: var(--green);
+
+    background:
+        rgba(57, 255, 20, .12);
+
+    box-shadow:
+        0 0 8px rgba(57, 255, 20, .15);
+
+}
+
+
+.machine-option-content strong {
+
+    display: block;
+
+    font-family: "VT323", monospace;
+
+    font-size: 23px;
+
+}
+
+
+.machine-option-content span {
+
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 14px;
+
+    opacity: .7;
+
+}
+
+
+/* =========================
+   IDLE STATUS
+========================= */
+
+/*
+   Idle is yellow because it means:
+   "available / waiting", not "healthy/active".
+*/
+
+.idle-status {
+
+    color: var(--warning-yellow);
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================
+   NO MACHINES WARNING
+========================= */
+
+.no-machines {
+
+    margin-top: 5px;
+
+    padding: 12px;
+
+    border: 1px solid var(--warning-yellow);
+
+    color: var(--warning-yellow);
+
+    font-size: 15px;
+
+}
+
+
+.no-machines small {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--warning-yellow-dim);
+
+    line-height: 1.4;
+
+}
+
+
+/* =========================
+   FORM ELEMENTS
+========================= */
+
+.input-label {
+
+    display: block;
+
+    margin: 12px 0 6px;
+
+    color: var(--green);
+
+    font-size: 15px;
+
+}
+
+
+select,
+textarea,
+.duration-input input {
+
+    width: 100%;
+
+    color: var(--green);
+
+    background:
+        #020802;
+
+    border: 1px solid var(--line);
+
+    padding: 10px;
+
+    font: inherit;
+
+    outline: none;
+
+}
+
+
+select:focus,
+textarea:focus,
+.duration-input input:focus {
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 8px rgba(57, 255, 20, .15);
+
+}
+
+
+textarea {
+
+    min-height: 75px;
+
+    resize: vertical;
+
+}
+
+
+.duration-input {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.duration-input input {
+
+    flex: 1;
+
+}
+
+
+.duration-input span {
+
+    font-size: 13px;
+
+}
+
+
+/* =========================
+   EXPERIMENT DESCRIPTION
+========================= */
+
+.experiment-description {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 110px;
+
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border: 1px solid var(--line);
+
+    background:
+        rgba(0, 20, 0, .35);
+
+}
+
+
+.description-icon {
+
+    font-size: 42px;
+
+    opacity: .65;
+
+}
+
+
+.experiment-description p {
+
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    opacity: .8;
+
+}
+
+
+/* =========================
+   OPTIONAL SETTINGS
+========================= */
+
+.modal-settings {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+
+}
+
+
+/* =========================
+   MODAL FOOTER
+========================= */
+
+.modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 14px 18px;
+
+    border-top: 1px solid var(--line);
+
+}
+
+
+.modal-footer button {
+
+    min-width: 150px;
+
+}
+
+
+.modal-cancel {
+
+    color: var(--green);
+
+}
+
+
+.modal-start {
+
+    color: var(--green);
+
+    border-color: var(--green);
+
+}
+
+
+.modal-start:hover {
+
+    color: #020602;
+
+    background: var(--green);
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .modal-content {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .modal-section + .modal-section {
+
+        border-left: 0;
+
+        border-top: 1px solid var(--line);
+
+    }
+
+
+    .modal-footer {
+
+        flex-direction: column;
+
+    }
+
+
+    .modal-footer button {
+
+        width: 100%;
+
+    }
+
+}
+
+/* =========================================================
+   DO NOT CLICK WARNING MODAL
+========================================================= */
+
+.warning-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 300;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, .82);
+}
+
+
+.warning-modal.active {
+
+    display: flex;
+}
+
+
+/* =========================
+   WARNING WINDOW
+========================= */
+
+.warning-box {
+
+    width: min(650px, 100%);
+
+    border: 1px solid var(--orange);
+
+    background:
+        rgba(2, 6, 2, .98);
+
+    box-shadow:
+        0 0 20px rgba(255, 106, 0, .12);
+
+    font-family:
+        "Share Tech Mono",
+        monospace;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.warning-header {
+
+    padding: 14px 16px;
+
+    border-bottom:
+        1px solid var(--orange);
+
+    color: var(--orange);
+
+    font-family:
+        "VT323",
+        monospace;
+
+    font-size: 28px;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+.warning-content {
+
+    min-height: 220px;
+
+    padding: 22px;
+
+    color: var(--orange);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    white-space: pre-line;
+    text-align: center;
+}
+
+
+/* Typed.js cursor */
+
+#warningText + .typed-cursor {
+
+    color: var(--orange);
+
+    font-size: 16px;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.warning-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    padding: 12px 16px;
+
+    border-top:
+        1px solid var(--orange);
+}
+
+
+#closeWarning {
+
+    color: var(--orange);
+
+    border-color: var(--orange);
+
+    padding: 8px 14px;
+
+    font-size: 12px;
+}
+
+
+#closeWarning:hover {
+
+    color: #020602;
+
+    background: var(--orange);
+
+    box-shadow:
+        0 0 10px rgba(255, 106, 0, .3);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .warning-box {
+
+        width: 100%;
+    }
+
+    .warning-content {
+
+        min-height: 260px;
+
+        font-size: 12px;
+    }
+
+}
+
+/* =========================
+SCIENTIST RESPONSIVE SIZE
+========================= */
+
+/* Telas grandes */
+@media (min-width: 1201px) {
+.scientist-image {
+width: 90%;
+height: 90%;
+}
+}
+
+/* Laptops / telas médias */
+@media (max-width: 1200px) {
+.scientist-image {
+width: 75%;
+height: 75%;
+}
+}
+
+/* Tablets */
+@media (max-width: 1000px) {
+.scientist-image {
+width: 65%;
+height: 65%;
+}
+}
+
+/* Celulares */
+@media (max-width: 650px) {
+.scientist-image {
+width: 55%;
+height: 55%;
+}
+}
+  

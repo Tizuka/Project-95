@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PROJECT 95</title>
+
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <audio id="warningMusic" src="music/i-dont-want-to-set-the-world-on-fire.mp3" preload="auto">
+    </audio>
+    <div class="crt">
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="scientist">
+                    <img class="vaultBoy" src="images/fallout-1-modified.png" alt="Lab Scientist">
+                </div>
+
+                <div>
+                    <h1>PROJECT 95</h1>
+                    <p>AUTHORIZED PERSONNEL ONLY</p>
+                </div>
+
+            </div>
+
+
+            <div class="lab-status">
+
+                <span>LAB STATUS</span>
+
+                <strong>
+                    ALL SYSTEMS NOMINAL
+                </strong>
+
+            </div>
+
+
+            <div class="clock">
+
+                <span>TIME</span>
+
+                <strong id="clock">
+                    14:42:01
+                </strong>
+
+                <span>DATE</span>
+
+                <strong>
+                    08.19.26
+                </strong>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             MAIN NAVIGATION
+        ========================== -->
+
+        <nav class="nav">
+
+            <button class="nav-btn active" data-page="live-page">
+                ⚗ LIVE
+            </button>
+
+            <button class="nav-btn" data-page="machines-page">
+                ⚙ MACHINES
+            </button>
+
+            <button class="nav-btn" data-page="history-page">
+                ▤ HISTORY
+            </button>
+
+            <button class="nav-btn" data-page="guide-page">
+                ⚗ GUIDE
+            </button>
+
+            <button class="danger" id="doNotClick">
+                DO NOT PRESS
+            </button>
+
+        </nav>
+
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+        <!-- =====================================================
+     ADD EXPERIMENT MODAL
+====================================================== -->
+
+        <div class="modal-overlay" id="experiment-modal">
+
+            <div class="experiment-modal">
+
+                <!-- MODAL HEADER -->
+
+                <div class="modal-header">
+
+                    <div>
+                        <h2>⚗ ADD EXPERIMENT</h2>
+
+                        <p>
+                            SELECT A MACHINE AND CONFIGURE YOUR EXPERIMENT
+                        </p>
+                    </div>
+
+                    <button class="modal-close" id="close-experiment-modal">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- MODAL CONTENT -->
+
+                <div class="modal-content">
+
+
+                    <!-- =========================================
+                 SELECT MACHINE
+            ========================================== -->
+
+                    <section class="modal-section">
+
+                        <h3>
+                            1. SELECT MACHINE
+                        </h3>
+
+                        <p class="modal-description">
+                            Only idle machines are available for new experiments.
+                        </p>
+
+
+                        <div class="machine-selection">
+
+
+                            <!-- MACHINE 01 -->
+
+                            <!-- <label class="machine-option">
+
+                                <input type="radio" name="machine" value="LAB-01">
+
+                                <div class="machine-option-content">
+
+                                    <div>
+                                        <strong>LAB-01</strong>
+
+                                        <span>
+                                            PRESSURE CHAMBER
+                                        </span>
+                                    </div>
+
+                                    <b class="idle-status">
+                                        ● IDLE
+                                    </b>
+
+                                </div>
+
+                            </label> -->
+
+
+                            <!-- MACHINE 02 -->
+
+                            <!-- <label class="machine-option">
+
+                                <input type="radio" name="machine" value="LAB-02">
+
+                                <div class="machine-option-content">
+
+                                    <div>
+                                        <strong>LAB-02</strong>
+
+                                        <span>
+                                            CRYO FREEZER
+                                        </span>
+                                    </div>
+
+                                    <b class="idle-status">
+                                        ● IDLE
+                                    </b>
+
+                                </div>
+
+                            </label> -->
+
+
+                            <!-- MACHINE 03 -->
+
+                            <!-- <label class="machine-option">
+
+                                <input type="radio" name="machine" value="LAB-03">
+
+                                <div class="machine-option-content">
+
+                                    <div>
+                                        <strong>LAB-03</strong>
+
+                                        <span>
+                                            THERMAL REACTOR
+                                        </span>
+                                    </div>
+
+                                    <b class="idle-status">
+                                        ● IDLE
+                                    </b>
+
+                                </div>
+
+                            </label> -->
+
+
+                            <!-- NO AVAILABLE MACHINES -->
+
+                            <div class="no-machines">
+
+                                ⚠ NO IDLE MACHINES?
+
+                                <small>
+                                    Stop a running experiment to free up a machine.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =========================================
+                 SELECT EXPERIMENT
+            ========================================== -->
+
+                    <section class="modal-section">
+
+                        <h3>
+                            2. SELECT EXPERIMENT
+                        </h3>
+
+                        <p class="modal-description">
+                            Choose the experiment you want to run.
+                        </p>
+
+
+                        <label class="input-label">
+                            EXPERIMENT TYPE
+                        </label>
+
+                        <select id="experiment-type">
+
+                            <option class="experiment-type-option" value="">
+                                -- SELECT AN EXPERIMENT --
+                            </option>
+
+                        </select>
+
+
+                        <!-- EXPERIMENT DETAILS -->
+
+                        <div class="experiment-description">
+
+                            <span class="description-icon">
+                                ⚗
+                            </span>
+
+                            <p class="experiment-details-description">
+                                Select an experiment type to see
+                                its details and requirements.
+                            </p>
+
+                        </div>
+
+
+                        <!-- OPTIONAL SETTINGS -->
+
+                        <div class="modal-settings">
+
+                            <div>
+
+                                <label class="input-label">
+                                    DURATION
+                                </label>
+
+                                <div class="duration-input">
+
+                                    <input type="number" value="60" min="1">
+
+                                    <span>
+                                        MIN
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="input-label">
+                                    PRIORITY
+                                </label>
+
+                                <select>
+
+                                    <option>
+                                        NORMAL
+                                    </option>
+
+                                    <option>
+                                        HIGH
+                                    </option>
+
+                                    <option>
+                                        CRITICAL
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="input-label">
+                            NOTES
+                        </label>
+
+                        <textarea placeholder="Add any notes about this experiment..."></textarea>
+
+                    </section>
+
+                </div>
+
+
+
+                <!-- =========================================
+             MODAL FOOTER
+        ========================================== -->
+
+                <div class="modal-footer">
+
+                    <button class="modal-cancel" id="cancel-experiment">
+                        CANCEL
+                    </button>
+
+                    <button class="modal-start" id="start-experiment">
+                        ⚗ START EXPERIMENT
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+        <main class="dashboard">
+
+
+            <!-- =====================================================
+                 LIVE PAGE
+            ====================================================== -->
+
+            <section class="page panel live-panel active-page" id="live-page">
+
+                <div class="panel-title">
+
+                    <h2>
+                        &gt; LIVE EXPERIMENTS
+                    </h2>
+
+                    <button class="add-btn" id="open-experiment-modal">
+                        ＋ ADD EXPERIMENT
+                    </button>
+
+                </div>
+
+
+
+                <!-- =========================
+                     EXPERIMENT #1842
+                ========================== -->
+
+                <article class="experiment-card">
+
+                    <div class="card-head">
+
+                        <span>
+                            EXPERIMENT #1842
+                        </span>
+
+                        <b class="status running">
+                            RUNNING
+                        </b>
+
+                    </div>
+
+
+                    <h3>
+                        THERMAL STABILITY TEST
+                    </h3>
+
+
+                    <div class="experiment-content">
+
+
+                        <div class="vault-figure">
+
+                            🧪
+
+                            <small>
+                                SCIENCE!
+                            </small>
+
+                        </div>
+
+
+                        <div class="telemetry">
+
+                            <span>
+                                LIVE TELEMETRY
+                            </span>
+
+                            <p>
+                                TEMP
+                                <b>
+                                    74.2 °C
+                                </b>
+                            </p>
+
+                            <p>
+                                PRESS
+                                <b>
+                                    4.3 BAR
+                                </b>
+                            </p>
+
+                            <p>
+                                HUMID
+                                <b>
+                                    48 %
+                                </b>
+                            </p>
+
+                        </div>
+
+
+                        <div class="chart">
+
+                            <span>
+                                90
+                            </span>
+
+                            <div class="chart-line"></div>
+
+                            <small>
+                                14:20&nbsp;&nbsp;
+                                14:30&nbsp;&nbsp;
+                                14:40&nbsp;&nbsp;
+                                14:50
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta">
+
+                        MACHINE: LAB-03
+
+                        &nbsp;&nbsp;
+
+                        STARTED: 14:32:18
+
+                        &nbsp;&nbsp;
+
+                        DURATION: 18m 42s
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button>
+                            〈 VIEW DETAILS 〉
+                        </button>
+
+                        <button class="danger">
+                            [ STOP EXPERIMENT ]
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+
+
+
+                <div class="warning">
+
+                    ⚠ CAUTION:
+                    HIGH RADIATION LEVELS DETECTED IN LAB-04
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 MACHINES PAGE
+            ====================================================== -->
+
+            <section class="page panel machines-page" id="machines-page">
+
+                <div class="panel-title">
+
+                    <h2>
+                        &gt; LAB MACHINES
+                    </h2>
+
+                    <span class="online">
+                        4 ONLINE
+                    </span>
+
+                </div>
+
+
+
+                <!-- LAB 01 -->
+
+                <div class="machine-card">
+
+                    <div class="machine-art">
+                        ☢
+                    </div>
+
+
+                    <div class="machine-info">
+
+                        <h3>
+                            LAB-01
+                        </h3>
+
+                        <span>
+                            PRESSURE CHAMBER
+                        </span>
+
+                        <p>
+                            STATUS:
+                            <i>
+                                ● RUNNING
+                            </i>
+                        </p>
+
+                        <p>
+                            CURRENT EXPERIMENT:
+                            <br>
+                            PRESSURE TEST (#1843)
+                        </p>
+
+                    </div>
+
+
+                    <div class="mini-telemetry">
+
+                        <span>
+                            TELEMETRY
+                        </span>
+
+                        TEMP
+                        <b>
+                            62.1 °C
+                        </b>
+
+                        PRESS
+                        <b>
+                            5.6 BAR
+                        </b>
+
+                        HUMID
+                        <b>
+                            41 %
+                        </b>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LAB 02 -->
+
+                <div class="machine-card">
+
+                    <div class="machine-art cold">
+                        ❄
+                    </div>
+
+
+                    <div class="machine-info">
+
+                        <h3>
+                            LAB-02
+                        </h3>
+
+                        <span>
+                            CRYO FREEZER
+                        </span>
+
+                        <p>
+                            STATUS:
+
+                            <i class="idle">
+                                ● IDLE
+                            </i>
+
+                        </p>
+
+                        <p>
+                            CURRENT EXPERIMENT:
+                            <br>
+                            —
+                        </p>
+
+                    </div>
+
+
+                    <div class="mini-telemetry">
+
+                        <span>
+                            TELEMETRY
+                        </span>
+
+                        TEMP
+                        <b>
+                            -18.7 °C
+                        </b>
+
+                        PRESS
+                        <b>
+                            1.2 BAR
+                        </b>
+
+                        HUMID
+                        <b>
+                            36 %
+                        </b>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LAB 03 -->
+
+                <div class="machine-card">
+
+                    <div class="machine-art">
+                        ⚗
+                    </div>
+
+
+                    <div class="machine-info">
+
+                        <h3>
+                            LAB-03
+                        </h3>
+
+                        <span>
+                            THERMAL REACTOR
+                        </span>
+
+                        <p>
+                            STATUS:
+
+                            <i>
+                                ● RUNNING
+                            </i>
+
+                        </p>
+
+                        <p>
+                            CURRENT EXPERIMENT:
+                            <br>
+                            THERMAL STABILITY (#1842)
+                        </p>
+
+                    </div>
+
+
+                    <div class="mini-telemetry">
+
+                        <span>
+                            TELEMETRY
+                        </span>
+
+                        TEMP
+                        <b>
+                            74.2 °C
+                        </b>
+
+                        PRESS
+                        <b>
+                            4.3 BAR
+                        </b>
+
+                        HUMID
+                        <b>
+                            48 %
+                        </b>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LAB 04 -->
+
+                <div class="machine-card machine-alert">
+
+                    <div class="machine-art danger-art">
+                        ☢
+                    </div>
+
+
+                    <div class="machine-info">
+
+                        <h3>
+                            LAB-04
+                        </h3>
+
+                        <span>
+                            RADIATION EMITTER
+                        </span>
+
+                        <p>
+                            STATUS:
+
+                            <i class="alert-text">
+                                ● ALERT
+                            </i>
+
+                        </p>
+
+                        <p>
+                            CURRENT EXPERIMENT:
+                            <br>
+                            RADIATION TEST (#1844)
+                        </p>
+
+                    </div>
+
+
+                    <div class="mini-telemetry">
+
+                        <span>
+                            TELEMETRY
+                        </span>
+
+                        TEMP
+                        <b class="orange">
+                            91.3 °C
+                        </b>
+
+                        PRESS
+                        <b>
+                            3.1 BAR
+                        </b>
+
+                        HUMID
+                        <b>
+                            33 %
+                        </b>
+
+                    </div>
+
+                </div>
+
+
+                <div class="maintenance">
+
+                    <strong>
+                        ⚒ MAINTENANCE MODE
+                    </strong>
+
+                    <span>
+                        NO MAINTENANCE SCHEDULED
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 HISTORY PAGE
+            ====================================================== -->
+
+            <section class="page panel history-page" id="history-page">
+
+                <div class="panel-title">
+
+                    <h2>
+                        &gt; EXPERIMENT HISTORY
+                    </h2>
+
+                </div>
+
+
+
+                <div class="history-list">
+
+
+                    <div class="history-head">
+
+                        <span>
+                            ID
+                        </span>
+
+                        <span>
+                            EXPERIMENT
+                        </span>
+
+                        <span>
+                            MACHINE
+                        </span>
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <span>
+                            DATE
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ☢ #1844
+                        </div>
+
+                        <div>
+                            Radiation Test
+                        </div>
+
+                        <div>
+                            LAB-04
+                        </div>
+
+                        <b class="failed">
+                            FAILED
+                        </b>
+
+                        <div>
+                            Today, 15:42
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ⚗ #1843
+                        </div>
+
+                        <div>
+                            Pressure Test
+                        </div>
+
+                        <div>
+                            LAB-01
+                        </div>
+
+                        <b class="completed">
+                            COMPLETED
+                        </b>
+
+                        <div>
+                            Today, 14:20
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ⚗ #1842
+                        </div>
+
+                        <div>
+                            Thermal Stability
+                        </div>
+
+                        <div>
+                            LAB-03
+                        </div>
+
+                        <b class="stopped">
+                            STOPPED
+                        </b>
+
+                        <div>
+                            Today, 13:52
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ❄ #1841
+                        </div>
+
+                        <div>
+                            Cryogenic Test
+                        </div>
+
+                        <div>
+                            LAB-02
+                        </div>
+
+                        <b class="completed">
+                            COMPLETED
+                        </b>
+
+                        <div>
+                            Yesterday, 18:33
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ⚗ #1840
+                        </div>
+
+                        <div>
+                            Pressure Test
+                        </div>
+
+                        <div>
+                            LAB-01
+                        </div>
+
+                        <b class="completed">
+                            COMPLETED
+                        </b>
+
+                        <div>
+                            Yesterday, 16:11
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ⚗ #1839
+                        </div>
+
+                        <div>
+                            Thermal Stability
+                        </div>
+
+                        <div>
+                            LAB-03
+                        </div>
+
+                        <b class="failed">
+                            FAILED
+                        </b>
+
+                        <div>
+                            Yesterday, 11:07
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+                            ☢ #1838
+                        </div>
+
+                        <div>
+                            Radiation Test
+                        </div>
+
+                        <div>
+                            LAB-04
+                        </div>
+
+                        <b class="completed">
+                            COMPLETED
+                        </b>
+
+                        <div>
+                            2 days ago
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lab-log">
+
+                    <h3>
+                        EXPERIMENT DETAILS
+                    </h3>
+
+                    <p>
+                        [14:42:01]
+                        System check complete.
+                    </p>
+
+                    <p>
+                        [14:41:58]
+                        LAB-03:
+                        Thermal Stability Test started.
+                    </p>
+
+                    <p>
+                        [14:41:35]
+                        LAB-01:
+                        Pressure Test completed successfully.
+                    </p>
+
+                    <p class="log-warning">
+                        [14:40:57]
+                        WARNING:
+                        High radiation detected in LAB-04.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+
+            <!-- =====================================================
+     GUIDE PAGE
+====================================================== -->
+
+            <section class="page panel guide-page" id="guide-page">
+
+
+                <!-- =========================
+         GUIDE HEADER
+    ========================== -->
+
+
+                <div class="panel-title">
+
+                    <h2>
+                        &gt; LAB SURVIVAL GUIDE
+                    </h2>
+
+                </div>
+
+
+
+                <!-- =========================
+         GUIDE CONTENT
+    ========================== -->
+
+                <div class="guide-grid">
+
+
+                    <!-- =================================================
+             LEFT COLUMN — SCIENTIST
+        ================================================== -->
+
+                    <div class="guide-column guide-character-column">
+
+                        <div class="guide-character">
+
+                            <img class="scientist-image" src="images/scientist.png" alt="Laboratory Scientist">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+             CENTER COLUMN — INSTRUCTIONS 01–03
+        ================================================== -->
+
+                    <div class="guide-column guide-middle">
+
+
+                        <!-- =========================
+                 STEP 01
+            ========================== -->
+
+                        <div class="guide-section">
+                            <h3>
+                                WELCOME, FELLOW SCIENTIST
+                            </h3>
+
+                            <p>
+                                If you're reading this, congratulations.
+                                Either the laboratory survived...
+                                or you did.
+                            </p>
+
+                            <p>
+                                This terminal contains everything you need
+                                to operate the laboratory without accidentally
+                                destroying what remains of civilization.
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                 STEP 02
+            ========================== -->
+
+                        <div class="guide-section">
+
+                            <h3>
+                                1. START AN EXPERIMENT
+                            </h3>
+
+                            <p>
+                                Return to <strong>LIVE</strong> and press
+                                <strong>＋ ADD EXPERIMENT</strong>.
+                            </p>
+
+                            <p>
+                                Select the machine, choose an experiment
+                                type, and set the parameters.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =========================
+                 STEP 03
+            ========================== -->
+
+                        <div class="guide-section">
+
+                            <h3>
+                                2. WATCH THE NUMBERS
+                            </h3>
+
+                            <p>
+                                Once an experiment is running,
+                                <strong>LIVE TELEMETRY</strong> will show
+                                the machine's current readings.
+                            </p>
+
+
+                            <p>
+                                Temp. Pressure. Humidity. Radiation.
+                            </p>
+
+
+                            <p>
+                                If the numbers stay within the expected
+                                range, excellent.
+                            </p>
+
+
+                            <p>
+                                If they turn orange...
+                            </p>
+
+
+                            <div class="big-warning">
+
+                                STOP ASKING QUESTIONS.
+                                <br>
+                                STOP THE EXPERIMENT.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+             RIGHT COLUMN — INSTRUCTIONS 04–06
+        ================================================== -->
+
+                    <div class="guide-column guide-right">
+
+
+                        <!-- =========================
+                 STEP 04
+            ========================== -->
+
+                        <div class="guide-section">
+
+                            <h3>
+                                3. SOMETHING LOOKS WRONG?
+                            </h3>
+
+                            <p>
+                                An <strong>ALERT</strong> means the machine
+                                has detected an abnormal reading.
+                            </p>
+
+                            <p>
+                                Do not ignore it.
+                            </p>
+
+                            <p>
+                                The last scientist who ignored an alert
+                                is no longer available for comment.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =========================
+                 STEP 05
+            ========================== -->
+
+                        <div class="guide-section">
+
+                            <h3>
+                                4. NEED THE FULL STORY?
+                            </h3>
+
+                            <p>
+                                Open <strong>HISTORY</strong> to see previous
+                                experiments, their machines, results,
+                                and timestamps.
+                            </p>
+
+                            <p>
+                                This is useful for determining whether
+                                you've discovered something revolutionary...
+                                or simply repeated the same mistake
+                                I made yesterday.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =========================
+                 STEP 06
+            ========================== -->
+
+                        <div class="guide-final">
+
+                            <h3 class="final-rule">
+                                5. FINAL RULE
+                            </h3>
+
+                            <p>
+                                Never leave an experiment unattended.
+                            </p>
+
+                            <p>
+                                Never trust a machine that starts
+                                making noises.
+                            </p>
+
+                            <p>
+                                And absolutely never press the button
+                                marked <strong>DO NOT PRESS</strong>.
+                            </p>
+
+
+                            <div class="scientist-signature">
+
+                                — DR. [REDACTED]
+
+                                <br>
+
+                                <small>
+                                    SCIENCE IS 95% CHAOS.
+                                    <br>
+                                    THE OTHER 5% IS PAPERWORK.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 SETTINGS PAGE
+            ====================================================== -->
+
+
+        </main>
+
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+
+            <div>
+
+                PIP-OS V1.0.0
+
+                <br>
+
+                <small>
+                    TERMINAL 007
+                </small>
+
+            </div>
+
+
+
+            <div class="meters">
+
+                POWER
+
+                <span>
+                    █░░░░░
+                </span>
+
+                RADIATION
+
+                <span>
+                    ████░
+                </span>
+
+                ☢
+
+            </div>
+
+        </footer>
+
+    </div>
+
+    <!-- =====================================================
+     DO NOT CLICK WARNING MODAL
+===================================================== -->
+
+    <div class="warning-modal" id="warningModal">
+
+        <div class="warning-box">
+
+            <div class="warning-header">
+                ⚠ SYSTEM WARNING
+            </div>
+
+            <div class="warning-content">
+
+                <span id="warningText"></span>
+
+            </div>
+
+            <div class="warning-footer">
+
+                <button id="closeWarning">
+                    [ CLOSE ]
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="js\frontend.navigation.js"></script>
+    <script type="module" src="js\live.page.js"></script>
+
+
+</body>
+
+</html>

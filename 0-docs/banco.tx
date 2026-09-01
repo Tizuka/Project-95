@@ -1,0 +1,22 @@
+show collections db.classifieddata.find().pretty()
+taskkill //PID 5528 //F
+netstat -ano | findstr :3000 tasklist
+1. Machine Model      
+       ↓
+2. Machine Service
+       ↓
+3. Machine Controller
+       ↓
+4. Machine Routes
+       ↓
+5. Conectar a Route no server.js
+       ↓
+6. Testar criar/buscar Machine
+       ↓
+7. Experiment Model
+       ↓
+8. Relacionar Machine → Experiment
+       ↓
+9. Telemetry Model
+       ↓
+10. Gerar Telemetry
