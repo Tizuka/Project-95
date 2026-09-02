@@ -1,6 +1,1 @@
-- Adicionar valores de "value" para os experiments no banco de dados como: 
-thermal-stability, pressure,cryogenic 
-- depois adicionar na parte do live.page 
-
-
-  
+TODO: Se atentar a organizacao do codigo, colocar em funcoes e separar paradas por escopo maldicao

@@ -15,7 +15,8 @@ const experimentSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
-    }
+    },
+    duration: Number
 
 });
 

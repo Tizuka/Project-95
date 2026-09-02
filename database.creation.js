@@ -1,46 +1,55 @@
-import mongoose from 'mongoose';
-import Machine from './4-models/machine.model.js';
+const mongoose = require('mongoose');
 
-async function seedMachines() {
-    try {
-        await mongoose.connect(
-            'mongodb://127.0.0.1:27017/classified'
-        );
+const Experiment = require('./4-models/experiment.model.js');
 
-        await Machine.deleteMany({});
+const experiments = [
 
-        const machines = [
-            {
-                name: 'LAB-01',
-                status: 'IDLE',
-                experimentId: null
-            },
-            {
-                name: 'LAB-02',
-                status: 'IDLE',
-                experimentId: null
-            },
-            {
-                name: 'LAB-03',
-                status: 'IDLE',
-                experimentId: null
-            },
-            {
-                name: 'LAB-04',
-                status: 'IDLE',
-                experimentId: null
-            }
-        ];
+    {
+        name: "Thermal Stability Test",
+        value: "thermal-stability",
+        description: "Tests material stability under controlled temperature conditions.",
+        duration: 180
+    },
 
-        await Machine.insertMany(machines);
+    {
+        name: "Pressure Test",
+        value: "pressure",
+        description: "Tests structural resistance under extreme pressure.",
+        duration: 120
+    },
 
-        console.log('Machines recreated successfully!');
+    {
+        name: "Cryogenic Test",
+        value: "cryogenic",
+        description: "Evaluates material behavior under extremely low temperatures.",
+        duration: 300 
+    },
 
-        await mongoose.connection.close();
-
-    } catch (error) {
-        console.error('Error:', error);
+    {
+        name: "Radiation Test",
+        value: "radiation",
+        description: "Measures material resistance to controlled radiation.",
+        duration: 240
     }
+
+];
+
+async function createExperiments() {
+
+    await mongoose.connect('mongodb://127.0.0.1:27017/classified');
+
+    console.log("MongoDB connected");
+
+    await Experiment.deleteMany({});
+
+    console.log("Old experiments deleted");
+
+    await Experiment.insertMany(experiments);
+
+    console.log("Experiments created");
+
+    await mongoose.disconnect();
+
 }
 
-seedMachines();
+createExperiments();  

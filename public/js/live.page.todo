@@ -1,0 +1,20 @@
+Se for uma interação diferente → provavelmente outro addEventListener.
+
+Se for apenas uma parte da mesma interação → provavelmente uma função.
+
+E tem uma segunda pergunta ainda melhor:
+
+"Eu consigo dar um nome para este bloco que descreva o que ele faz?"
+
+Se você olha para 15 linhas e pensa:
+
+"Isso aqui renderiza as máquinas."
+
+Então:
+
+function renderMachines() {
+    // essas 15 linhas
+}
+
+Código que precisa existir junto para criar/comportar um mesmo elemento pode ficar
+ junto. Código que representa uma responsabilidade diferente pode ser separado.

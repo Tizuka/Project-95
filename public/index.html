@@ -149,83 +149,6 @@
                         <div class="machine-selection">
 
 
-                            <!-- MACHINE 01 -->
-
-                            <!-- <label class="machine-option">
-
-                                <input type="radio" name="machine" value="LAB-01">
-
-                                <div class="machine-option-content">
-
-                                    <div>
-                                        <strong>LAB-01</strong>
-
-                                        <span>
-                                            PRESSURE CHAMBER
-                                        </span>
-                                    </div>
-
-                                    <b class="idle-status">
-                                        ● IDLE
-                                    </b>
-
-                                </div>
-
-                            </label> -->
-
-
-                            <!-- MACHINE 02 -->
-
-                            <!-- <label class="machine-option">
-
-                                <input type="radio" name="machine" value="LAB-02">
-
-                                <div class="machine-option-content">
-
-                                    <div>
-                                        <strong>LAB-02</strong>
-
-                                        <span>
-                                            CRYO FREEZER
-                                        </span>
-                                    </div>
-
-                                    <b class="idle-status">
-                                        ● IDLE
-                                    </b>
-
-                                </div>
-
-                            </label> -->
-
-
-                            <!-- MACHINE 03 -->
-
-                            <!-- <label class="machine-option">
-
-                                <input type="radio" name="machine" value="LAB-03">
-
-                                <div class="machine-option-content">
-
-                                    <div>
-                                        <strong>LAB-03</strong>
-
-                                        <span>
-                                            THERMAL REACTOR
-                                        </span>
-                                    </div>
-
-                                    <b class="idle-status">
-                                        ● IDLE
-                                    </b>
-
-                                </div>
-
-                            </label> -->
-
-
-                            <!-- NO AVAILABLE MACHINES -->
-
                             <div class="no-machines">
 
                                 ⚠ NO IDLE MACHINES?
@@ -296,9 +219,11 @@
                                     DURATION
                                 </label>
 
-                                <div class="duration-input">
+                                <div class="duration-display">
 
-                                    <input type="number" value="60" min="1">
+                                    <span id="experiment-duration">
+                                        3
+                                    </span>
 
                                     <span>
                                         MIN
@@ -308,39 +233,7 @@
 
                             </div>
 
-
-                            <div>
-
-                                <label class="input-label">
-                                    PRIORITY
-                                </label>
-
-                                <select>
-
-                                    <option>
-                                        NORMAL
-                                    </option>
-
-                                    <option>
-                                        HIGH
-                                    </option>
-
-                                    <option>
-                                        CRITICAL
-                                    </option>
-
-                                </select>
-
-                            </div>
-
                         </div>
-
-
-                        <label class="input-label">
-                            NOTES
-                        </label>
-
-                        <textarea placeholder="Add any notes about this experiment..."></textarea>
 
                     </section>
 
@@ -799,7 +692,7 @@
                 <div class="maintenance">
 
                     <strong>
-                        ⚒ MAINTENANCE MODE
+                        ⚒ MAINTENANCE MODE -
                     </strong>
 
                     <span>

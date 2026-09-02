@@ -1,4 +1,7 @@
-show collections db.classifieddata.find().pretty()
+show collections 
+
+db.experiments.find().pretty()
+db.machines.find().pretty()
 taskkill //PID 5528 //F
 netstat -ano | findstr :3000 tasklist
 1. Machine Model      
