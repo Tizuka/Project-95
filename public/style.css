@@ -37,6 +37,7 @@
 
 * {
     box-sizing: border-box;
+    user-select: none;
 }
 
 html, body {
@@ -1298,7 +1299,7 @@ color: #000;
 
 .history-list {
   /* border: 1px solid var(--line); */
-  font-size: 11px;
+  font-size: 15px;
 }
 
 .history-list > div {
@@ -2957,8 +2958,21 @@ body.screen-glitch .crt {
    MEDIA QUERIES — ORDEM CRESCENTE (MAX-WIDTH)
    ========================================================= */
 
-/* ---------- PHONE (até 500px) ---------- */
+@media (max-width: 374px) {
+      #live-page .align-running-details {
+               flex-direction: column; 
+      }
+}
+
+@media (max-width: 418px) {
+    .history-page .history-list > div:not(.history-head) > div,
+    .history-page .history-list > div:not(.history-head) > b {
+        font-size: 10px;
+    }
+}
+   /* ---------- PHONE (até 500px) ---------- */
 @media (max-width: 500px) {
+
 
   .meters{
     margin-top:3vh;
@@ -2976,13 +2990,12 @@ body.screen-glitch .crt {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        gap:10vw;
         width: 100%;
         
     }
 
     #live-page .panel-title h2 {
-        font-size: 18px;
+        font-size: 15px;
     }
 
     #live-page .add-btn {
@@ -2990,21 +3003,30 @@ body.screen-glitch .crt {
     }
 
     #live-page .experiment-card {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     #live-page .card-head > span {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     #live-page .card-head h3 {
 
-        font-size: 14px;
+        font-size: 12px;
     }
 
     #live-page .align-running-details button {
 
-        font-size: 10px;
+        font-size: 12px;
+    }
+
+    #live-page .align-running-details b {
+      font-size: 12px;
+    }
+    
+    #live-page .align-running-details button:hover {
+
+        cursor: pointer;
     }
 
     #live-page .status {
@@ -3122,7 +3144,13 @@ body.screen-glitch .crt {
     order: 3;
   }
 }
+@media (max-width: 638px) {
 
+    .history-page .history-list > div:not(.history-head) {
+        font-size: 12px;
+    }
+
+}
 
 /* ---------- SMALL TABLET / LARGE PHONE (até 700px) ---------- */
 @media (max-width: 700px) {
