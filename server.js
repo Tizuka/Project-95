@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5500'
 }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/classified')
