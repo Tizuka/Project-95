@@ -160,6 +160,16 @@ display: flex;
     saturate(4);
 }
 
+.align-images {
+  display: flex;
+    justify-content: center;
+  align-items: center;
+}
+
+.logo{
+  width: 80px;
+  height: 40px;
+}
 .scientist {
   font-size: 14px;
 
