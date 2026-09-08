@@ -417,7 +417,7 @@ button.active {
 
 .panel-title h2 {
 
-  font-size: 27px;
+  font-size: 19px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: 2px solid var(--green);
@@ -425,6 +425,7 @@ button.active {
 }
 
 .project-title {
+  font-size: 40px;
   font-family: "square", monospace !important;
   color: #20ff20;
   text-shadow: 0 0 5px rgba(32, 255, 32, 0.4);
@@ -455,6 +456,10 @@ button.active {
 }
 .project-title.flicker {
     animation: lightFlicker 0.8s ease-in-out;
+}
+
+.authorized {
+text-align: center;
 }
 
 @keyframes lightFlicker {
