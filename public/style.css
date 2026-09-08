@@ -1,6 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+@font-face {
+    font-family: "Square";
+    src: url("./fonts/Square-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Square";
+    src: url("./fonts/Square-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Square";
+    src: url("./fonts/Square-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+
 :root {
   --green: #39ff14;
   --green-dim: #75b94b;
@@ -14,7 +36,15 @@
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 .modal-header h2,
 .modal-section h3 {
@@ -23,14 +53,12 @@
     letter-spacing: 0.5px;
 }
 body {
-  margin: 0;
-  min-height: 100vh;
+  min-height: 50vh;
   background: #000;
   color: var(--green);
   font-family: "Share Tech Mono", monospace;
-  overflow-x: hidden;
+  /* overflow: hidden; */
 }
-
 
 /* =========================
    GLOBAL CRT EFFECT
@@ -70,25 +98,33 @@ body::after {
       rgba(0,0,0,.5) 100%
     );
 }
-
+h1,
+h2,
+h3,
+p,
+button,
+span,
+strong {
+    font-family: "Share Tech Mono", monospace;
+}
 
 /* =========================
    CRT CONTAINER
 ========================= */
 
 .crt {
-  width: min(1800px, 100%);
-  margin: auto;
-  padding: 12px;
-  min-height: 100vh;
+     width: min(1900px, 100%);
+    margin: 6px auto;
+    padding: 12px 30px;
+    min-height: calc(100vh - 12px);
 
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(50,255,20,.05),
-      transparent 35%
-    ),
-    #020602;
+    background: #020602;
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -97,35 +133,25 @@ body::after {
 ========================= */
 
 .topbar {
-  display: grid;
-
-  grid-template-columns:
-    1.5fr
-    .8fr
-    .5fr;
-
-  gap: 12px;
-
-  align-items: stretch;
-
-  border: 1px solid var(--green);
-
-  padding: 12px;
-
-  background: var(--panel);
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    background: transparent;
+    padding: 10px 14px 5px;
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+margin-bottom: clamp(24px, 5vw, 30px);  
+display: flex;
+  align-items: flex-start;
+  /* gap: 15px; */
 }
 
 .vaultBoy {
   width: 134px;
   height: 134px;
 
-  object-fit: cover;
+  object-fit: contain;
 
   filter:
     grayscale(1)
@@ -145,8 +171,8 @@ body::after {
 }
 
 .scientist-image {
-  width: 234px;
-  height: 234px;
+  width: 134px;
+  height: 134px;
 }
 
 h1,
@@ -159,10 +185,10 @@ p {
 h1 {
   margin-bottom: 4px;
 
-  font-family: "VT323", monospace;
+  font-family: "Share Tech Mono", monospace;
 
   font-size:
-    clamp(38px, 4vw, 62px);
+    clamp(10px, 4vw, 50px);
 
   letter-spacing: 2px;
 
@@ -175,15 +201,22 @@ h1 {
   font-size: 15px;
 }
 
+.align-labstatus-clock {
+  /* margin-top: 40px; */
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+  gap:20px
+}
+
+
 .lab-status,
 .clock {
-  border: 1px solid var(--line);
-
   padding: 10px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 400px;
 }
 
 .lab-status strong,
@@ -207,15 +240,49 @@ h1 {
 
 .nav {
   display: flex;
-
+  flex-direction: column;
+  padding: 22px 22px 22px 0px;
+  width: 15%;
+  justify-content: center;
+  align-items: flex-start;
+ border-right: 3px solid var(--line);
+ margin-right: 30px;
   gap: 8px;
-
-  margin: 10px 0;
+  /* margin: 10px 0; */
 }
+
+.nav button {
+    width: 100%;
+    text-align: left;
+
+    font-family: "VT323", monospace;
+    font-size: 24px;
+    letter-spacing: 1px;
+
+    padding: 7px 12px;
+
+    text-shadow:
+        0 0 3px rgba(57, 255, 20, 0.45);
+
+    transition: .15s ease;
+}
+
+
+
+
 
 button,
 input {
   font: inherit;
+}
+.experiment-card .align-running-details button {
+background:none
+
+}
+
+.experiment-card .align-running-details button:hover {
+color:#000
+
 }
 
 button {
@@ -223,7 +290,7 @@ button {
 
   background: #020802;
 
-  border: 1px solid var(--green);
+  border:none;
 
   padding: 9px 13px;
 
@@ -231,6 +298,7 @@ button {
 
   transition: .15s ease;
 }
+
 
 button:hover,
 button.active {
@@ -248,8 +316,9 @@ button.active {
 ========================= */
 
 .dashboard {
-  display: block;
+  flex:1;
 }
+
 
 
 /* =========================
@@ -265,18 +334,58 @@ button.active {
 }
 
 .live-panel.active-page {
-  display: block;
+    flex: 1;
+    width: 100%;
+}
+.experiment-list {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/* align content with navbar */
+
+.align-navANDmain {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    flex: 1;
+    min-height: 0;
 }
 
+/* =========================
+   HOME PAGE
+========================= */
+.align-vaultboy-labstatus{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    gap: 45px;
+
+    width: fit-content;
+    margin: 0 auto;
+
+}
+
+.page.home-page.active-page {
+    display: grid;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    padding: 10px 0 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+}
 /* =========================
    GENERAL PANEL
 ========================= */
 
 .panel {
-  border: 1px solid var(--green);
-
-  background: var(--panel);
 
   padding: 10px;
 
@@ -290,22 +399,70 @@ button.active {
 
   justify-content: space-between;
 
-  gap: 10px;
+  gap: 5px;
 
-  margin-bottom: 9px;
+  margin-bottom: 4px;
+  
 }
 
 .panel-title h2 {
-  font-family: "VT323", monospace;
 
   font-size: 27px;
-
-  margin: 0;
-
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--green);
   letter-spacing: 1px;
 }
 
+.project-title {
+  font-family: "square", monospace !important;
+  color: #20ff20;
+  text-shadow: 0 0 5px rgba(32, 255, 32, 0.4);
+   
+}
 
+.static-nav {
+    /* width: 800px; */
+    width: calc(800px - 10vw);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    flex-shrink: 1;
+}
+
+
+.project-info {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 15vw;
+    /* gap: 330px;
+    
+    margin: 0 */
+
+}
+.project-title.flicker {
+    animation: lightFlicker 0.8s ease-in-out;
+}
+
+@keyframes lightFlicker {
+    0% {
+        opacity: 1;
+        text-shadow: 0 0 5px rgba(32, 255, 32, 0.4);
+    }
+
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 5px rgba(32, 255, 32, 0.4);
+    }
+}
 /* =========================
    ADD BUTTON
 ========================= */
@@ -321,7 +478,6 @@ button.active {
    EXPERIMENT CARDS
 ========================= */
 
-.experiment-card,
 .machine-card {
   border: 1px solid var(--line);
 
@@ -335,24 +491,10 @@ button.active {
 
 .card-head {
   display: flex;
-
+  flex-direction: column;
   justify-content: space-between;
-
+  /* border: 2px solid var(--green) ; */
   font-size: 13px;
-}
-
-.experiment-card h3 {
-  font-family: "VT323", monospace;
-
-  font-size: 25px;
-
-  margin: 5px 0 7px;
-}
-
-.status {
-  border: 1px solid var(--green);
-
-  padding: 4px 7px;
 }
 
 .alert {
@@ -361,22 +503,296 @@ button.active {
   border-color: var(--orange);
 }
 
+/* =========================
+   EXPERIMENT CARD
+========================= */
+
+.experiment-card {
+    width: 100%;
+    border: 1px solid #39ff14;
+    padding: 14px 18px 16px;
+    box-sizing: border-box;
+
+  font-family:
+    "Share Tech Mono",
+    monospace;    color: #39ff14;
+
+    background: rgba(0, 20, 0, 0.15);
+}
+
 
 /* =========================
-   EXPERIMENT CONTENT
+   CARD HEADER
+========================= */
+
+.card-head {
+    display: grid;
+    grid-template-columns: 1fr auto 110px;
+    align-items: center;
+
+    min-height: 42px;
+}
+
+.card-head > span {
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.card-head h3 {
+    margin: 0;
+    text-align: center;
+
+  font-family:
+    "Share Tech Mono",
+    monospace;    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+
+.status.running {
+    color: #39ff14;
+}
+
+
+/* =========================
+   META
+========================= */
+
+.meta {
+    margin-top: 18px;
+
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+
+    margin-top: 18px;
+}
+
+.actions button {
+    background: transparent;
+    border: none;
+
+    color: #39ff14;
+
+  font-family:
+    "Share Tech Mono",
+    monospace;    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.actions button:hover {
+    text-decoration: underline;
+}
+
+
+/* STOP BUTTON */
+
+.actions .danger {
+    color: #ff7a00;
+}
+
+
+/* =========================
+   experiment card new
+========================= */
+
+/* =========================
+   EXPERIMENT LIST
+========================= */
+
+.experiment-card {
+    display: grid;
+    grid-template-columns: 100px 1fr 130px 150px;
+    align-items: center;
+
+    width: 100%;
+    padding: 0;
+
+    border: none;
+    border-bottom: 1px solid rgba(57, 255, 20, 0.35);
+
+    background: transparent;
+
+  font-family: "VT323", monospace;
+    color: #39ff14;
+
+    transition: background 0.1s, color 0.1s;
+}
+
+
+/* =========================
+   ONE-LINE HEADER
+========================= */
+
+.card-head {
+    display: contents;
+}
+
+
+/* ID */
+
+.card-head > span {
+    grid-column: 1;
+
+    padding: 16px 10px;
+
+    font-size: 15px;
+}
+
+
+/* EXPERIMENT NAME */
+
+.card-head h3 {
+    grid-column: 2;
+
+    margin: 0;
+    padding: 16px 10px;
+
+  font-family: "VT323", monospace;
+    font-size: 17px;
+    font-weight: 400;
+
+    text-align: left;
+}
+
+
+/* STATUS */
+
+.card-head .status {
+    grid-column: 3;
+
+    margin: 0;
+    padding: 16px 10px;
+
+    border: none;
+
+  font-family: "VT323", monospace;
+    font-size: 15px;
+    font-weight: 400;
+
+    text-align: right;
+}
+
+
+/* =========================
+   SEE DETAILS BUTTON
+========================= */
+
+.actions {
+    display: contents;
+}
+
+.actions button:first-child {
+    grid-column: 4;
+
+    margin: 0;
+    padding: 16px 10px;
+
+    background: transparent;
+    border: none;
+
+    color: #39ff14;
+
+  font-family: "VT323", monospace;
+    font-size: 14px;
+
+    text-align: right;
+    cursor: pointer;
+}
+
+
+/* STOP BUTTON HIDDEN FROM THE LIST */
+
+.actions .danger {
+    display: none;
+}
+
+
+/* =========================
+   HOVER
+========================= */
+
+.experiment-card:hover {
+    background: #39ff14;
+    color: #000;
+}
+.experiment-card:hover .align-running-details button {
+color: #000;
+}
+.experiment-card:hover .card-head > span,
+.experiment-card:hover .card-head h3,
+.experiment-card:hover .card-head .status,
+.experiment-card:hover .actions button
+.experiment-card:hover .align-running-details button {
+    color: #000;
+}
+
+.align-running-details button {
+    white-space: nowrap;
+}
+/* =========================
+   META
+========================= */
+
+.meta {
+    display: none;
+
+    grid-column: 1 / -1;
+
+    padding: 12px 10px;
+
+    border-top: 1px solid rgba(57, 255, 20, 0.4);
+
+  font-family: "VT323", monospace;
+    font-size: 13px;
+}
+
+
+/* =========================
+   EXPANDED CONTENT
 ========================= */
 
 .experiment-content {
-  display: grid;
+    display: none;
+    grid-column: 1 / -1;
+    margin: 10px;
+    /* padding: 20px; */
 
-  grid-template-columns:
-    85px
-    1fr
-    1.25fr;
+    /* border-top: 1px solid rgba(57, 255, 20, 0.4); */
+}
 
-  gap: 8px;
 
-  align-items: center;
+/* =========================
+   EXPANDED STATE
+========================= */
+
+.experiment-card.expanded .meta {
+    display: block;
+}
+
+.experiment-card.expanded .experiment-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .vault-figure {
@@ -386,7 +802,7 @@ button.active {
 
   place-items: center;
 
-  border: 1px dashed var(--line);
+  /* border: 1px dashed var(--line); */
 
   font-size: 43px;
 
@@ -409,9 +825,9 @@ button.active {
 ========================= */
 
 .telemetry {
-  border: 1px solid #286b18;
-
-  padding: 7px;
+  border-right: 1px solid #286b18;
+  width: 200px;
+  padding: 40px;
 
   font-size: 13px;
 }
@@ -440,7 +856,7 @@ button.active {
 
 .chart {
   height: 100px;
-
+  width: 400px;
   border: 1px solid #286b18;
 
   position: relative;
@@ -514,7 +930,7 @@ button.active {
 ========================= */
 
 .meta {
-  font-size: 11px;
+  font-size: 21px;
 
   margin: 7px 0;
 }
@@ -539,9 +955,29 @@ button.active {
 
   width: auto;
 
-  font-size: 11px;
+  font-size: 21px;
 
   padding: 9px 13px;
+}
+
+.align-running-details {
+  /* width: 50vw;   */
+  display: flex;
+  justify-content:flex-end;
+  margin: 0 auto;
+}
+
+.align-running-details .status {
+
+
+    font-size: 20px;
+    font-weight: 400;
+
+    text-align: center;
+}
+
+.align-running-details .status.running {
+    color: #39ff14;
 }
 
 .danger {
@@ -578,192 +1014,177 @@ button.active {
 /* =========================
    MACHINES
 ========================= */
-/* =========================
-   MACHINES
-========================= */
 
-/*
-   MACHINES PAGE
-   2 machines per row
-*/
+.machines-list {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 .machines-page.active-page {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 10px;
+    display: block;
 }
 
+.machines-list .card-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 700px;
+} 
 
-/*
-   PAGE TITLE
-   Occupies the entire width
-*/
-
-.machines-page .panel-title {
-  grid-column: 1 / -1;
-}
-
-
-/*
+/* =========================
    MACHINE CARD
-*/
+========================= */
 
 .machine-card {
-  display: grid;
+    display: grid;
 
-  grid-template-columns:
-    70px
-    minmax(0, 1fr)
-    105px;
+    grid-template-columns: 135px 1fr auto;
 
-  gap: 8px;
+    align-items: center;
 
-  align-items: center;
+    width: 100%;
 
-  border: 1px solid var(--line);
+    padding: 16px 10px;
 
-  padding: 8px;
+    margin: 0;
 
-  margin-bottom: 0;
+    border: none;
+    border-bottom: 1px solid rgba(57, 255, 20, 0.35);
 
-  background:
-    rgba(0, 20, 0, .45);
+    background: transparent;
+
+    color: #39ff14;
+
+    font-family: "VT323", monospace;
+
+    transition: background 0.1s, color 0.1s;
 }
 
 
-/*
-   MACHINE ICON
-*/
-
-.machine-art {
-  height: 82px;
-
-  border: 1px dashed var(--line);
-
-  display: grid;
-
-  place-items: center;
-
-  font-size: 38px;
-
-  filter:
-    grayscale(1)
-    sepia(1)
-    hue-rotate(60deg)
-    saturate(4);
-}
-
-
-.machine-art.cold {
-  filter:
-    grayscale(1)
-    sepia(1)
-    hue-rotate(140deg)
-    saturate(4);
-}
-
-
-.danger-art {
-  color: var(--orange);
-  filter: none;
-}
-
-
-/*
-   MACHINE INFORMATION
-*/
+/* =========================
+   MACHINE ID + NAME
+========================= */
 
 .machine-info {
-  min-width: 0;
+    display: contents;
 }
-
 
 .machine-info h3 {
-  font-family: "VT323", monospace;
+    grid-column: 1;
 
-  font-size: 25px;
+    margin: 0;
 
-  margin: 0;
+    padding: 16px 10px;
+
+    font-family: "VT323", monospace;
+
+    font-size: 17px;
+
+    font-weight: 400;
+
+    letter-spacing: 1px;
 }
-
 
 .machine-info span {
-  font-size: 10px;
+    grid-column: 2;
+
+    padding: 16px 10px;
+
+    font-family: "VT323", monospace;
+
+    font-size: 17px;
+
+    opacity: 1;
+}
+
+.maintenance {
+ 
+ margin-top: 40px;
+
+}
+/* =========================
+   STATUS
+========================= */
+
+.machine-card .mini-telemetry {
+    grid-column: 3;
+
+    margin: 0;
+
+    padding: 16px 10px;
+
+    border: none;
+
+    background: transparent;
+
+    font-family: "VT323", monospace;
+
+    font-size: 17px;
+
+    text-align: right;
+}
+
+.machine-card .mini-telemetry span {
+    display: none;
+}
+
+.machine-card .mini-telemetry b {
+    display: block;
+
+    font-family: "VT323", monospace;
+
+    font-size: 17px;
+
+    font-weight: 400;
+
+    white-space: nowrap;
 }
 
 
-.machine-info p {
-  font-size: 10px;
+/* =========================
+   STATUS COLORS
+========================= */
 
-  line-height: 1.3;
+.machine-card .online {
+    color: #39ff14;
+}
 
-  margin: 5px 0 0;
+.machine-card .idle-status {
+    color: #39ff14;
+}
+
+.machine-card .orange,
+.machine-card .alert-text {
+    color: #ff6a00;
 }
 
 
-.machine-info i {
-  font-style: normal;
+/* =========================
+   REMOVE ART
+========================= */
+
+.machine-card .machine-art {
+    display: none;
 }
 
 
-.idle {
-  color: #7db5ff;
+/* =========================
+   HOVER
+========================= */
+
+.machine-card:hover {
+    background: #39ff14;
+
+    color: #000;
 }
 
-
-.alert-text,
-.orange {
-  color: var(--orange);
+.machine-card:hover .machine-info h3,
+.machine-card:hover .machine-info span,
+.machine-card:hover .mini-telemetry,
+.machine-card:hover .mini-telemetry b {
+    color: #000;
 }
-
-
-/*
-   MACHINE TELEMETRY
-*/
-
-.mini-telemetry {
-  border: 1px solid #286b18;
-
-  padding: 6px;
-
-  font-size: 10px;
-
-  line-height: 1.6;
-
-  min-width: 0;
-}
-
-
-.mini-telemetry span {
-  display: block;
-
-  margin-bottom: 4px;
-
-  opacity: .8;
-}
-
-
-.mini-telemetry b {
-  display: block;
-
-  font-size: 11px;
-}
-
-
-/*
-   MAINTENANCE
-   Stays underneath all machines
-*/
-
-.machines-page .maintenance {
-  grid-column: 1 / -1;
-
-  margin-top: 0;
-}
-
 
 /* =========================
    MACHINES RESPONSIVE
@@ -800,6 +1221,9 @@ button.active {
 */
 
 @media (max-width: 600px) {
+    .experiment-content{
+        flex-direction: column;
+    }
 
   .machine-card {
     grid-template-columns:
@@ -829,7 +1253,7 @@ button.active {
 
   background: #020802;
 
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
 
   padding: 10px;
 
@@ -858,8 +1282,7 @@ button.active {
 }
 
 .history-list {
-  border: 1px solid var(--line);
-
+  /* border: 1px solid var(--line); */
   font-size: 11px;
 }
 
@@ -877,8 +1300,7 @@ button.active {
 
   padding: 8px 5px;
 
-  border-bottom:
-    1px solid #163b0d;
+  border-bottom: 1px solid #163b0d;
 
   align-items: center;
 }
@@ -900,7 +1322,7 @@ button.active {
 }
 
 .lab-log {
-  border: 1px solid var(--line);
+  /* border: 1px so lid var(--line); */
 
   margin-top: 10px;
 
@@ -991,7 +1413,7 @@ button.active {
 
   gap: 16px;
 
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
 
   padding: 14px;
 
@@ -1012,7 +1434,7 @@ button.active {
 
   min-height: 0;
 
-  border: 1px dashed var(--line);
+  /* border: 1px dashed var(--line); */
 
   display: flex;
 
@@ -1072,9 +1494,9 @@ button.active {
 .guide-final h3 {
   font-family: "VT323", monospace;
 
-    margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
 
-  font-size: 28px;
+  font-size: 20px;
 
   letter-spacing: 1px;
 
@@ -1092,8 +1514,8 @@ button.active {
 .guide-section p,
 .guide-final p {
   font-size: 13px;
-margin: 0 0 10px 0;
-  line-height: 1.55;
+  margin: 0 0 10px 0;
+  line-height: 1.30;
 
   margin: 0 0 9px;
 }
@@ -1112,11 +1534,6 @@ margin: 0 0 10px 0;
 
 .guide-section {
     border: none;
-    border-bottom: 1px dashed #39ff14;
-
-    padding: 0 0 18px 0;
-    margin: 0 0 18px 0;
-
     background: transparent;
     box-shadow: none;
 }
@@ -1167,8 +1584,8 @@ margin: 0 0 10px 0;
 .guide-warning {
   color: var(--orange) !important;
 
-  border-left:
-    2px solid var(--orange);
+  /* border-left:
+    2px solid var(--orange); */
 
   padding-left: 9px;
 }
@@ -1198,7 +1615,7 @@ margin: 0 0 10px 0;
 }
 
 .guide-readings span {
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
 
   padding: 8px 5px;
 
@@ -1221,21 +1638,21 @@ margin: 0 0 10px 0;
   color: var(--orange);
 
   padding: 10px;
-
-  margin-top: 10px;
+  width: 300px;
+  margin:0 auto;
 
   text-align: center;
 
   font-family: "VT323", monospace;
 
-  font-size: 22px !important;
+  font-size: 15px !important;
 
   line-height: 1.1 !important;
 
   letter-spacing: 1px;
 
-  text-shadow:
-    0 0 6px rgba(255, 106, 0, .35);
+  /* text-shadow:
+    0 0 6px rgba(255, 106, 0, .35); */
 
   background:
     rgba(255, 106, 0, .03);
@@ -1251,7 +1668,7 @@ margin: 0 0 10px 0;
 
 .guide-final {
       border: none;
-    background: transparent;
+    /* background: transparent; */
     box-shadow: none;
 
     padding: 0;
@@ -1294,11 +1711,11 @@ margin: 0 0 10px 0;
 
 .guide-final p {
   padding-left: 10px;
-
+/* 
   border-left:
-    1px solid var(--line);
+    1px solid var(--line); */
 
-  color: var(--green);
+  /* color: var(--green); */
 
   font-size: 15px;
 
@@ -1326,9 +1743,9 @@ margin: 0 0 10px 0;
    SCIENTIST SIGNATURE
 ========================= */
 
-.guide-final .scientist-signature {
+ .scientist-signature {
   border-top:
-    1px dashed var(--line);
+    2px dashed var(--line);
 
   margin-top: 14px;
 
@@ -1345,8 +1762,12 @@ margin: 0 0 10px 0;
   color: var(--green);
 }
 
-.guide-final .final-rule {
+/* .guide-final .final-rule {
     margin-bottom: 12px;
+} */
+
+.final-rule{
+  margin:15px
 }
 
 .guide-final .scientist-signature small {
@@ -1385,27 +1806,24 @@ margin: 0 0 10px 0;
 .footer {
   display: grid;
 
-  grid-template-columns:
-    .8fr
-    2fr
-    1.2fr;
+  grid-template-columns: 20% 50% 30%;
 
-  gap: 10px;
-
+   gap: 1%;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   align-items: center;
 
-  border: 1px solid var(--green);
+  border-top: 1px solid var(--green);
 
-  padding: 10px;
+padding-top: 2vh;
 
-  margin-top: 10px;
 
   font-size: 14px;
 }
 
 .footer-nav {
   display: flex;
-
   gap: 5px;
 }
 
@@ -1418,13 +1836,26 @@ margin: 0 0 10px 0;
 }
 
 .meters {
-  text-align: right;
+    display: flex;
+    align-items: right;
+    justify-content: flex-end;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 400;
 }
 
 .meters span {
-  letter-spacing: 2px;
+    letter-spacing: 4px;
+    margin-right: 35px;
 }
 
+.meters span:first-of-type {
+    margin-right: 40px;
+}
+
+.meters {
+    color: #39ff14;
+}
 
 /* =========================================================
    RESPONSIVE
@@ -1483,15 +1914,9 @@ margin: 0 0 10px 0;
     grid-column: auto;
   }
 
-  .experiment-content {
-    grid-template-columns:
-      70px
-      1fr;
-  }
-
-  .chart {
-    grid-column: 1 / -1;
-  }
+    .experiment-content {
+        flex-direction: column;
+    }
 
   .machine-card {
     grid-template-columns:
@@ -1513,6 +1938,7 @@ margin: 0 0 10px 0;
   }
 
   .nav {
+    
     flex-wrap: wrap;
   }
 
@@ -1544,7 +1970,7 @@ margin: 0 0 10px 0;
   .guide-intro p,
   .guide-section p,
   .guide-final p {
-    font-size: 15px;
+    font-size: 12px;
   }
 
 }
@@ -1597,6 +2023,9 @@ margin: 0 0 10px 0;
     width: min(800px, 100%);
     max-height: 90vh;
     overflow-y: auto;
+    border: 1px solid var(--line);
+    background-color: #000;
+
 }
 
 /* =========================
@@ -1615,7 +2044,7 @@ margin: 0 0 10px 0;
 
      padding: 12px 16px;
 
-    border-bottom: 1px solid var(--line);
+
 
 }
 
@@ -1675,27 +2104,27 @@ margin: 0 0 10px 0;
     gap: 0;
 
     margin: 10px;
-
-    border: 1px solid var(--line);
+    background-color: #000;
+    /* border: 1px solid var(--line); */
 
 }
 
 
 .modal-section {
-
+/* border-left: 1px solid var(--line);  */
     padding: 12px;
 
     min-width: 0;
 
 }
 
-
+.experiment-type-option {
+}
 .modal-section + .modal-section {
 
-    border-left: 1px solid var(--line);
+    /* border: 1px solid var(--line); */
 
 }
-
 
 .modal-section h3 {
 
@@ -1766,7 +2195,7 @@ margin: 0 0 10px 0;
 
     padding: 12px;
 
-    border: 1px solid var(--line);
+    /* border: 1px solid var(--line); */
 
     background:
         rgba(0, 20, 0, .35);
@@ -1787,7 +2216,7 @@ margin: 0 0 10px 0;
 .machine-option input:checked
 + .machine-option-content {
 
-    border-color: var(--green);
+    /* border-color: var(--green); */
 
     background:
         rgba(57, 255, 20, .12);
@@ -1917,7 +2346,7 @@ select:focus,
 textarea:focus,
 .duration-input input:focus {
 
-    border-color: var(--green);
+    /* border-color: var(--green); */
 
     box-shadow:
         0 0 8px rgba(57, 255, 20, .15);
@@ -1977,7 +2406,7 @@ textarea {
 
     padding: 12px;
 
-    border: 1px solid var(--line);
+    /* border: 1px solid var(--line); */
 
     background:
         rgba(0, 20, 0, .35);
@@ -2033,7 +2462,7 @@ textarea {
 
     padding: 14px 18px;
 
-    border-top: 1px solid var(--line);
+    /* border-top: 1px solid var(--line); */
 
 }
 
@@ -2056,7 +2485,7 @@ textarea {
 
     color: var(--green);
 
-    border-color: var(--green);
+    /* border-color: var(--green); */
 
 }
 
@@ -2066,44 +2495,6 @@ textarea {
     color: #020602;
 
     background: var(--green);
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 700px) {
-
-    .modal-content {
-
-        grid-template-columns: 1fr;
-
-    }
-
-
-    .modal-section + .modal-section {
-
-        border-left: 0;
-
-        border-top: 1px solid var(--line);
-
-    }
-
-
-    .modal-footer {
-
-        flex-direction: column;
-
-    }
-
-
-    .modal-footer button {
-
-        width: 100%;
-
-    }
 
 }
 
@@ -2191,7 +2582,7 @@ textarea {
 
     min-height: 220px;
 
-    padding: 22px;
+    padding: 0 22px 22px;
 
     color: var(--orange);
 
@@ -2200,7 +2591,7 @@ textarea {
     line-height: 1.8;
 
     white-space: pre-line;
-    text-align: center;
+text-align: left;
 }
 
 
@@ -2213,7 +2604,24 @@ textarea {
     font-size: 16px;
 
 }
+/* =========================
+   WARNING WAITING CURSOR
+========================= */
 
+.warning-waiting-cursor {
+    color: var(--orange);
+    animation: blinkCursor 0.8s step-end infinite;
+}
+
+@keyframes blinkCursor {
+    0%, 50% {
+        opacity: 1;
+    }
+
+    51%, 100% {
+        opacity: 0;
+    }
+}
 
 /* =========================
    FOOTER
@@ -2311,3 +2719,710 @@ height: 55%;
 }
 }
   
+
+/* =========================
+   RANDOM CRT GLITCH
+========================= */
+
+body.screen-glitch {
+    animation: screen-glitch 0.22s steps(2, end);
+}
+
+body.screen-glitch .crt {
+    transform: translateX(2px);
+    filter: contrast(1.15) brightness(1.08);
+}
+
+@keyframes screen-glitch {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-2px);
+    }
+
+    40% {
+        transform: translateX(3px);
+    }
+
+    60% {
+        transform: translateX(-1px);
+    }
+
+    80% {
+        transform: translateX(2px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* =========================================================
+   PROJECT 95 — HOME LAYOUT
+   Header/title and left navigation stay global.
+   The HOME content is split into:
+   VAULT BOY | STATUS/CLOCK | SYSTEM LOG
+========================================================= */
+
+#home-page.home-page {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 10px 0 0 !important;
+    margin: 0;
+    background: transparent;
+    border: none;
+}
+
+.page.home-page.active-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 74px;
+}
+
+#home-page .home-content {
+    display: grid;
+
+    grid-template-columns:
+        minmax(280px, 1.15fr)
+        minmax(190px, .75fr)
+        minmax(360px, 1.5fr);
+
+    align-items: center;
+
+    width: 100%;
+    min-height: 58vh;
+
+    gap: 18px;
+}
+
+#home-page .home-vaultboy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+#home-page .home-vaultboy .vaultBoy {
+    width: min(100%, 390px);
+    height: auto;
+    max-height: 320px;
+    object-fit: contain;
+}
+
+#home-page .home-status-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 28px;
+
+    min-width: 0;
+}
+
+#home-page .lab-status,
+#home-page .clock {
+    width: 100%;
+    padding: 0;
+}
+
+#home-page .lab-status strong,
+#home-page .clock strong {
+    margin-top: 5px;
+    font-size: 17px;
+}
+
+#home-page .clock span {
+    margin-top: 2px;
+    font-size: 12px;
+    opacity: .8;
+}
+
+
+/* =========================================================
+   SYSTEM LOG
+========================================================= */
+
+#home-page .home-system-log {
+    align-self: stretch;
+
+    min-width: 0;
+
+    margin: 10px 0;
+
+    padding: 14px 0 14px 22px;
+
+    border-left: 1px solid var(--line);
+}
+
+#home-page .home-log-header {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+#home-page .home-log-header::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: var(--line);
+}
+
+#home-page .home-log-header h3 {
+    margin: 0;
+
+    font-family: "VT323", monospace;
+
+    font-size: 25px;
+
+    font-weight: 400;
+
+    letter-spacing: 1px;
+}
+
+#home-page .home-log-list {
+
+    max-height: 180px;
+    overflow-y: auto;
+
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+#home-page .home-log-list p {
+    margin: 0;
+
+    font-size: 12px;
+
+    line-height: 1.35;
+}
+
+#home-page .home-log-list p span {
+    opacity: .8;
+
+    margin-right: 5px;
+}
+
+#home-page .home-log-list .log-warning {
+    color: var(--orange);
+}
+
+
+/* =========================================================
+   OLD HOME LOG
+========================================================= */
+
+#home-page .lab-log {
+    display: none;
+}
+
+.home-vault-clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 100px */
+}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+/* =========================================================
+   MEDIA QUERIES — ORDEM CRESCENTE (MAX-WIDTH)
+   ========================================================= */
+
+/* ---------- PHONE (até 500px) ---------- */
+@media (max-width: 500px) {
+
+  .meters{
+    margin-top:3vh;
+  }
+
+      #live-page .align-running-details {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 0;
+    }
+
+    #live-page .card-head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap:10vw;
+        width: 100%;
+        
+    }
+
+    #live-page .panel-title h2 {
+        font-size: 18px;
+    }
+
+    #live-page .add-btn {
+        font-size: 12px;
+    }
+
+    #live-page .experiment-card {
+        font-size: 12px;
+    }
+
+    #live-page .card-head > span {
+        font-size: 11px;
+    }
+
+    #live-page .card-head h3 {
+
+        font-size: 14px;
+    }
+
+    #live-page .align-running-details button {
+
+        font-size: 10px;
+    }
+
+    #live-page .status {
+
+        font-size: 10px;
+    }
+
+    #live-page .telemetry {
+        border-right: none;
+        font-size: 11px;
+    }
+
+    #live-page .telemetry p {
+        font-size: 10px;
+    }
+
+    #live-page .chart {
+        font-size: 10px;
+    }
+
+    #live-page .chart small {
+        font-size: 8px;
+    }
+
+    #live-page .meta {
+        font-size: 9px;
+    }
+
+    #live-page .actions button {
+        font-size: 10px;
+    }
+
+    .nav button.danger {
+        background: var(--orange);
+        color: #000;
+        flex: 1 1 0;
+    }
+  .crt {
+    padding: 8px 10px;
+  }
+
+  .project-title {
+    font-size: clamp(25px, 9vw, 38px);
+  }
+
+
+  .brand p {
+    font-size: 12px;
+  }
+
+  .static-nav {
+    width: 100%;
+    
+  }
+
+  .nav {
+    gap: 3px;
+  }
+
+  .nav button {
+    font-size: 18px;
+    padding: 6px 7px;
+  }
+
+  #home-page .home-vaultboy .vaultBoy {
+    width: min(240px, 75vw);
+  }
+
+  #home-page .home-log-list p {
+    font-size: 10px;
+  }
+
+  #home-page .home-content {
+    min-height: auto;
+  }
+}
+
+
+/* ---------- MOBILE EXTRA (até 600px) ---------- */
+@media (max-width: 600px) {
+    #live-page .telemetry {
+        border-right: none;
+    }
+    .nav button.danger {
+        background: var(--orange);
+        color: #000;
+        flex: 1 1 0;
+    }
+    .nav button {
+       width: auto;
+      text-align: center;
+        flex: 1 1 auto;
+    }
+  #home-page .home-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    gap: 18px;
+  }
+
+  #home-page .home-vaultboy {
+    order: 1;
+  }
+
+  #home-page .home-vaultboy .vaultBoy {
+    width: min(100%, 280px);
+  }
+
+  #home-page .home-status-column {
+    order: 2;
+  }
+
+  #home-page .home-system-log {
+    order: 3;
+  }
+}
+
+
+/* ---------- SMALL TABLET / LARGE PHONE (até 700px) ---------- */
+@media (max-width: 700px) {
+
+  .crt {
+    width: 100%;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 0;
+  }
+
+  .topbar {
+    padding: 8px 5px;
+  }
+
+  /* HEADER */
+  .project-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .project-title {
+    font-size: clamp(28px, 8vw, 45px);
+  }
+
+  .static-nav {
+    width: 100%;
+    max-width: 600px;
+    align-self: center;
+  }
+
+  /* NAVIGATION */
+  .align-navANDmain {
+    flex-direction: column;
+  }
+
+  .nav {
+    width: 100%;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px 0;
+    margin: 0 0 15px 0;
+    border-right: none;
+    border-bottom: 2px solid var(--line);
+    gap: 5px;
+  }
+
+  .nav button {
+    width: auto;
+    flex: 1 1 auto;
+    font-size: 20px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  .dashboard {
+    width: 100%;
+  }
+
+  /* HOME */
+  #home-page .home-content {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    gap: 25px;
+  }
+
+  #home-page .home-vaultboy {
+    order: 1;
+  }
+
+  #home-page .home-vaultboy .vaultBoy {
+    width: min(280px, 80vw);
+  }
+
+  #home-page .home-status-column {
+    order: 2;
+    width: 100%;
+    align-items: center;
+    gap: 18px;
+  }
+
+  #home-page .lab-status,
+  #home-page .clock {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  #home-page .home-system-log {
+    order: 3;
+    width: 100%;
+  }
+}
+
+@media (max-width: 710px) {
+    .static-nav {
+        display: none;
+    }
+}
+
+/* ---------- TABLET / MEDIUM SCREENS (até 850px) ---------- */
+@media (max-width: 884px) {
+
+  .chart{
+    margin-left: 2vw;
+  }
+
+.experiment-content{
+  align-items: center;
+}
+
+.live-panel.active-page {
+  display: flex;
+  flex-direction: column; }
+
+  
+   /* TOP RIGHT BOTTOM LEFT */
+.dashboard {
+    display: flex;
+    justify-content: center; /* centro no X */
+    align-items: center;     /* centro no Y */
+}
+.home-vaultboy, .home-status-column {
+    display: flex;
+    justify-content: center; /* centro no X */
+    align-items: center; 
+}
+  #home-page .home-content {
+    margin: auto 0;
+    grid-template-columns:
+      minmax(220px, 1fr)
+      minmax(170px, .8fr);
+    grid-template-rows: auto auto;
+    min-height: auto;
+  }
+
+    .project-info {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+  #home-page .home-vaultboy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #home-page .home-status-column {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #home-page .home-system-log {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    border-left: 0;
+    padding: 16px 0 0;
+    margin: 0;
+  }
+}
+
+
+/* ---------- TABLET (até 900px) ---------- */
+@media (max-width: 900px) {
+
+  .crt {
+    padding: 12px 20px;
+    min-height: 700px;
+  }
+
+  .project-info {
+    gap: 30px;
+  }
+
+  .static-nav {
+    width: min(550px, 48vw);
+  }
+
+  .nav {
+    flex-basis: 125px;
+    padding-right: 12px;
+    margin-right: 15px;
+  }
+
+  .nav button {
+    font-size: 21px;
+    padding: 6px 8px;
+  }
+
+  #home-page .home-content {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(150px, .7fr);
+  }
+
+  #home-page .home-system-log {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+
+/* ---------- LARGE TABLETS / SMALL DESKTOPS (até 1100px) ---------- */
+@media (max-width: 1100px) {
+
+
+    .align-navANDmain {
+        flex-direction: column;
+    }
+
+    .nav {
+        width: 100%;
+        flex: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 8px 0;
+        margin: 0 0 15px 0;
+        border-right: none;
+        border-bottom: 2px solid var(--line);
+        gap: 5px;
+    }
+
+    .nav button {
+        width: auto;
+        flex: 1 1 auto;
+        font-size: 20px;
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+
+
+
+
+    .scientist-image {
+    width: 300px;
+    height: 300px;
+  }
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+}
+  #home-page .home-content {
+    grid-template-columns:
+      minmax(220px, 1fr)
+      170px
+      minmax(280px, 1.25fr);
+    align-content: center;
+    gap: 12px;
+    min-height: auto;
+  }
+
+  #home-page .home-vaultboy .vaultBoy {
+    width: min(100%, 320px);
+  }
+
+  #home-page .home-log-list p {
+    font-size: 11px;
+  }
+
+
+}
+
+@media (max-width: 1150px) and (max-height: 850px) {
+
+    .project-info {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .static-nav {
+        width: min(600px, 70vw);
+    }
+}
+@media (max-width: 1200px) {
+.machines-list .card-head {
+  gap: 0px;
+}
+}
+/* =========================================================
+CASOS ESPECÍFICOS)
+   ========================================================= */
+
+/* TALL TABLETS */
+@media (min-width: 701px) and (max-width: 900px) and (min-height: 1000px) {
+
+  .align-navANDmain {
+    flex-direction: column;
+  }
+
+  .nav {
+    width: 100%;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px 0;
+    margin: 0 0 15px 0;
+    border-right: none;
+    border-bottom: 2px solid var(--line);
+    gap: 5px;
+  }
+
+  .nav button {
+    width: auto;
+    flex: 1 1 auto;
+    font-size: 20px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  #home-page .home-content {
+    min-height: auto;
+  }
+}

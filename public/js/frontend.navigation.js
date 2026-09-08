@@ -1,183 +1,4 @@
 
-/* =========================
-WARNING POPUP + MUSIC
-========================= */
-
-const warningModal =
-    document.getElementById("warningModal");
-
-const warningText =
-    document.getElementById("warningText");
-
-const doNotClick =
-    document.getElementById("doNotClick");
-
-const closeWarning =
-    document.getElementById("closeWarning");
-
-const warningMusic =
-    document.getElementById("warningMusic");
-
-
-let typedInstance = null;
-
-
-/* =========================
-   OPEN WARNING
-========================= */
-
-doNotClick.addEventListener("click", () => {
-
-    /*
-     * Open popup
-     */
-    warningModal.classList.add("active");
-
-
-    /*
-     * Restart music from
-     * the beginning
-     */
-    warningMusic.currentTime = 0;
-
-    warningMusic.play().catch(error => {
-        console.log("Music could not start:", error);
-    });
-
-
-    /*
-     * Clear previous text
-     * so the animation restarts
-     */
-    warningText.innerHTML = "";
-
-
-    /*
-     * Start Typed.js
-     */
-    typedInstance = new Typed("#warningText", {
-
-        strings: [
-            `FACILITY STATUS: 
-
-CONTAINMENT: FAILED
-EXTERNAL COMMUNICATION: LOST
-POWER GRID: UNSTABLE
-
-...
-
-RADIO SIGNAL DETECTED.
-
-PLAYING ARCHIVED BROADCAST...`
-        ],
-
-        typeSpeed: 35,
-
-        startDelay: 300,
-
-        showCursor: true,
-
-        cursorChar: "█",
-
-        autoInsertCss: true,
-
-        onComplete: () => {
-
-            console.log(
-                "WARNING MESSAGE COMPLETE"
-            );
-
-        }
-
-    });
-
-});
-
-
-/* =========================
-   CLOSE WARNING
-========================= */
-
-function closeWarningModal() {
-
-    /*
-     * Close popup
-     */
-    warningModal.classList.remove("active");
-
-
-    /*
-     * Stop music
-     */
-    warningMusic.pause();
-
-
-    /*
-     * Reset music position
-     * so it starts from the
-     * beginning next time
-     */
-    warningMusic.currentTime = 0;
-
-
-    /*
-     * Destroy Typed.js instance
-     * so the text animation
-     * also starts from zero
-     */
-    if (typedInstance) {
-
-        typedInstance.destroy();
-
-        typedInstance = null;
-
-    }
-
-}
-
-
-/* =========================
-   CLOSE BUTTON
-========================= */
-
-closeWarning.addEventListener(
-    "click",
-    closeWarningModal
-);
-
-
-/* =========================
-   CLOSE WITH ESC
-========================= */
-
-document.addEventListener("keydown", (event) => {
-
-    if (
-        event.key === "Escape" &&
-        warningModal.classList.contains("active")
-    ) {
-
-        closeWarningModal();
-
-    }
-
-});
-
-
-/* =========================
-   CLOSE WHEN CLICKING
-   OUTSIDE THE WINDOW
-========================= */
-
-warningModal.addEventListener("click", (event) => {
-
-    if (event.target === warningModal) {
-
-        closeWarningModal();
-
-    }
-
-});
 /*
  * ADD EXPERIMENT MODAL
  */
@@ -264,9 +85,20 @@ document.addEventListener("keydown", (event) => {
  * PAGE NAVIGATION
  */
 
-const navigationButtons =
-    document.querySelectorAll(".nav-btn");
+const navigationButtons = document.querySelectorAll(".nav-btn"); 
+const initializingSound = document.getElementById("initializingSound");
 
+let liveInitializationPlayed = false;
+let machinesInitializationPlayed = false;
+
+function playInitializingSound() {
+    if (!initializingSound) return;
+
+    initializingSound.volume = 0.18;
+    initializingSound.currentTime = 0;
+
+    initializingSound.play().catch(() => {});
+}
 
 navigationButtons.forEach(button => {
 
@@ -274,7 +106,21 @@ navigationButtons.forEach(button => {
 
         const pageId =
             button.dataset.page;
+if (
+    pageId === "live" &&
+    !liveInitializationPlayed
+) {
+    playInitializingSound();
+    liveInitializationPlayed = true;
+}
 
+if (
+    pageId === "machines" &&
+    !machinesInitializationPlayed
+) {
+    playInitializingSound();
+    machinesInitializationPlayed = true;
+}
 
         /*
          * Hide every page
@@ -369,4 +215,27 @@ setInterval(
     updateClock,
     1000
 );
+
+
+
+/* =========================
+   Expand on see details
+========================= */
+const detailButtons = document.querySelectorAll(
+    ".experiment-card .align-running-details button"
+);
+
+detailButtons.forEach(button => {
+    button.addEventListener("click", () => {
+
+        const card = button.closest(".experiment-card");
+
+        const isExpanded = card.classList.toggle("expanded");
+
+        button.textContent = isExpanded
+            ? "〈 HIDE DETAILS 〉"
+            : "〈 VIEW DETAILS 〉";
+
+    });
+});
 

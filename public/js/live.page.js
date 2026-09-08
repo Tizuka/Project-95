@@ -3,7 +3,7 @@
 import { loadIdleMachines } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
 import { startExperiment } from '../../5-fetch/experiment.run.fetch.js';
-
+import { showWarning } from './warning.modal.js';
 
 // Open Experiment
 const experiments = await loadExperiments();
@@ -114,10 +114,6 @@ function renderExperiments() {
 
     });
 }
-function showWarning(message) {
-    warningText.textContent = message;
-    warningModal.classList.add("active");
-}
 // 1.4 OPEN EXPERIMENT MODAL
 openExperimentModal.addEventListener("click", async () => {
 
@@ -165,8 +161,12 @@ addExperimentButton.addEventListener("click", async () => {
     console.log("experimentselected", experimentSelected );
     if(!machineSelected || !experimentSelected) {
         // alert("Please select a machine and an experiment before starting.");
-        showWarning("Please select a machine and an experiment before starting.");
-        return;
+         showWarning(
+                machineSelected,
+                experimentSelected
+            );
+
+            return;
     }
 
 const experimentRunObject = {
@@ -192,6 +192,14 @@ startExperiment(experimentRunObject)
     });
 
 });
+
+
+
+/* =========================
+   ExperimentRun Display on live page
+========================= */
+
+
 
 
 
