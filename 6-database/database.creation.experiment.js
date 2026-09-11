@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Experiment = require('./4-models/experiment.model.js');
+const Experiment = require('../4-models/experiment.model.js');
 
 const experiments = [
 

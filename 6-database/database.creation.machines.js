@@ -1,6 +1,6 @@
     const mongoose = require('mongoose');
 
-    const Machine = require('./4-models/machine.model.js');
+    const Machine = require('../4-models/machine.model.js');
 
     const machines = [
         {
