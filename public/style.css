@@ -1853,7 +1853,6 @@ padding-top: 2vh;
 
 .meters {
     display: flex;
-    align-items: right;
     justify-content: flex-end;
     gap: 12px;
     font-size: 15px;

@@ -5,5 +5,6 @@ const router = express.Router();
 
 
 router.post('/startExperiment', experimentRunController.startExperimentController);
+router.get('/loadAllExperimentRuns', experimentRunController.loadAllExperimentRunsController);
 
 module.exports = router;

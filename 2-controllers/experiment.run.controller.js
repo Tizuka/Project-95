@@ -12,6 +12,23 @@ async function startExperimentController(req, res) {
     }
 }
 
+
+
+
+// Getall Experimnet runs
+async function loadAllExperimentRunsController(req, res) {
+    try {
+        const experimentRuns = await experimentRunService.loadAllExperimentRuns();
+        res.json(experimentRuns);
+
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        });
+    }
+}
+
+
 module.exports = {
-    startExperimentController
+    startExperimentController,loadAllExperimentRunsController
 };

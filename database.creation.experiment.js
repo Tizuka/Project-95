@@ -5,28 +5,28 @@ const Experiment = require('./4-models/experiment.model.js');
 const experiments = [
 
     {
-        name: "Thermal Stability Test",
+        name: "THERMAL STABILITY TEST",
         value: "thermal-stability",
         description: "Tests material stability under controlled temperature conditions.",
         duration: 180
     },
 
     {
-        name: "Pressure Test",
+        name: "PRESSURE TEST",
         value: "pressure",
         description: "Tests structural resistance under extreme pressure.",
         duration: 120
     },
 
     {
-        name: "Cryogenic Test",
+        name: "CRYOGENIC TEST",
         value: "cryogenic",
         description: "Evaluates material behavior under extremely low temperatures.",
         duration: 300 
     },
 
     {
-        name: "Radiation Test",
+        name: "RADIATION TEST",
         value: "radiation",
         description: "Measures material resistance to controlled radiation.",
         duration: 240

@@ -4,6 +4,8 @@ const machineController = require('../2-controllers/machine.controller');
 const router = express.Router();
 
 
+console.log("router received update status");
 router.get('/idle', machineController.getIdleMachines);
+router.post('/updateStatus', machineController.updateStatusController);
 
 module.exports = router;

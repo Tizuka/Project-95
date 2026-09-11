@@ -6,7 +6,7 @@ const machineSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['IDLE', 'RUNNING', 'COMPLETED', 'FAILED'],
+        enum: ['IDLE', 'RUNNING'],
         default: 'IDLE'
     },
 
