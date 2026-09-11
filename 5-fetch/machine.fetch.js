@@ -30,8 +30,11 @@ export async function updateStatus(machineId) {
 }
 
 
+export async function loadMachines() {
+    const response = await fetch('http://127.0.0.1:3000/machines/loadMachines');
+    const allmachines = await response.json();
+    console.log("allmachines:", allmachines);
 
-// loadExperiments();
-// addExperiment();
-// loadRunningExperiments();
-// renderExperimentCard();
+
+    return allmachines;
+}

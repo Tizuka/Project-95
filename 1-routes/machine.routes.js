@@ -6,6 +6,7 @@ const router = express.Router();
 
 console.log("router received update status");
 router.get('/idle', machineController.getIdleMachines);
+router.get('/loadMachines', machineController.loadMachines);
 router.post('/updateStatus', machineController.updateStatusController);
 
 module.exports = router;

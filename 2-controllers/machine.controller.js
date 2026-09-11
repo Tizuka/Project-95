@@ -47,7 +47,20 @@ async function updateStatusController(req, res) {
 }
 
 
+async function loadMachines(req, res) {
+    
+    try {
+        const machines = await machineService.loadMachines();
+
+        res.json(machines);
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        });
+    }
+}
+
 
 module.exports = {
-    getIdleMachines,updateStatusController
+    getIdleMachines,updateStatusController,loadMachines
 };

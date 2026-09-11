@@ -1,7 +1,7 @@
 // 1. ADD EXPERIMENT BUTTON
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
 import { loadIdleMachines, updateStatus } from '../../5-fetch/machine.fetch.js';
-import { loadExperiments, getExperimentFromId } from '../../5-fetch/experiments.fetch.js';
+import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
 import { startExperiment } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
 import { loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
@@ -10,19 +10,19 @@ import { loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
 
 
 // experimentRuns
-console.log("1 - SCRIPT START");
+// console.log("1 - SCRIPT START");
 const experimentRuns = await loadAllExperimentRuns();
-console.log("2 - EXPERIMENT RUNS LOADED", experimentRuns);
+// console.log("2 - EXPERIMENT RUNS LOADED", experimentRuns);
 const livePageButton = document.getElementById("live-page-button");
 const experimentList = document.querySelector(".experiment-list");
 // Open Experiment
 
 const experiments = await loadExperiments();
-console.log("3 - EXPERIMENTS LOADED", experiments);
+// console.log("3 - EXPERIMENTS LOADED", experiments);
 const openExperimentModal =
     document.getElementById("open-experiment-modal");
 const machines = await loadIdleMachines();
-console.log("4 - MACHINES LOADED", machines);// ELEMENTS
+// console.log("4 - MACHINES LOADED", machines);// ELEMENTS
 const machineSelection =
     document.querySelector(".machine-selection");
 const experimentDetailsDescription =
@@ -38,7 +38,7 @@ let experimentSelected = '';
 let selectedMachineId = '';
     machineSelection.innerHTML = "";
 function renderMachines() {
- console.log("5 dentro de renderMachines")
+//  console.log("5 dentro de renderMachines")
 
     machines.forEach(machine => {
 
@@ -58,7 +58,7 @@ function renderMachines() {
         machineSelected = event.target.value;
         selectedMachineId = machine._id;
     });
- console.log("6 fora de renderMachines, antes da criacao dos cards")
+//  console.log("6 fora de renderMachines, antes da criacao dos cards")
 
 
         const machineOptionContent =
@@ -98,7 +98,7 @@ function renderMachines() {
     });
 }
 function renderExperiments() {
- console.log("7 dentro de render experiments")
+//  console.log("7 dentro de render experiments")
 
     experimentTypeSelect.innerHTML = `
         <option value="">-- SELECT AN EXPERIMENT --</option>
@@ -128,7 +128,7 @@ function renderExperiments() {
 }
 // 1.4 OPEN EXPERIMENT MODAL
 openExperimentModal.addEventListener("click", async () => {
- console.log("8 dentro de openExperimentModal.addEventListener")
+//  console.log("8 dentro de openExperimentModal.addEventListener")
 
     // renderizar machines
 

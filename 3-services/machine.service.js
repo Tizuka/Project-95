@@ -16,7 +16,13 @@ async function updateStatus(machineId) {
 
 }
 
+
+async function loadMachines() {
+    return await Machine.find();
+}
+
+
 module.exports = {
     getIdleMachines,
-    updateStatus
+    updateStatus,loadMachines
 };
