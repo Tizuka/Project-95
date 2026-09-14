@@ -2,9 +2,8 @@
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
 import { loadIdleMachines, updateStatus } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
-import { startExperiment } from '../../5-fetch/experiment.run.fetch.js';
+import { startExperiment,loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
-import { loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
 
 
 
@@ -126,19 +125,13 @@ function renderExperiments() {
 
     });
 }
+
+
 // 1.4 OPEN EXPERIMENT MODAL
 openExperimentModal.addEventListener("click", async () => {
 //  console.log("8 dentro de openExperimentModal.addEventListener")
-
-    // renderizar machines
-
     renderMachines();
-
-    // renderizar experiments
-
     renderExperiments();
-
-
     experimentDuration.textContent = '';
 
 });
@@ -366,12 +359,12 @@ function renderExperimentCards(experimentRuns) {
 
             &nbsp;&nbsp;
 
-            STARTED:  ${new Date(experimentRun.startedAt).toLocaleTimeString('pt-BR')}
+            STARTED: ${new Date(experimentRun.startedAt).toDateString()}
+    ${new Date(experimentRun.startedAt).toLocaleTimeString("en-US", { hour12: false })}
+             -
 
-            &nbsp;&nbsp;
-
-            END: ${new Date(experimentRun.endedAt).toLocaleTimeString('pt-BR')}
-        `;
+            END:  ${new Date(experimentRun.endedAt).toDateString()}
+    ${new Date(experimentRun.endedAt).toLocaleTimeString("en-US", { hour12: false })}    `;
 
 
         // =========================

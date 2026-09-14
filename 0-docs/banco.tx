@@ -2,8 +2,10 @@ show collections
 
 db.experiments.find().pretty()
 db.machines.find().pretty()
-taskkill //PID 5528 //F
-netstat -ano | findstr :3000 tasklist
+db.experimentruns.find().pretty()
+netstat -ano | findstr :3000
+tasklist | findstr 12345
+taskkill /PID 12345 /F
 1. Machine Model      
        ↓
 2. Machine Service

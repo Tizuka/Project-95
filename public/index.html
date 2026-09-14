@@ -67,7 +67,7 @@
                     MACHINES
                 </button>
 
-                <button class="nav-btn" data-page="history-page">
+                <button id="history-page-button" class="nav-btn" data-page="history-page">
                     HISTORY
                 </button>
 
@@ -112,7 +112,7 @@
 
                                 <span>DATE</span>
 
-                                <strong>
+                                <strong id="date">
                                     08.19.26
                                 </strong>
                             </div>
@@ -127,42 +127,6 @@
                             </div>
 
                             <div class="home-log-list">
-
-                                <p>
-                                    <span>[14:42:01]</span>
-                                    System check complete.
-                                </p>
-
-                                <p>
-                                    <span>[14:41:58]</span>
-                                    LAB-03: Thermal Stability Test started.
-                                </p>
-
-                                <p>
-                                    <span>[14:41:35]</span>
-                                    LAB-01: Pressure Test completed successfully.
-                                </p>
-
-                                <p class="log-warning">
-                                    <span>[14:40:57]</span>
-                                    WARNING: High radiation detected in LAB-04.
-                                </p>
-
-                                <p>
-                                    <span>[14:40:21]</span>
-                                    LAB-02: Cryogenic systems idle.
-                                </p>
-
-                                <p>
-                                    <span>[14:39:44]</span>
-                                    Backup systems verified.
-                                </p>
-
-                                <p>
-                                    <span>[14:39:12]</span>
-                                    All laboratory systems online.
-                                </p>
-
                             </div>
 
                         </div>
@@ -194,105 +158,6 @@
                      EXPERIMENT #1842
                 ========================== -->
                     <div class="experiment-list">
-                        <article class="experiment-card">
-
-                            <div class="card-head">
-
-                                <span>
-                                    #1842
-                                </span>
-                                <h3>
-                                    THERMAL STABILITY TEST
-                                </h3>
-                                <div class="align-running-details">
-                                    <button>
-                                        〈 VIEW DETAILS 〉
-                                    </button>
-                                    <b class="status running">
-                                        [RUNNING]
-                                    </b>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="experiment-content">
-
-                                <div class="telemetry">
-
-                                    <span>
-                                        LIVE TELEMETRY
-                                    </span>
-
-                                    <p>
-                                        TEMP
-                                        <b>
-                                            74.2 °C
-                                        </b>
-                                    </p>
-
-                                    <p>
-                                        PRESS
-                                        <b>
-                                            4.3 BAR
-                                        </b>
-                                    </p>
-
-                                    <p>
-                                        HUMID
-                                        <b>
-                                            48 %
-                                        </b>
-                                    </p>
-
-                                </div>
-
-
-                                <div class="chart">
-
-                                    <span>
-                                        90
-                                    </span>
-
-                                    <div class="chart-line"></div>
-
-                                    <small>
-                                        14:20&nbsp;&nbsp;
-                                        14:30&nbsp;&nbsp;
-                                        14:40&nbsp;&nbsp;
-                                        14:50
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="meta">
-
-                                MACHINE: LAB-03
-
-                                &nbsp;&nbsp;
-
-                                STARTED: 14:32:18
-
-                                &nbsp;&nbsp;
-
-                                DURATION: 18m 42s
-
-                            </div>
-
-
-                            <div class="actions">
-
-                                <button class="danger">
-                                    [ STOP EXPERIMENT ]
-                                </button>
-
-                            </div>
-
-                        </article>
                     </div>
 
                     <!-- <div class="warning">
@@ -394,183 +259,9 @@
                                 DATE
                             </span>
 
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ☢ #1844
-                            </div>
-
-                            <div>
-                                Radiation Test
-                            </div>
-
-                            <div>
-                                LAB-04
-                            </div>
-
-                            <b class="failed">
-                                FAILED
-                            </b>
-
-                            <div>
-                                Today, 15:42
-                            </div>
 
                         </div>
-
-
-                        <div>
-
-                            <div>
-                                ⚗ #1843
-                            </div>
-
-                            <div>
-                                Pressure Test
-                            </div>
-
-                            <div>
-                                LAB-01
-                            </div>
-
-                            <b class="completed">
-                                COMPLETED
-                            </b>
-
-                            <div>
-                                Today, 14:20
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ⚗ #1842
-                            </div>
-
-                            <div>
-                                Thermal Stability
-                            </div>
-
-                            <div>
-                                LAB-03
-                            </div>
-
-                            <b class="stopped">
-                                STOPPED
-                            </b>
-
-                            <div>
-                                Today, 13:52
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ❄ #1841
-                            </div>
-
-                            <div>
-                                Cryogenic Test
-                            </div>
-
-                            <div>
-                                LAB-02
-                            </div>
-
-                            <b class="completed">
-                                COMPLETED
-                            </b>
-
-                            <div>
-                                Yesterday, 18:33
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ⚗ #1840
-                            </div>
-
-                            <div>
-                                Pressure Test
-                            </div>
-
-                            <div>
-                                LAB-01
-                            </div>
-
-                            <b class="completed">
-                                COMPLETED
-                            </b>
-
-                            <div>
-                                Yesterday, 16:11
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ⚗ #1839
-                            </div>
-
-                            <div>
-                                Thermal Stability
-                            </div>
-
-                            <div>
-                                LAB-03
-                            </div>
-
-                            <b class="failed">
-                                FAILED
-                            </b>
-
-                            <div>
-                                Yesterday, 11:07
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <div>
-                                ☢ #1838
-                            </div>
-
-                            <div>
-                                Radiation Test
-                            </div>
-
-                            <div>
-                                LAB-04
-                            </div>
-
-                            <b class="completed">
-                                COMPLETED
-                            </b>
-
-                            <div>
-                                2 days ago
-                            </div>
-
-                        </div>
-
+                        <div id="history-item"></div>
                     </div>
                 </section>
 
@@ -1040,6 +731,7 @@
     <script src="js\frontend.navigation.js"></script>
     <script type="module" src="js\live.page.js"></script>
     <script type="module" src="js\machines.page.js"></script>
+    <script type="module" src="js\history.page.js"></script>
 
 </body>
 

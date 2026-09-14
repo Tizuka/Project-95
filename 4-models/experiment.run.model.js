@@ -18,7 +18,7 @@ const experimentRunSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['RUNNING', 'COMPLETED', 'FAILED','CANCELLED'],
+        enum: ['RUNNING', 'COMPLETED', 'FAILED','STOPPED'],
         default: 'pending'
     },
 

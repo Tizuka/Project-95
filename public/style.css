@@ -1333,6 +1333,10 @@ color: #000;
   color: var(--green);
 }
 
+.running {
+  color: var(--line);
+}
+
 .stopped {
   color: #e0bd27;
 }

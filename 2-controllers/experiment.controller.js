@@ -17,29 +17,16 @@ async function getExperiments(req, res) {
 
 
 async function getExperimentFromId(req, res) {
-
-    console.log("experiment controller received getExperimentFromId");
-
     try {
-
-        console.log("REQ.BODY:", req.body);
-
         const { experimentId } = req.body;
-
-        console.log("experimentId:", experimentId);
-        console.log("TYPE:", typeof experimentId);
-
-        const experimentName =
-            await experimentService.getExperimentFromId(experimentId);
-
+        console.log("getExperimentFromId Controller try", req);
+        const experimentName = await experimentService.getExperimentFromId(experimentId);
+        console.log("experimentName",experimentName);
         res.json(experimentName);
 
-        console.log("experimentName of experimentID:", experimentName);
 
     } catch (error) {
-
         console.error("UPDATE STATUS ERROR:", error);
-
         res.status(500).json({
             error: error.message
         });
