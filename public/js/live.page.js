@@ -1,8 +1,8 @@
 // 1. ADD EXPERIMENT BUTTON
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
-import { loadIdleMachines, updateStatus } from '../../5-fetch/machine.fetch.js';
+import { loadIdleMachines, updateStatus, loadMachines } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
-import { startExperiment,loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
+import { startExperiment,loadAllExperimentRuns, statusComplete } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
 
 
@@ -10,17 +10,17 @@ import { showWarning } from './warning.modal.js';
 
 // experimentRuns
 // console.log("1 - SCRIPT START");
-const experimentRuns = await loadAllExperimentRuns();
+
 // console.log("2 - EXPERIMENT RUNS LOADED", experimentRuns);
 const livePageButton = document.getElementById("live-page-button");
 const experimentList = document.querySelector(".experiment-list");
 // Open Experiment
-
 const experiments = await loadExperiments();
 // console.log("3 - EXPERIMENTS LOADED", experiments);
 const openExperimentModal =
     document.getElementById("open-experiment-modal");
 const machines = await loadIdleMachines();
+const allMachines = await loadMachines();
 // console.log("4 - MACHINES LOADED", machines);// ELEMENTS
 const machineSelection =
     document.querySelector(".machine-selection");
@@ -35,10 +35,10 @@ const addExperimentButton =
 let machineSelected = '';    
 let experimentSelected = '';
 let selectedMachineId = '';
-    machineSelection.innerHTML = "";
+
 function renderMachines() {
 //  console.log("5 dentro de renderMachines")
-
+    machineSelection.innerHTML = "";  
     machines.forEach(machine => {
 
         // Select Machines
@@ -125,100 +125,21 @@ function renderExperiments() {
 
     });
 }
-
-
-// 1.4 OPEN EXPERIMENT MODAL
-openExperimentModal.addEventListener("click", async () => {
-//  console.log("8 dentro de openExperimentModal.addEventListener")
-    renderMachines();
-    renderExperiments();
-    experimentDuration.textContent = '';
-
-});
-// 1.5 SELECT EXPERIMENT
-experimentTypeSelect.addEventListener('change', (event) => {
-     experimentSelected =
-        experiments.find(
-            experiment =>
-                event.target.value === experiment.value
-        );
-
-    experimentDetailsDescription.textContent =
-        experimentSelected
-            ? experimentSelected.description
-            : 'Select an experiment type to see its details and requirements.';
-
-    // console.log("EXPERIMENT SELECTED:", experimentSelected);
-
-    experimentDuration.textContent =
-        experimentSelected
-            ? `${experimentSelected.duration / 60}`
-            : '';
-
-});
-// 1.6 ADD EXPERIMENT BUTTON 
-addExperimentButton.addEventListener("click", async () => {
-    const clickedAt = new Date();
-    const endedAt = new Date(clickedAt);
-    endedAt.setSeconds(
-        endedAt.getSeconds() + experimentSelected.duration
-    );
-    console.log("machineselected", machineSelected );
-    console.log("experimentselected", experimentSelected );
-    if(!machineSelected || !experimentSelected) {
-        // alert("Please select a machine and an experiment before starting.");
-         showWarning(
-                machineSelected,
-                experimentSelected
-            );
-
-            return;
-    }
-
-const experimentRunObject = {
-    name: machineSelected,
-    experimentId:experimentSelected._id,
-    machineId:selectedMachineId,
-    status:"RUNNING",
-    experimentName: experimentSelected.name,
-    experimentDuration: experimentSelected.duration,
-    startedAt: clickedAt,
-    endedAt:endedAt
-
-};
-
-startExperiment(experimentRunObject)
-    .then(savedRun => {
-        console.log("Experiment run started:", savedRun);
-        // Optionally, you can update the UI or redirect the user to another page
-    })
-    .catch(error => {
-        console.error("Error starting experiment run:", error);
-        // Optionally, show an error message to the user
-    });
-
-updateStatus(selectedMachineId)
-    .then(savedRun => {
-        window.location.reload();
-        console.log("updateStatus started:", savedRun);
-    })
-    .catch(error => {
-        console.error("Error starting updateStatus:", error);
-    });
-console.log("experimentSelected:", experimentSelected);
-console.log("experimentSelected._id:", experimentSelected?._id);
-
-  
-
-
-});
-
-
-
 function renderExperimentCards(experimentRuns) {
     experimentList.innerHTML = "";
+    const activeExperiments = experimentRuns.filter(
+        experimentRun => experimentRun.status !== "COMPLETED"
+    );
 
-    experimentRuns.forEach((experimentRun, index) => {
+    if (activeExperiments.length === 0) {
+        experimentList.innerHTML = `
+            <div class="no-experiments">
+                <span> --- NO ACTIVE EXPERIMENTS --- </span>
+            </div>
+        `;
+    }
+    
+    activeExperiments.forEach((experimentRun, index) => {
 
         const cardNumber = 1842 + index;
 
@@ -381,6 +302,16 @@ function renderExperimentCards(experimentRuns) {
 
         actions.appendChild(stopButton);
 
+    stopButton.addEventListener('click', async () => {
+    console.log("experimentRun.id and name",experimentRun._id,experimentRun.name);
+        
+    const updatedExperiment = await statusComplete(experimentRun._id,experimentRun.name);
+        console.log("updatedExperiment",updatedExperiment,updatedExperiment.status);
+    experimentRun.status = updatedExperiment.experiment.status;
+        
+    status.textContent = `[${experimentRun.status}]`;
+    
+    });
 
         // =========================
         // APPEND CARD
@@ -395,17 +326,114 @@ function renderExperimentCards(experimentRuns) {
 
     });
 }
+async function checkExperiments() {
+    const experiments = await loadAllExperimentRuns();
+
+    for (const experiment of experiments) {
+
+        if (new Date() >= new Date(experiment.endedAt)) {
+
+// TODO: ADICIONAR A CHAMADA DO fetch AQUI 
+        }
+    }
+}
+
+// 1.4 OPEN EXPERIMENT MODAL
+openExperimentModal.addEventListener("click", async () => {
+//  console.log("8 dentro de openExperimentModal.addEventListener")
+    renderMachines();
+    renderExperiments();
+    experimentDuration.textContent = '';
+
+});
+// 1.5 SELECT EXPERIMENT
+experimentTypeSelect.addEventListener('change', (event) => {
+     experimentSelected =
+        experiments.find(
+            experiment =>
+                event.target.value === experiment.value
+        );
+
+    experimentDetailsDescription.textContent =
+        experimentSelected
+            ? experimentSelected.description
+            : 'Select an experiment type to see its details and requirements.';
+
+    // console.log("EXPERIMENT SELECTED:", experimentSelected);
+
+    experimentDuration.textContent =
+        experimentSelected
+            ? `${experimentSelected.duration / 60}`
+            : '';
+
+});
+// 1.6 ADD EXPERIMENT BUTTON 
+addExperimentButton.addEventListener("click", async () => {
+    const clickedAt = new Date();
+    const endedAt = new Date(clickedAt);
+    endedAt.setSeconds(
+        endedAt.getSeconds() + experimentSelected.duration
+    );
+    console.log("machineselected", machineSelected );
+    console.log("experimentselected", experimentSelected );
+    if(!machineSelected || !experimentSelected) {
+        // alert("Please select a machine and an experiment before starting.");
+         showWarning(
+                machineSelected,
+                experimentSelected
+            );
+
+            return;
+    }
+
+const experimentRunObject = {
+    name: machineSelected,
+    experimentId:experimentSelected._id,
+    machineId:selectedMachineId,
+    status:"RUNNING",
+    experimentName: experimentSelected.name,
+    experimentDuration: experimentSelected.duration,
+    startedAt: clickedAt,
+    endedAt:endedAt
+
+};
+
+startExperiment(experimentRunObject)
+    .then(savedRun => {
+        console.log("Experiment run started:", savedRun);
+        // Optionally, you can update the UI or redirect the user to another page
+    })
+    .catch(error => {
+        console.error("Error starting experiment run:", error);
+        // Optionally, show an error message to the user
+    });
+
+updateStatus(selectedMachineId)
+    .then(savedRun => {
+        window.location.reload();
+        console.log("updateStatus started:", savedRun);
+    })
+    .catch(error => {
+        console.error("Error starting updateStatus:", error);
+    });
+console.log("experimentSelected:", experimentSelected);
+console.log("experimentSelected._id:", experimentSelected?._id);
+
+  
 
 
+});
 
 /* =========================
    ExperimentRun Display on live page
 ========================= */
 
 livePageButton.addEventListener('click', async () => {
+    experimentList.innerHTML = "";
+   const experimentRuns = await loadAllExperimentRuns();
    renderExperimentCards(experimentRuns);
 
 
 });
 
-
+// setInterval(checkExperiments, 1000);

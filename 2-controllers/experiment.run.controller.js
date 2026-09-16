@@ -12,7 +12,18 @@ async function startExperimentController(req, res) {
     }
 }
 
+async function completeExperimentController(req, res) {
+    try {
+        const experimentComplete = await experimentRunService.completeExperiment(req.params.experimentId,req.params.experimentName);
+        res.json(experimentComplete);
 
+    } catch (error) {
+            console.error("ERRO NO COMPLETE:", error);
+        res.status(500).json({
+            error: error.message
+        });
+    }
+}
 
 
 // Getall Experimnet runs
@@ -30,5 +41,5 @@ async function loadAllExperimentRunsController(req, res) {
 
 
 module.exports = {
-    startExperimentController,loadAllExperimentRunsController
+    startExperimentController,loadAllExperimentRunsController,completeExperimentController
 };

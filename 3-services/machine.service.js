@@ -18,7 +18,7 @@ async function updateStatus(machineId) {
 
 
 async function loadMachines() {
-    return await Machine.find();
+    return await Machine.find({});
 }
 
 

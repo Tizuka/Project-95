@@ -4,11 +4,6 @@ import {getExperimentFromId} from '../../5-fetch/experiments.fetch.js'
 const historyPageButton = document.getElementById("history-page-button");
 const experimentRun = await loadAllExperimentRuns();
 const historyItem = document.getElementById("history-item");
-
-
-
-
-console.log(experimentRun);
 var index =0;
 
 function capitalizeWords(text) {
@@ -73,14 +68,12 @@ function getExperimentIcon(experimentValue) {
 historyPageButton.addEventListener("click", async ()=>{
   historyItem.innerHTML = '';
   index = 0;
-experimentRun.forEach(async element => {
-      const getExperimentName = await getExperimentFromId(element.experimentId); 
-console.log("ID:", element.experimentId);
-console.log("RESULT:", getExperimentName);
+const reversedExperimentRun = [...experimentRun].reverse();
+experimentRun.reverse().forEach(async element => {
 
-     index ++;
-  var number = 1841 + index;
-
+const getExperimentName = await getExperimentFromId(element.experimentId);   
+  const number = 1841 + reversedExperimentRun.length - index;
+  index ++;
   const insideDivId = document.createElement("div");
 
   insideDivId.textContent = `${getExperimentIcon((getExperimentName[0].value.toLowerCase()))} #${number}`;

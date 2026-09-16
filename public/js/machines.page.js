@@ -1,12 +1,12 @@
 import { loadMachines } from '../../5-fetch/machine.fetch.js';
 
-const machines = await loadMachines();
+
 
 const machineButton = document.getElementById("machine-page-button");
 const machineList = document.querySelector(".machines-list");
 
 machineButton.addEventListener("click", async () => {
-
+    const machines = await loadMachines();
     machineList.innerHTML = "";
 
     machines.forEach(element => {

@@ -21,3 +21,19 @@ export async function loadAllExperimentRuns() {
 
     return experimentRuns;
 }
+
+export async function statusComplete(experimentId, experimentName){
+    const response = await fetch(
+        `http://127.0.0.1:3000/experimentRun/${experimentId}/${experimentName}/complete`,
+        {
+            method: "PATCH"
+        }
+    );
+
+    const statusCompleted = await response.json();
+
+    console.log("statusComplete");
+
+    return statusCompleted;
+}
+    
