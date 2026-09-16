@@ -67,9 +67,13 @@ function getExperimentIcon(experimentValue) {
 
 historyPageButton.addEventListener("click", async ()=>{
   historyItem.innerHTML = '';
+  if (experimentRun.length === 0) {
+    historyItem.textContent = "-- NO HISTORY AVAILABLE --";
+    return;
+}
   index = 0;
 const reversedExperimentRun = [...experimentRun].reverse();
-experimentRun.reverse().forEach(async element => {
+experimentRun.forEach(async element => {
 
 const getExperimentName = await getExperimentFromId(element.experimentId);   
   const number = 1841 + reversedExperimentRun.length - index;
