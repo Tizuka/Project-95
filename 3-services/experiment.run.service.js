@@ -35,7 +35,25 @@ async function completeExperiment(experimentId,machineName) {
 }
 
 async function loadAllExperimentRuns() {
-    return await experimentRun.find();
+    return await experimentRun.aggregate([
+        {
+            $addFields: {
+                statusOrder: {
+                    $cond: [
+                        { $eq: ["$status", "RUNNING"] },
+                        0,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            $sort: {
+                statusOrder: 1,
+                startedAt: -1
+            }
+        }
+    ]);
 }
 
 

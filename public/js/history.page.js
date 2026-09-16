@@ -2,7 +2,6 @@ import { loadAllExperimentRuns } from '../../5-fetch/experiment.run.fetch.js';
 import {getExperimentFromId} from '../../5-fetch/experiments.fetch.js'
 
 const historyPageButton = document.getElementById("history-page-button");
-const experimentRun = await loadAllExperimentRuns();
 const historyItem = document.getElementById("history-item");
 var index =0;
 
@@ -67,6 +66,7 @@ function getExperimentIcon(experimentValue) {
 
 historyPageButton.addEventListener("click", async ()=>{
   historyItem.innerHTML = '';
+      const experimentRun = await loadAllExperimentRuns();
   if (experimentRun.length === 0) {
     historyItem.textContent = "-- NO HISTORY AVAILABLE --";
     return;
