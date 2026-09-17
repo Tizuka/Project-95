@@ -194,6 +194,11 @@ function renderExperimentCards(experimentRuns) {
 
         const status = document.createElement("b");
         status.classList.add("status", "running");
+
+status.dataset.experimentId = experimentRun._id;
+status.textContent = `[${experimentRun.status}]`;
+
+
         status.textContent = `[${experimentRun.status}]`;
 
         alignRunningDetails.appendChild(button);
@@ -327,13 +332,33 @@ function renderExperimentCards(experimentRuns) {
     });
 }
 async function checkExperiments() {
-    const experiments = await loadAllExperimentRuns();
+const experiments = await loadAllExperimentRuns();
 
     for (const experiment of experiments) {
 
-        if (new Date() >= new Date(experiment.endedAt)) {
+        if (
+            experiment.status === "RUNNING" &&
+            new Date() >= new Date(experiment.endedAt)
+        ) {
+            console.log("EXPERIMENT TIME ENDED:", experiment._id);
 
-// TODO: ADICIONAR A CHAMADA DO fetch AQUI 
+            await statusComplete(
+                experiment._id,
+                experiment.name
+            );
+
+            const status = document.querySelector(
+                `[data-experiment-id="${experiment._id}"]`
+            );
+
+            if (status) {
+                status.innerHTML = "[COMPLETED]";
+                status.classList.remove("running");
+                status.classList.add("completed");
+            }
+
+            console.log("EXPERIMENT COMPLETED AUTOMATICALLY:", experiment._id);
+
         }
     }
 }
@@ -436,4 +461,4 @@ livePageButton.addEventListener('click', async () => {
 
 });
 
-// setInterval(checkExperiments, 1000);
+setInterval(checkExperiments, 1000);

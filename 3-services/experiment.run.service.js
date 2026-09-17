@@ -15,11 +15,16 @@ async function completeExperiment(experimentId,machineName) {
     console.log("completeExperiment service");
     console.log("ID RECEIVED:", experimentId);
 
-    const updatedExperiment = await experimentRun.findByIdAndUpdate(
-        experimentId,
-        { $set: { status: "COMPLETED" } },
-        { new: true }
-    );
+const updatedExperiment = await experimentRun.findByIdAndUpdate(
+    experimentId,
+    {
+        $set: {
+            status: "COMPLETED",
+            endedAt: new Date()
+        }
+    },
+    { new: true }
+);
     const findMachine = await machine.findOneAndUpdate(
     { name: machineName },
     { $set: { status: "IDLE" } },
