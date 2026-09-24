@@ -1,37 +1,62 @@
-
 const experimentRun = require('../4-models/experiment.run.model.js');
 const machine = require('../4-models/machine.model.js');
+const systemLog = require('../4-models/system.log.model.js');
 
-
+var experimentName = "";
 
 async function startExperiment(experimentRunData) {
+
     const newExperimentRun = new experimentRun(experimentRunData);
-    return await newExperimentRun.save();
+    const savedExperiment = await newExperimentRun.save();
+
+    await systemLog.create({
+        message: `${experimentRunData.name}: ${experimentRunData.experimentName} started.`
+    });
+    experimentName = experimentRunData.experimentName;
+    return savedExperiment;
 }
 
 
-async function completeExperiment(experimentId,machineName) {
+async function completeExperiment(experimentId, machineName) {
 
     console.log("completeExperiment service");
     console.log("ID RECEIVED:", experimentId);
+    console.log("machineName:", machineName);
 
-const updatedExperiment = await experimentRun.findByIdAndUpdate(
-    experimentId,
-    {
-        $set: {
-            status: "COMPLETED",
-            endedAt: new Date()
+    const updatedExperiment = await experimentRun.findOneAndUpdate(
+        {
+            _id: experimentId,
+            status: "RUNNING"
+        },
+        {
+            $set: {
+                status: "COMPLETED",
+                completedAt: new Date()
+            }
+        },
+        {
+            new: true
         }
-    },
-    { new: true }
-);
-    const findMachine = await machine.findOneAndUpdate(
-    { name: machineName },
-    { $set: { status: "IDLE" } },
-    { new: true }
-);
+    );
 
-    console.log("UPDATED EXPERIMENT:", updatedExperiment);
+    const findMachine = await machine.findOneAndUpdate(
+        { name: machineName },
+        {
+            $set: {
+                status: "IDLE"
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    if (updatedExperiment) {
+        await systemLog.create({
+            message: `${machineName}: ${updatedExperiment.experimentName} completed successfully.`
+        });
+
+    }
 
     return {
         experiment: updatedExperiment,
@@ -39,7 +64,9 @@ const updatedExperiment = await experimentRun.findByIdAndUpdate(
     };
 }
 
+
 async function loadAllExperimentRuns() {
+
     return await experimentRun.aggregate([
         {
             $addFields: {
@@ -59,9 +86,23 @@ async function loadAllExperimentRuns() {
             }
         }
     ]);
+
+}
+
+
+async function loadSystemLogs() {
+
+    return await systemLog.find()
+        .sort({ createdAt: -1 })
+        .limit(20);
+
 }
 
 
 module.exports = {
-    startExperiment,loadAllExperimentRuns,completeExperiment
+    startExperiment,
+    loadAllExperimentRuns,
+    completeExperiment,
+    loadSystemLogs
 };
+

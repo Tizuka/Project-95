@@ -23,7 +23,7 @@ const experimentRunSchema = new mongoose.Schema({
     },
 
     // TODO: implement 'failed' state brought by telemetry
-
+    experimentName: String,     
     startedAt: Date,
     endedAt: Date
 });

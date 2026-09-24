@@ -13,6 +13,7 @@ export async function startExperiment(experimentRun) {
 }
 
 
+
 export async function loadAllExperimentRuns() {
     const response = await fetch('http://127.0.0.1:3000/experimentRun/loadAllExperimentRuns');
     const experimentRuns = await response.json();
@@ -37,3 +38,16 @@ export async function statusComplete(experimentId, experimentName){
     return statusCompleted;
 }
     
+
+export async function loadSystemLogs() {
+
+    const response = await fetch(
+        'http://127.0.0.1:3000/systemLog'
+    );
+
+    const logs = await response.json();
+
+    console.log("SYSTEM LOGS:", logs);
+
+    return logs;
+}

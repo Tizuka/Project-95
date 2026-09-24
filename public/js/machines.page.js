@@ -8,7 +8,7 @@ const machineList = document.querySelector(".machines-list");
 machineButton.addEventListener("click", async () => {
     const machines = await loadMachines();
     machineList.innerHTML = "";
-
+    console.log(machines);
     machines.forEach(element => {
 
         const cardHead = document.createElement("div");
