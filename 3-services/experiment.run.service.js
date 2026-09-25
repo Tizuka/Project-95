@@ -64,6 +64,55 @@ async function completeExperiment(experimentId, machineName) {
     };
 }
 
+async function stopExperiment(experimentId, machineName) {
+
+    console.log("stopExperiment service");
+    console.log("ID RECEIVED:", experimentId);
+    console.log("machineName:", machineName);
+
+    const updatedExperiment = await experimentRun.findOneAndUpdate(
+        {
+            _id: experimentId,
+            status: "RUNNING"
+        },
+        {
+            $set: {
+                status: "STOPPED"
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    const findMachine = await machine.findOneAndUpdate(
+        {
+            name: machineName
+        },
+        {
+            $set: {
+                status: "IDLE"
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    if (updatedExperiment) {
+
+        await systemLog.create({
+            message:
+                `${machineName}: ${updatedExperiment.experimentName} stopped.`
+        });
+
+    }
+
+    return {
+        experiment: updatedExperiment,
+        machine: findMachine
+    };
+}
 
 async function loadAllExperimentRuns() {
 
@@ -103,6 +152,7 @@ module.exports = {
     startExperiment,
     loadAllExperimentRuns,
     completeExperiment,
+    stopExperiment,
     loadSystemLogs
 };
 

@@ -37,7 +37,29 @@ export async function statusComplete(experimentId, experimentName){
 
     return statusCompleted;
 }
-    
+ 
+export async function stopExperimentRun(
+    experimentId,
+    experimentName
+) {
+
+    const response = await fetch(
+        `http://127.0.0.1:3000/experimentRun/${experimentId}/${experimentName}/stop`,
+        {
+            method: "PATCH"
+        }
+    );
+
+    const stoppedRun =
+        await response.json();
+
+    console.log(
+        "stopExperimentRun:",
+        stoppedRun
+    );
+
+    return stoppedRun;
+}
 
 export async function loadSystemLogs() {
 
@@ -51,3 +73,4 @@ export async function loadSystemLogs() {
 
     return logs;
 }
+

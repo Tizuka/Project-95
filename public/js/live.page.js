@@ -2,15 +2,14 @@
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
 import { loadIdleMachines, updateStatus, loadMachines } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
-import { startExperiment,loadAllExperimentRuns, statusComplete } from '../../5-fetch/experiment.run.fetch.js';
+import { stopExperimentRun,startExperiment,loadAllExperimentRuns, statusComplete,loadSystemLogs } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
-
-
+import {startTelemetry,stopTelemetry} from './telemetry.js';
 
 
 // experimentRuns
 // console.log("1 - SCRIPT START");
-
+const telemetryHistory = new Map();
 // console.log("2 - EXPERIMENT RUNS LOADED", experimentRuns);
 const livePageButton = document.getElementById("live-page-button");
 const experimentList = document.querySelector(".experiment-list");
@@ -19,7 +18,7 @@ const experiments = await loadExperiments();
 // console.log("3 - EXPERIMENTS LOADED", experiments);
 const openExperimentModal =
     document.getElementById("open-experiment-modal");
-const machines = await loadIdleMachines();
+let machines = await loadIdleMachines();
 const allMachines = await loadMachines();
 // console.log("4 - MACHINES LOADED", machines);// ELEMENTS
 const machineSelection =
@@ -35,6 +34,7 @@ const addExperimentButton =
 let machineSelected = '';    
 let experimentSelected = '';
 let selectedMachineId = '';
+
 
 function renderMachines() {
 //  console.log("5 dentro de renderMachines")
@@ -128,7 +128,7 @@ function renderExperiments() {
 function renderExperimentCards(experimentRuns) {
     experimentList.innerHTML = "";
     const activeExperiments = experimentRuns.filter(
-        experimentRun => experimentRun.status !== "COMPLETED"
+         experimentRun => experimentRun.status === "RUNNING"
     );
 
     if (activeExperiments.length === 0) {
@@ -193,11 +193,13 @@ function renderExperimentCards(experimentRuns) {
 
 
         const status = document.createElement("b");
-        status.classList.add("status", "running");
 
-status.dataset.experimentId = experimentRun._id;
-status.textContent = `[${experimentRun.status}]`;
+        status.classList.add(
+            "status",
+            experimentRun.status
+        );
 
+        status.dataset.experimentId = experimentRun._id;
 
         status.textContent = `[${experimentRun.status}]`;
 
@@ -217,58 +219,114 @@ status.textContent = `[${experimentRun.status}]`;
         experimentContent.classList.add("experiment-content");
 
         const telemetry = document.createElement("div");
-        telemetry.classList.add("telemetry");
+telemetry.classList.add("telemetry");
 
-        telemetry.innerHTML = `
-            <span>
-                LIVE TELEMETRY
-            </span>
+telemetry.innerHTML = `
+    <span>
+        LIVE TELEMETRY
+    </span>
 
-            <p>
-                TEMP
-                <b>
-                    74.2 °C
-                </b>
-            </p>
-
-            <p>
-                PRESS
-                <b>
-                    4.3 BAR
-                </b>
-            </p>
-
-            <p>
-                HUMID
-                <b>
-                    48 %
-                </b>
-            </p>
-        `;
-
+    <p>
+        WAITING FOR DATA...
+    </p>
+`;
 
         // =========================
         // CHART
         // =========================
 
-        const chart = document.createElement("div");
-        chart.classList.add("chart");
+const chart = document.createElement("div");
+chart.classList.add("chart");
 
-        chart.innerHTML = `
-            <span>
-                90
-            </span>
+chart.innerHTML = `
+    <svg
+        class="telemetry-chart"
+        viewBox="0 0 300 100"
+        preserveAspectRatio="none"
+    >
 
-            <div class="chart-line"></div>
+        <line
+            class="chart-reference max-line"
+            x1="35"
+            y1="5"
+            x2="300"
+            y2="5"
+        ></line>
 
-            <small>
-                14:20&nbsp;&nbsp;
-                14:30&nbsp;&nbsp;
-                14:40&nbsp;&nbsp;
-                14:50
-            </small>
-        `;
+        <line
+            class="chart-reference warning-line"
+            x1="35"
+            y1="5"
+            x2="300"
+            y2="5"
+        ></line>
 
+        <line
+            class="chart-reference critical-line"
+            x1="35"
+            y1="5"
+            x2="300"
+            y2="5"
+        ></line>
+
+        <line
+            class="chart-reference min-line"
+            x1="35"
+            y1="95"
+            x2="300"
+            y2="95"
+        ></line>
+
+        <polyline
+            class="telemetry-chart-line"
+            points=""
+            fill="none"
+        ></polyline>
+
+        <text
+            class="chart-label max-label"
+            x="8"
+            y="5"
+            font-size="5"
+        >
+            MAX
+        </text>
+
+        <text
+            class="chart-label warning-label"
+            x="8"
+            y="5"
+            font-size="5"
+        >
+            WARNING
+        </text>
+
+        <text
+            class="chart-label critical-label"
+            x="8"
+            y="5"
+            font-size="5"
+        >
+            CRITICAL
+        </text>
+
+        <text
+            class="chart-label min-label"
+            x="8"
+            y="95"
+            font-size="5"
+        >
+            MIN
+        </text>
+
+    </svg>
+
+    <div class="chart-summary">
+        LAST 30s
+        <span class="chart-min-value">MIN --</span>
+        <span class="chart-max-value">MAX --</span>
+    </div>
+`;
         experimentContent.appendChild(telemetry);
         experimentContent.appendChild(chart);
 
@@ -307,16 +365,34 @@ status.textContent = `[${experimentRun.status}]`;
 
         actions.appendChild(stopButton);
 
-    stopButton.addEventListener('click', async () => {
-    console.log("experimentRun.id and name",experimentRun._id,experimentRun.name);
-        
-    const updatedExperiment = await statusComplete(experimentRun._id,experimentRun.name);
-        console.log("updatedExperiment",updatedExperiment,updatedExperiment.status);
-    experimentRun.status = updatedExperiment.experiment.status;
-        
-    status.textContent = `[${experimentRun.status}]`;
-    
-    });
+stopButton.addEventListener("click", async () => {
+
+    console.log(
+        "STOP EXPERIMENT:",
+        experimentRun._id,
+        experimentRun.name
+    );
+
+    stopTelemetry(experimentRun._id);
+
+    const stoppedExperiment =
+        await stopExperimentRun(
+            experimentRun._id,
+            experimentRun.name
+        );
+
+    console.log(
+        "stoppedExperiment:",
+        stoppedExperiment
+    );
+
+    experimentRun.status =
+        stoppedExperiment.experiment.status;
+
+    status.textContent =
+        `[${experimentRun.status}]`;
+
+});
 
         // =========================
         // APPEND CARD
@@ -326,13 +402,216 @@ status.textContent = `[${experimentRun.status}]`;
         expArticle.appendChild(experimentContent);
         expArticle.appendChild(meta);
         expArticle.appendChild(actions);
-
         experimentList.appendChild(expArticle);
+
+        startTelemetry(
+            experimentRun._id,
+            experimentName,
+            (telemetryData) => {
+
+                updateTelemetryDisplay(
+                    telemetry,
+                    telemetryData
+                );
+
+                updateTelemetryChart(
+                    chart,
+                    experimentRun._id,
+                    telemetryData
+                );
+
+            }
+        );
 
     });
 }
+function updateTelemetryDisplay(
+    telemetryElement,
+    telemetry
+) {
+
+    telemetryElement.innerHTML = `
+        <span>
+            LIVE TELEMETRY
+        </span>
+
+        <p>
+            ${telemetry.sensor.toUpperCase()}
+            <b>
+                ${telemetry.value} ${telemetry.unit}
+            </b>
+        </p>
+    `;
+}
+function updateTelemetryChart(
+    chartElement,
+    experimentRunId,
+    telemetry
+) { console.log("CHART TELEMETRY:", telemetry);
+console.log("CHART MIN:", telemetry.min);
+console.log("CHART MAX:", telemetry.max);
+
+    const key = String(experimentRunId);
+
+    if (!telemetryHistory.has(key)) {
+        telemetryHistory.set(key, []);
+    }
+
+    const history = telemetryHistory.get(key);
+
+    history.push({
+        value: telemetry.value,
+        timestamp: new Date(telemetry.timestamp)
+    });
+
+    // Keep only the latest 30 seconds
+    if (history.length > 30) {
+        history.shift();
+    }
+
+    const values = history.map(point => point.value);
+
+    // =================================
+    // FIXED EXPERIMENT RANGE
+    // =================================
+
+   const chartMin = Number(telemetry.min);
+const chartMax = Number(telemetry.max);
+
+const chartRange = chartMax - chartMin;
+
+const top = 12;
+const bottom = 78;
+
+function valueToY(value) {
+
+    const numericValue = Number(value);
+
+    if (!Number.isFinite(numericValue)) {
+        return bottom;
+    }
+
+    const normalized =
+        (numericValue - chartMin) / chartRange;
+
+    const clamped =
+        Math.max(0, Math.min(1, normalized));
+
+    return bottom -
+        (clamped * (bottom - top));
+}
+    // =================================
+    // TELEMETRY LINE
+    // =================================
+
+    const width = 300;
+
+    const points = history.map((point, index) => {
+
+        const x =
+            history.length === 1
+                ? width / 2
+                : 35 +
+                  (index / (history.length - 1)) *
+                  (width - 35);
+
+        const y = valueToY(point.value);
+
+        return `${x},${y}`;
+
+    }).join(" ");
+
+    const line =
+        chartElement.querySelector(
+            ".telemetry-chart-line"
+        );
+
+    line.setAttribute("points", points);
+
+    // =================================
+    // REFERENCE LINES
+    // =================================
+
+    chartElement
+        .querySelector(".max-line")
+        .setAttribute("y1", valueToY(chartMax));
+
+    chartElement
+        .querySelector(".max-line")
+        .setAttribute("y2", valueToY(chartMax));
+
+    chartElement
+        .querySelector(".warning-line")
+        .setAttribute("y1", valueToY(telemetry.warning));
+
+    chartElement
+        .querySelector(".warning-line")
+        .setAttribute("y2", valueToY(telemetry.warning));
+
+    chartElement
+        .querySelector(".critical-line")
+        .setAttribute("y1", valueToY(telemetry.critical));
+
+    chartElement
+        .querySelector(".critical-line")
+        .setAttribute("y2", valueToY(telemetry.critical));
+
+    chartElement
+        .querySelector(".min-line")
+        .setAttribute("y1", valueToY(chartMin));
+
+    chartElement
+        .querySelector(".min-line")
+        .setAttribute("y2", valueToY(chartMin));
+
+    // =================================
+    // LABEL POSITIONS
+    // =================================
+
+    chartElement
+        .querySelector(".max-label")
+        .setAttribute("y", valueToY(chartMax) + 3);
+
+    chartElement
+        .querySelector(".warning-label")
+        .setAttribute("y", valueToY(telemetry.warning) + 3);
+
+    chartElement
+        .querySelector(".critical-label")
+        .setAttribute("y", valueToY(telemetry.critical) + 3);
+
+    chartElement
+        .querySelector(".min-label")
+        .setAttribute("y", valueToY(chartMin) + 3);
+
+    // =================================
+    // LAST 30s MIN / MAX
+    // =================================
+
+    const observedMin =
+        Math.min(...values);
+
+    const observedMax =
+        Math.max(...values);
+
+    chartElement
+        .querySelector(".chart-min-value")
+        .textContent =
+        `MIN ${chartMin} ${telemetry.unit}`;
+
+    chartElement
+        .querySelector(".chart-max-value")
+        .textContent =
+        `MAX ${chartMax} ${telemetry.unit}`;
+    }
+
+async function refreshMachines() {
+    machines = await loadIdleMachines();
+    console.log("MACHINES UPDATED:", machines);
+}
 async function checkExperiments() {
-const experiments = await loadAllExperimentRuns();
+
+    const experiments = await loadAllExperimentRuns();
 
     for (const experiment of experiments) {
 
@@ -340,13 +619,15 @@ const experiments = await loadAllExperimentRuns();
             experiment.status === "RUNNING" &&
             new Date() >= new Date(experiment.endedAt)
         ) {
-            console.log("EXPERIMENT TIME ENDED:", experiment._id);
 
+            console.log("EXPERIMENT TIME ENDED:", experiment._id);
+            stopTelemetry(experiment._id);
             await statusComplete(
                 experiment._id,
                 experiment.name
             );
-
+            refreshMachines();
+            await window.loadSystemLogs();
             const status = document.querySelector(
                 `[data-experiment-id="${experiment._id}"]`
             );
@@ -357,11 +638,15 @@ const experiments = await loadAllExperimentRuns();
                 status.classList.add("completed");
             }
 
-            console.log("EXPERIMENT COMPLETED AUTOMATICALLY:", experiment._id);
+            await loadSystemLogs();
 
+            console.log("EXPERIMENT COMPLETED AUTOMATICALLY:", experiment._id);
         }
     }
 }
+
+
+
 
 // 1.4 OPEN EXPERIMENT MODAL
 openExperimentModal.addEventListener("click", async () => {
@@ -423,26 +708,23 @@ const experimentRunObject = {
 
 };
 
-startExperiment(experimentRunObject)
-    .then(savedRun => {
-        console.log("Experiment run started:", savedRun);
-        // Optionally, you can update the UI or redirect the user to another page
-    })
-    .catch(error => {
-        console.error("Error starting experiment run:", error);
-        // Optionally, show an error message to the user
-    });
+try {
 
-updateStatus(selectedMachineId)
-    .then(savedRun => {
-        window.location.reload();
-        console.log("updateStatus started:", savedRun);
-    })
-    .catch(error => {
-        console.error("Error starting updateStatus:", error);
-    });
-console.log("experimentSelected:", experimentSelected);
-console.log("experimentSelected._id:", experimentSelected?._id);
+    const savedRun = await startExperiment(experimentRunObject);
+
+    console.log("Experiment run started:", savedRun);
+
+    const updatedMachine = await updateStatus(selectedMachineId);
+
+    console.log("Machine status updated:", updatedMachine);
+
+    window.location.reload();
+
+} catch (error) {
+
+    console.error("Error starting experiment:", error);
+
+}
 
   
 
@@ -454,9 +736,10 @@ console.log("experimentSelected._id:", experimentSelected?._id);
 ========================= */
 
 livePageButton.addEventListener('click', async () => {
+    await refreshMachines();
     experimentList.innerHTML = "";
-   const experimentRuns = await loadAllExperimentRuns();
-   renderExperimentCards(experimentRuns);
+    const experimentRuns = await loadAllExperimentRuns();
+    renderExperimentCards(experimentRuns);
 
 
 });

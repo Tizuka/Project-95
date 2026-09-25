@@ -181,10 +181,6 @@ display: flex;
     saturate(4);
 }
 
-.scientist-image {
-  width: 134px;
-  height: 134px;
-}
 
 h1,
 h2,
@@ -209,7 +205,7 @@ h1 {
 
 .brand p {
   margin: 0;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .align-labstatus-clock {
@@ -252,14 +248,11 @@ h1 {
 .nav {
   display: flex;
   flex-direction: column;
-  padding: 22px 22px 22px 0px;
+  padding: 22px 22px 22px 20px;  
   width: 15%;
   justify-content: center;
   align-items: flex-start;
- border-right: 3px solid var(--line);
- margin-right: 30px;
-  gap: 8px;
-  /* margin: 10px 0; */
+  margin-right: 30px;
 }
 
 .nav button {
@@ -267,7 +260,7 @@ h1 {
     text-align: left;
 
     font-family: "VT323", monospace;
-    font-size: 24px;
+    font-size: 30px;
     letter-spacing: 1px;
 
     padding: 7px 12px;
@@ -426,7 +419,7 @@ button.active {
 }
 
 .project-title {
-  font-size: 40px;
+  font-size: 43px;
   font-family: "square", monospace !important;
   color: #20ff20;
   text-shadow: 0 0 5px rgba(32, 255, 32, 0.4);
@@ -586,34 +579,6 @@ text-align: center;
     font-size: 13px;
     letter-spacing: 0.5px;
 }
-
-
-/* =========================
-   ACTIONS
-========================= */
-
-/* .actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 35px;
-
-    margin-top: 18px;
-} */
-
-/* .actions button {
-    background: transparent;
-    border: none;
-
-    color: #39ff14;
-
-  font-family:
-    "Share Tech Mono",
-    monospace;    font-size: 14px;
-
-    cursor: pointer;
-} */
-
 
 /* STOP BUTTON */
 
@@ -860,87 +825,101 @@ color: #000;
 
 .telemetry p {
   display: flex;
-
   justify-content: space-between;
 
   margin: 4px 0;
 }
 
-
+.telemetry p b {
+  white-space: nowrap;
+  margin-left: 10px;
+}
 /* =========================
    CHART
 ========================= */
 
 .chart {
-  height: 100px;
-  width: 400px;
-  border: 1px solid #286b18;
+    height: 100px;
+    width: 400px;
+    border: 1px solid #286b18;
+    position: relative;
+    padding: 8px;
+    overflow: hidden;
+}
+.chart-label {
+    fill: var(--green);
+    font-size: 10px;
+    font-family: inherit;
+    font-weight: 600;
+}
+.experiment-card:hover .chart-label {
+    fill: #000;
+}
+.telemetry-chart {
+    position: absolute;
 
-  position: relative;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 22px;
 
-  padding: 8px;
+    width: auto;
+    height: auto;
 
-  overflow: hidden;
+    display: block;
 }
 
-.chart-line {
-  position: absolute;
-
-  inset:
-    35px
-    8px
-    20px;
-
-  background:
-    linear-gradient(
-      165deg,
-
-      transparent 0 12%,
-
-      var(--green) 13% 14%,
-
-      transparent 15% 24%,
-
-      var(--green) 25% 26%,
-
-      transparent 27% 39%,
-
-      var(--green) 40% 41%,
-
-      transparent 42% 53%,
-
-      var(--green) 54% 55%,
-
-      transparent 56% 65%,
-
-      var(--green) 66% 67%,
-
-      transparent 68% 76%,
-
-      var(--green) 77% 78%,
-
-      transparent 79%
-    );
+.telemetry-chart-line {
+    fill: none !important;
+    stroke: var(--green);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
 }
 
-.chart small {
-  position: absolute;
 
-  bottom: 3px;
+.chart-summary {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 3px;
 
-  left: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  font-size: 9px;
+    font-size: 9px;
 }
 
-.chart.blue .chart-line {
-  filter: hue-rotate(90deg);
+.chart-summary span {
+    white-space: nowrap;
 }
 
-.chart.red .chart-line {
-  filter: hue-rotate(145deg);
+.telemetry-chart-line {
+    fill: none !important;
+    stroke: var(--green);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
 }
 
+.chart-reference {
+    stroke: var(--green);
+    stroke-width: 0.7;
+    stroke-dasharray: 4 3;
+    opacity: 0.45;
+}
+.experiment-card:hover .chart-label {
+    fill: #000;
+}
+
+.experiment-card:hover .chart-reference {
+    stroke: #000;
+}
+
+.experiment-card:hover .telemetry-chart-line {
+    stroke: #000;
+}
 
 /* =========================
    EXPERIMENT META
@@ -1301,47 +1280,50 @@ color: #000;
   font-size: 11px;
 }
 
+/* =========================
+   HISTORY
+========================= */
+
 .history-list {
-  /* border: 1px solid var(--line); */
-  font-size: 15px;
+    font-size: 15px;
+
+    max-height: 58vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 8px;
 }
 
 .history-list > div {
-  display: grid;
-
-  grid-template-columns:
-    .8fr
-    1.5fr
-    .9fr
-    .9fr
-    1.2fr;
-
-  gap: 7px;
-
-  padding: 8px 5px;
-
-  border-bottom: 1px solid #163b0d;
-
-  align-items: center;
+    display: grid;
+    grid-template-columns:
+        .8fr
+        1.5fr
+        .9fr
+        .9fr
+        1.2fr;
+    gap: 7px;
+    padding: 8px 5px;
+    border-bottom: 1px solid #163b0d;
+    align-items: center;
 }
-
 .history-head {
   color: var(--green-dim);
 }
 
-.completed {
+.COMPLETED {
   color: var(--green);
 }
 
-.running {
+.RUNNING {
   color: var(--line);
 }
 
-.stopped {
+.STOPPED {
   color: #e0bd27;
 }
 
-.failed {
+.FAILED {
   color: var(--orange);
 }
 
@@ -1375,54 +1357,36 @@ color: #000;
 /* =========================================================
    GUIDE PAGE
 ========================================================= */
-
 .guide-page {
-  width: 100%;
-
-  max-width: none;
-
-  margin: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 10px;
 }
-
 
 /* =========================
    GUIDE TWO-COLUMN LAYOUT
 ========================= */
 
 .guide-grid {
-  display: grid;
-
-  grid-template-columns:
-    24%
-    minmax(0, 1fr)
-    minmax(0, 1fr);
-
-  gap: 12px;
-
-  width: 100%;
-
-  /*
-    All three columns stretch to the height
-    of the tallest content column.
-  */
-  align-items: stretch;
+    display: grid;
+    grid-template-columns: 24% minmax(0, 1fr) minmax(0, 1fr);
+    gap: 30px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
 }
+
+
 .guide-column {
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 10px;
-
-  /*
-    Forces the column to occupy the
-    complete height of the Guide.
-  */
-  height: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
+.guide-character-column {
+    display: flex;
+}
 
 /* =========================
    GUIDE INTRO
@@ -1448,54 +1412,33 @@ color: #000;
 }
 
 .guide-character {
-  width: 100%;
+    width: 100%;
+    height: 100%;
+    min-height: 390px;
 
-  /*
-    The character panel fills the same
-    vertical space as the instructions.
-  */
-  height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  min-height: 0;
+    border: 1px solid var(--line);
+    background: rgba(0, 10, 0, .35);
 
-  /* border: 1px dashed var(--line); */
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  overflow: hidden;
-
-  background:
-    rgba(0, 10, 0, .35);
-
-  /*
-    Makes the panel stretch with the
-    entire Guide content.
-  */
-  flex: 1;
+    overflow: hidden;
 }
 
-.scientist-image {
-  width: 100%;
+.guide-character .scientist-image {
+    width: 80%;
+    height: 80%;
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
 
-  height: 100%;
-
-  max-width: 100%;
-  max-height: 100%;
-
-  object-fit: contain;
-
-  display: block;
-
-  filter:
-    grayscale(1)
-    sepia(1)
-    hue-rotate(60deg)
-    saturate(4)
-    contrast(1.1);
+    filter:
+        grayscale(1)
+        sepia(1)
+        hue-rotate(60deg)
+        saturate(4)
+        contrast(1.1);
 }
 
 .guide-intro-text {
@@ -1513,20 +1456,13 @@ color: #000;
    GUIDE TITLES
 ========================= */
 
-.guide-intro h3,
-.guide-section h3,
-.guide-final h3 {
-  font-family: "VT323", monospace;
+.guide-section h3 {
+    margin: 0 0 10px;
 
-  margin: 0 0 10px 0;
-
-  font-size: 20px;
-
-  letter-spacing: 1px;
-
-  margin: 0 0 8px;
-
-  color: var(--green);
+    font-family: "VT323", monospace;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--green);
 }
 
 
@@ -1534,15 +1470,13 @@ color: #000;
    GUIDE TEXT
 ========================= */
 
-.guide-intro p,
-.guide-section p,
-.guide-final p {
-  font-size: 13px;
-  margin: 0 0 10px 0;
-  line-height: 1.30;
+.guide-section p {
+    margin: 0 0 10px;
 
-  margin: 0 0 9px;
+    font-size: 14px;
+    line-height: 1.1;
 }
+
 
 .guide-intro p:last-child,
 .guide-section p:last-child,
@@ -1557,10 +1491,13 @@ color: #000;
 
 
 .guide-section {
+    padding: 0;
+    margin: 0;
     border: none;
     background: transparent;
     box-shadow: none;
 }
+
 
 .guide-column .guide-section:last-child {
     border-bottom: none;
@@ -1597,7 +1534,37 @@ color: #000;
 }
 
 .guide-section strong {
-  color: var(--green);
+    color: var(--green);
+}
+.guide-middle .guide-section::after {
+    content: "";
+
+    display: block;
+
+    width: 100%;
+    height: 1px;
+
+    margin: 13px 0;
+
+    background:
+        repeating-linear-gradient(
+            to right,
+            var(--line) 0 4px,
+            transparent 4px 8px
+        );
+
+    opacity: .6;
+}
+
+.guide-middle .guide-section:last-child::after {
+    display: none;
+}
+
+.guide-right {
+    border-left: 1px solid var(--line);
+    padding-left: 28px;
+
+    min-width: 0;
 }
 
 
@@ -1657,32 +1624,40 @@ color: #000;
 ========================= */
 
 .big-warning {
-  border: 1px solid var(--orange);
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 12px 18px;
 
-  color: var(--orange);
+    border: 1px solid var(--orange);
+    background: rgba(255, 106, 0, .03);
 
-  padding: 10px;
-  width: 300px;
-  margin:0 auto;
+    color: var(--orange);
 
-  text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 25px;
 
-  font-family: "VT323", monospace;
-
-  font-size: 15px !important;
-
-  line-height: 1.1 !important;
-
-  letter-spacing: 1px;
-
-  /* text-shadow:
-    0 0 6px rgba(255, 106, 0, .35); */
-
-  background:
-    rgba(255, 106, 0, .03);
+    font-family: "VT323", monospace;
+    font-size: 16px;
+    line-height: 1.25;
+    letter-spacing: 1px;
 }
+.big-warning .warning-icon {
+    flex: 0 0 auto;
 
+    font-family: Arial, sans-serif;
+    font-size: 55px;
+    line-height: 1;
 
+    color: var(--orange);
+
+    text-shadow: 0 0 6px rgba(255, 106, 0, .25);
+}
+.big-warning .warning-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
 /* =========================
    GUIDE FINAL RULE
 ========================= */
@@ -1767,43 +1742,75 @@ color: #000;
    SCIENTIST SIGNATURE
 ========================= */
 
- .scientist-signature {
-  border-top:
-    2px dashed var(--line);
+.scientist-signature {
+    margin-top: 22px;
+    padding-top: 18px;
 
-  margin-top: 14px;
+    border-top: 1px dashed var(--line);
 
-  padding-top: 10px;
+    text-align: left;
 
-  text-align: right;
+    font-family: "VT323", monospace;
+    font-size: 21px;
+    line-height: 1.3;
 
-  font-family:
-    "VT323",
-    monospace;
-
-  font-size: 21px;
-
-  color: var(--green);
+    color: var(--green);
 }
 
 /* .guide-final .final-rule {
     margin-bottom: 12px;
 } */
 
-.final-rule{
-  margin:15px
+.final-rule {
+    margin: 0;
+    padding: 0;
 }
 
-.guide-final .scientist-signature small {
-  font-family:
-    "Share Tech Mono",
-    monospace;
+.final-rule h3 {
+    margin: 0 0 14px;
 
-  font-size: 10px;
+    font-family: "VT323", monospace;
+    font-size: 24px;
+    letter-spacing: 1px;
 
-  opacity: .7;
+    color: var(--green);
+}
 
-  color: var(--green-dim);
+.final-rule p {
+    position: relative;
+
+    margin: 0 0 10px;
+    padding-left: 18px;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* little terminal arrows */
+.final-rule p::before {
+    content: ">";
+
+    position: absolute;
+    left: 0;
+
+    color: var(--green);
+}
+
+
+
+
+
+.scientist-signature small {
+    display: block;
+
+    margin-top: 10px;
+
+    font-family: "Share Tech Mono", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--green-dim);
+    opacity: .9;
 }
 
 /*
@@ -1829,21 +1836,14 @@ color: #000;
 
 .footer {
   display: grid;
-
   grid-template-columns: 20% 50% 30%;
-
-   gap: 1%;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   align-items: center;
-
   border-top: 1px solid var(--green);
-
-padding-top: 2vh;
-
-
-  font-size: 14px;
+  padding-top: 2vh;
+  font-size: 12px;
 }
 
 .footer-nav {
@@ -2645,6 +2645,15 @@ text-align: left;
         opacity: 0;
     }
 }
+/* =========================
+   HISTORY
+========================= */
+
+
+
+
+
+
 
 /* =========================
    FOOTER
@@ -2914,13 +2923,10 @@ body.screen-glitch .crt {
 
 #home-page .home-log-list {
 
-    max-height: 180px;
+    max-height: 280px;
     overflow-y: auto;
-
-
     display: flex;
     flex-direction: column;
-
     gap: 7px;
 }
 
@@ -3147,7 +3153,7 @@ body.screen-glitch .crt {
 
 
   .brand p {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .static-nav {

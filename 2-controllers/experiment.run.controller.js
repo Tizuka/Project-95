@@ -25,6 +25,27 @@ async function completeExperimentController(req, res) {
     }
 }
 
+async function stopExperimentController(req, res) {
+    try {
+
+        const experimentStopped =
+            await experimentRunService.stopExperiment(
+                req.params.experimentId,
+                req.params.experimentName
+            );
+
+        res.json(experimentStopped);
+
+    } catch (error) {
+
+        console.error("ERRO NO STOP:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+}
 
 // Getall Experimnet runs
 async function loadAllExperimentRunsController(req, res) {
@@ -41,5 +62,5 @@ async function loadAllExperimentRunsController(req, res) {
 
 
 module.exports = {
-    startExperimentController,loadAllExperimentRunsController,completeExperimentController
+    startExperimentController,loadAllExperimentRunsController,completeExperimentController,stopExperimentController
 };
