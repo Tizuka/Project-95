@@ -11,9 +11,9 @@ export function startTelemetry(
     const key = String(experimentRunId);
 
     if (telemetryIntervals.has(key)) {
-        return;
-    }
-
+        clearInterval(telemetryIntervals.get(key));
+        telemetryIntervals.delete(key);
+    }   
     async function updateTelemetry() {
 
         try {

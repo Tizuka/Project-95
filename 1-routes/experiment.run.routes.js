@@ -21,5 +21,9 @@ router.patch('/:experimentId/:experimentName/complete',
 experimentRunController.stopExperimentController
 );
 
+router.patch(
+    '/:experimentId/:experimentName/failed',
+    experimentRunController.failedExperimentController
+);
 
 module.exports = router;

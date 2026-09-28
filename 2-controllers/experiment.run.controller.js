@@ -59,8 +59,29 @@ async function loadAllExperimentRunsController(req, res) {
         });
     }
 }
+async function failedExperimentController(req, res) {
+    try {
+
+        const experimentFailed =
+            await experimentRunService.failedExperiment(
+                req.params.experimentId,
+                req.params.experimentName
+            );
+
+        res.json(experimentFailed);
+
+    } catch (error) {
+
+        console.error("ERRO NO FAILED:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+}
 
 
 module.exports = {
-    startExperimentController,loadAllExperimentRunsController,completeExperimentController,stopExperimentController
+    startExperimentController,loadAllExperimentRunsController,completeExperimentController,stopExperimentController,failedExperimentController
 };

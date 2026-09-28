@@ -2,7 +2,7 @@
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
 import { loadIdleMachines, updateStatus, loadMachines } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
-import { stopExperimentRun,startExperiment,loadAllExperimentRuns, statusComplete,loadSystemLogs } from '../../5-fetch/experiment.run.fetch.js';
+import { stopExperimentRun,startExperiment,loadAllExperimentRuns, statusComplete,statusFailed,loadSystemLogs } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
 import {startTelemetry,stopTelemetry} from './telemetry.js';
 
@@ -10,6 +10,7 @@ import {startTelemetry,stopTelemetry} from './telemetry.js';
 // experimentRuns
 // console.log("1 - SCRIPT START");
 const telemetryHistory = new Map();
+const telemetryStates = new Map();
 // console.log("2 - EXPERIMENT RUNS LOADED", experimentRuns);
 const livePageButton = document.getElementById("live-page-button");
 const experimentList = document.querySelector(".experiment-list");
@@ -245,37 +246,59 @@ chart.innerHTML = `
         preserveAspectRatio="none"
     >
 
+        <!-- =========================
+             CHART GRID
+        ========================== -->
+
         <line
-            class="chart-reference max-line"
-            x1="35"
-            y1="5"
+            class="chart-grid"
+            x1="45"
+            y1="28"
             x2="300"
-            y2="5"
+            y2="28"
         ></line>
 
         <line
-            class="chart-reference warning-line"
-            x1="35"
-            y1="5"
+            class="chart-grid"
+            x1="45"
+            y1="50"
             x2="300"
-            y2="5"
+            y2="50"
+        ></line>
+
+        <line
+            class="chart-grid"
+            x1="45"
+            y1="72"
+            x2="300"
+            y2="72"
+        ></line>
+
+
+        <!-- =========================
+             WARNING / CRITICAL LINES
+        ========================== -->
+
+        <line
+            class="chart-reference warning-line"
+            x1="45"
+            y1="50"
+            x2="300"
+            y2="50"
         ></line>
 
         <line
             class="chart-reference critical-line"
-            x1="35"
-            y1="5"
+            x1="45"
+            y1="25"
             x2="300"
-            y2="5"
+            y2="25"
         ></line>
 
-        <line
-            class="chart-reference min-line"
-            x1="35"
-            y1="95"
-            x2="300"
-            y2="95"
-        ></line>
+
+        <!-- =========================
+             TELEMETRY LINE
+        ========================== -->
 
         <polyline
             class="telemetry-chart-line"
@@ -283,49 +306,46 @@ chart.innerHTML = `
             fill="none"
         ></polyline>
 
-        <text
-            class="chart-label max-label"
-            x="8"
-            y="5"
-            font-size="5"
-        >
-            MAX
-        </text>
+        <circle
+            class="telemetry-current-point"
+            cx="0"
+            cy="0"
+            r="3"
+        ></circle>
 
-        <text
-            class="chart-label warning-label"
-            x="8"
-            y="5"
-            font-size="5"
-        >
-            WARNING
-        </text>
+
+        <!-- =========================
+             LABELS
+        ========================== -->
 
         <text
             class="chart-label critical-label"
-            x="8"
-            y="5"
-            font-size="5"
+            x="2"
+            y="28"
+            font-size="6"
         >
             CRITICAL
         </text>
 
         <text
-            class="chart-label min-label"
-            x="8"
-            y="95"
-            font-size="5"
+            class="chart-label warning-label"
+            x="2"
+            y="53"
+            font-size="6"
         >
-            MIN
+            WARNING
+        </text>
+
+        <text
+            class="chart-label normal-label"
+            x="2"
+            y="90"
+            font-size="6"
+        >
+            NORMAL
         </text>
 
     </svg>
-
-    <div class="chart-summary">
-        LAST 30s
-        <span class="chart-min-value">MIN --</span>
-        <span class="chart-max-value">MAX --</span>
-    </div>
 `;
         experimentContent.appendChild(telemetry);
         experimentContent.appendChild(chart);
@@ -419,6 +439,11 @@ stopButton.addEventListener("click", async () => {
                     experimentRun._id,
                     telemetryData
                 );
+                evaluateTelemetry(
+                    experimentRun._id,
+                    experimentRun.name,
+                    telemetryData
+                );
 
             }
         );
@@ -447,9 +472,7 @@ function updateTelemetryChart(
     chartElement,
     experimentRunId,
     telemetry
-) { console.log("CHART TELEMETRY:", telemetry);
-console.log("CHART MIN:", telemetry.min);
-console.log("CHART MAX:", telemetry.max);
+) { 
 
     const key = String(experimentRunId);
 
@@ -475,45 +498,44 @@ console.log("CHART MAX:", telemetry.max);
     // FIXED EXPERIMENT RANGE
     // =================================
 
-   const chartMin = Number(telemetry.min);
-const chartMax = Number(telemetry.max);
+    const chartMin = Number(telemetry.min);
+    const critical = Number(telemetry.critical);
 
-const chartRange = chartMax - chartMin;
+    const chartMax = critical + 10;
 
-const top = 12;
-const bottom = 78;
+    const chartRange = chartMax - chartMin;
+    const top = 12;
+    const bottom = 78;
 
-function valueToY(value) {
+    function valueToY(value) {
 
-    const numericValue = Number(value);
+        const numericValue = Number(value);
 
-    if (!Number.isFinite(numericValue)) {
-        return bottom;
+        if (!Number.isFinite(numericValue)) {
+            return bottom;
+        }
+
+        const normalized =
+            (numericValue - chartMin) / chartRange;
+
+        const clamped =
+            Math.max(0, Math.min(1, normalized));
+
+        return bottom -
+            (clamped * (bottom - top));
     }
 
-    const normalized =
-        (numericValue - chartMin) / chartRange;
-
-    const clamped =
-        Math.max(0, Math.min(1, normalized));
-
-    return bottom -
-        (clamped * (bottom - top));
-}
-    // =================================
-    // TELEMETRY LINE
-    // =================================
 
     const width = 300;
 
     const points = history.map((point, index) => {
 
-        const x =
-            history.length === 1
-                ? width / 2
-                : 35 +
-                  (index / (history.length - 1)) *
-                  (width - 35);
+    const x =
+        history.length === 1
+            ? width / 2
+            : 45 +
+            (index / (history.length - 1)) *
+            (width - 45);
 
         const y = valueToY(point.value);
 
@@ -527,18 +549,30 @@ function valueToY(value) {
         );
 
     line.setAttribute("points", points);
+    const currentPoint =
+        chartElement.querySelector(
+            ".telemetry-current-point"
+        );
 
+    const lastPoint =
+        history[history.length - 1];
+
+    const lastX =
+        history.length === 1
+            ? width / 2
+            : 45 +
+            ((history.length - 1) /
+            (history.length - 1)) *
+            (width - 45);
+
+    const lastY =
+        valueToY(lastPoint.value);
+
+    currentPoint.setAttribute("cx", lastX);
+    currentPoint.setAttribute("cy", lastY); 
     // =================================
     // REFERENCE LINES
     // =================================
-
-    chartElement
-        .querySelector(".max-line")
-        .setAttribute("y1", valueToY(chartMax));
-
-    chartElement
-        .querySelector(".max-line")
-        .setAttribute("y2", valueToY(chartMax));
 
     chartElement
         .querySelector(".warning-line")
@@ -557,22 +591,6 @@ function valueToY(value) {
         .setAttribute("y2", valueToY(telemetry.critical));
 
     chartElement
-        .querySelector(".min-line")
-        .setAttribute("y1", valueToY(chartMin));
-
-    chartElement
-        .querySelector(".min-line")
-        .setAttribute("y2", valueToY(chartMin));
-
-    // =================================
-    // LABEL POSITIONS
-    // =================================
-
-    chartElement
-        .querySelector(".max-label")
-        .setAttribute("y", valueToY(chartMax) + 3);
-
-    chartElement
         .querySelector(".warning-label")
         .setAttribute("y", valueToY(telemetry.warning) + 3);
 
@@ -580,31 +598,333 @@ function valueToY(value) {
         .querySelector(".critical-label")
         .setAttribute("y", valueToY(telemetry.critical) + 3);
 
-    chartElement
-        .querySelector(".min-label")
-        .setAttribute("y", valueToY(chartMin) + 3);
+    }
+function showFailureVideo(telemetry, experimentRunId,experimentName) {
 
-    // =================================
-    // LAST 30s MIN / MAX
-    // =================================
+    const modal = document.createElement("div");
 
-    const observedMin =
-        Math.min(...values);
+    modal.classList.add("failure-video-modal");
 
-    const observedMax =
-        Math.max(...values);
+    modal.innerHTML = `
+        <div class="failure-video-content">
 
-    chartElement
-        .querySelector(".chart-min-value")
-        .textContent =
-        `MIN ${chartMin} ${telemetry.unit}`;
+            <h2>⚠ EXPERIMENT FAILURE</h2>
 
-    chartElement
-        .querySelector(".chart-max-value")
-        .textContent =
-        `MAX ${chartMax} ${telemetry.unit}`;
+            <video
+                class="failure-video"
+                autoplay
+                playsinline
+            >
+                <source
+                    src="/videos/experiment-failure.mp4"
+                    type="video/mp4"
+                >
+            </video>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const video =
+        modal.querySelector(".failure-video");
+
+    video.addEventListener("ended", async () => {
+
+        modal.remove();
+
+        await failExperiment(
+            experimentRunId,
+            experimentName
+        );
+
+    });
+
+    video.play().catch(error => {
+
+        console.error(
+            "Could not play failure video:",
+            error
+        );
+
+    });
+}    
+function evaluateTelemetry(
+    experimentRunId,
+    experimentName,
+    telemetry
+) {
+
+    const key = String(experimentRunId);
+
+    if (!telemetryStates.has(key)) {
+
+        telemetryStates.set(key, {
+
+            eventCount: 0,
+
+            warningCount: 0,
+            criticalCount: 0,
+            emergencyCount: 0,
+
+            previousEventValue: null
+
+        });
+
     }
 
+    const state =
+        telemetryStates.get(key);
+
+    const value =
+        Number(telemetry.value);
+
+    const warning =
+        Number(telemetry.warning);
+
+    const critical =
+        Number(telemetry.critical);
+
+
+    // ==========================================
+    // EVENT 1 — WARNING
+    // ==========================================
+    const WARNING_COUNT = 10;
+    const CRITICAL_COUNT = 10;
+    const EMERGENCY_COUNT = 10;
+
+    if (state.eventCount === 0) {
+
+        if (value >= warning) {
+
+            state.warningCount++;
+
+        } else {
+
+            state.warningCount = 0;
+
+        }
+
+
+        if (state.warningCount >= WARNING_COUNT) {
+
+            state.eventCount = 1;
+
+            state.warningCount = 0;
+
+            console.log(
+                "TELEMETRY EVENT 1 — WARNING:",
+                value
+            );
+
+           showTelemetryWarning(telemetry, experimentName);
+
+        }
+
+        return;
+    }
+
+
+    // ==========================================
+    // EVENT 2 — CRITICAL
+    // ==========================================
+    if (state.eventCount === 1) {
+
+        if (value >= critical) {
+
+            state.criticalCount++;
+
+        } else {
+
+            state.criticalCount = 0;
+
+        }
+
+
+        if (state.criticalCount >= CRITICAL_COUNT) {
+
+            state.eventCount = 2;
+
+            state.criticalCount = 0;
+
+            state.previousEventValue = value;
+
+            console.log(
+                "TELEMETRY EVENT 2 — CRITICAL:",
+                value
+            );
+
+            showTelemetryCritical(telemetry, experimentName);
+
+        }
+
+        return;
+    }
+
+
+    // ==========================================
+    // EVENT 3 — EMERGENCY
+    // ==========================================
+
+    if (state.eventCount === 2) {
+
+        if (
+            value > state.previousEventValue
+        ) {
+
+            state.emergencyCount++;
+
+        } else {
+
+            state.emergencyCount = 0;
+
+        }
+
+
+        if (state.emergencyCount >= EMERGENCY_COUNT) {
+
+            state.eventCount = 3;
+
+            state.emergencyCount = 0;
+
+            const previousCriticalValue =
+            state.previousEventValue;
+            state.previousEventValue = value;
+            console.log(
+                "TELEMETRY EVENT 3 — ESCALATION:",
+                value
+            );
+
+            showTelemetryEmergency(telemetry, experimentName, previousCriticalValue);
+
+            showFailureVideo(
+                telemetry,  
+                experimentRunId,
+                experimentName
+            );
+
+        }
+
+        return;
+    }
+
+}
+function showTelemetryWarning(telemetry, experimentName) {
+
+    const modal = document.createElement("div");
+
+    modal.classList.add(
+        "telemetry-alert-modal",
+        "telemetry-warning"
+    );
+
+    modal.innerHTML = `
+        <div class="telemetry-alert-box">
+
+            <div class="telemetry-alert-header">
+                ⚠ WARNING
+            </div>
+
+            <div class="telemetry-alert-content">
+
+                <div>> EXPERIMENT: ${experimentName} | SENSOR: ${telemetry.sensor.toUpperCase()}</div>
+                <div>> WARNING SIGNALS: 7 / 7</div>
+
+                <br>
+
+                <div>> HAZARD ASSESSMENT:</div>
+                <div>> ABNORMAL CONDITIONS DETECTED.</div>
+                <div>> CONTINUED OPERATION MAY ESCALATE CONDITIONS.</div>
+
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+function showTelemetryCritical(telemetry, experimentName) {
+
+    const modal = document.createElement("div");
+
+    modal.classList.add(
+        "telemetry-alert-modal",
+        "telemetry-critical"
+    );
+
+    modal.innerHTML = `
+        <div class="telemetry-alert-box">
+
+            <div class="telemetry-alert-header">
+                ⚠ CRITICAL
+            </div>
+
+            <div class="telemetry-alert-content">
+
+                <div>> EXPERIMENT: ${experimentName}</div>
+
+                <div>> SENSOR: ${telemetry.sensor.toUpperCase()}</div>
+
+                <div>> CURRENT VALUE: ${telemetry.value} ${telemetry.unit}</div>
+
+                <div>> CRITICAL SIGNALS: 5 / 5 CONSECUTIVE</div>
+
+                <div>> THRESHOLD: ${telemetry.critical} ${telemetry.unit}</div>
+
+                <br>
+
+                <div>> HAZARD ASSESSMENT:</div>
+
+                <div>> CRITICAL CONDITIONS CONFIRMED.</div>
+
+                <div>> CONTINUED OPERATION MAY RESULT IN</div>
+
+                <div>> EQUIPMENT DAMAGE OR EXPERIMENT FAILURE.</div>
+
+                <div>> IMMEDIATE ATTENTION REQUIRED.</div>
+
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+function showTelemetryEmergency(telemetry, experimentName,previousEventValue) {
+
+    const modal = document.createElement("div");
+
+    modal.classList.add(
+        "telemetry-alert-modal",
+        "telemetry-emergency"
+    );
+
+    modal.innerHTML = `
+        <div class="telemetry-alert-box">
+
+            <div class="telemetry-alert-header">
+                🚨 EMERGENCY
+            </div>
+
+            <div class="telemetry-alert-content">
+
+                <div>> EXPERIMENT: ${experimentName} | SENSOR: ${telemetry.sensor.toUpperCase()}</div>
+                <div>> ESCALATION SIGNALS: 3 / 3</div>
+                <div>> PREVIOUS CRITICAL: ${previousEventValue} ${telemetry.unit}</div>
+
+                <br>
+
+                <div>> HAZARD ASSESSMENT:</div>
+                <div>> CONDITIONS CONTINUING TO ESCALATE.</div>
+                <div>> EMERGENCY PROTOCOL INITIATED.</div>
+
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
 async function refreshMachines() {
     machines = await loadIdleMachines();
     console.log("MACHINES UPDATED:", machines);
@@ -644,7 +964,53 @@ async function checkExperiments() {
         }
     }
 }
+async function failExperiment(
+    experimentRunId,
+    experimentName
+) {
 
+    console.log(
+        "FAILING EXPERIMENT:",
+        experimentRunId,
+        experimentName
+    );
+
+    stopTelemetry(experimentRunId);
+
+    try {
+
+        const failedExperiment =
+            await statusFailed(
+                experimentRunId,
+                experimentName
+            );
+
+        console.log(
+            "EXPERIMENT FAILED:",
+            failedExperiment
+        );
+
+        const status =
+            document.querySelector(
+                `[data-experiment-id="${experimentRunId}"]`
+            );
+
+        if (status) {
+            status.textContent = "[FAILED]";
+
+            status.classList.remove("running");
+            status.classList.add("failed");
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Could not fail experiment:",
+            error
+        );
+
+    }
+}
 
 
 
@@ -730,17 +1096,42 @@ try {
 
 
 });
-
-/* =========================
-   ExperimentRun Display on live page
-========================= */
-
 livePageButton.addEventListener('click', async () => {
     await refreshMachines();
     experimentList.innerHTML = "";
     const experimentRuns = await loadAllExperimentRuns();
     renderExperimentCards(experimentRuns);
 
+
+});
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+
+        const modal =
+            document.querySelector(
+                ".telemetry-alert-modal"
+            );
+
+        if (modal) {
+            modal.remove();
+        }
+
+    }
+
+});
+
+
+document.addEventListener("click", (event) => {
+
+    const modal =
+        event.target.closest(".telemetry-alert-modal");
+
+    if (!modal) return;
+
+    if (event.target === modal) {
+        modal.remove();
+    }
 
 });
 

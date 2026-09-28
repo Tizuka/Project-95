@@ -74,3 +74,21 @@ export async function loadSystemLogs() {
     return logs;
 }
 
+export async function statusFailed(experimentId, experimentName) {
+
+    const response = await fetch(
+        `http://127.0.0.1:3000/experimentRun/${experimentId}/${experimentName}/failed`,
+        {
+            method: "PATCH"
+        }
+    );
+
+    const statusFailed = await response.json();
+
+    console.log(
+        "statusFailed:",
+        statusFailed
+    );
+
+    return statusFailed;
+}

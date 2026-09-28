@@ -146,13 +146,63 @@ async function loadSystemLogs() {
         .limit(20);
 
 }
+async function failedExperiment(experimentId, machineName) {
 
+    console.log("failedExperiment service");
+    console.log("ID RECEIVED:", experimentId);
+    console.log("machineName:", machineName);
+
+    const updatedExperiment = await experimentRun.findOneAndUpdate(
+        {
+            _id: experimentId,
+            status: "RUNNING"
+        },
+        {
+            $set: {
+                status: "FAILED"
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    const findMachine = await machine.findOneAndUpdate(
+        {
+            name: machineName
+        },
+        {
+            $set: {
+                status: "IDLE"
+            }
+        },
+        {
+            new: true
+        }
+    );
+
+    if (updatedExperiment) {
+
+        await systemLog.create({
+            message:
+                `${machineName}: ${updatedExperiment.experimentName} failed.`
+        });
+
+    }
+
+    return {
+        experiment: updatedExperiment,
+        machine: findMachine
+    };
+}
 
 module.exports = {
     startExperiment,
     loadAllExperimentRuns,
     completeExperiment,
     stopExperiment,
-    loadSystemLogs
+    failedExperiment,
+    loadSystemLogs,
+    
 };
 
