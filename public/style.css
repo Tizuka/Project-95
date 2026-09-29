@@ -484,9 +484,29 @@ text-align: center;
 
 
 /* =========================
-   EXPERIMENT CARDS
+LIVE PAGE
 ========================= */
+.failure-video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.failure-video-content {
+    width: 50vw;
+    max-width: 800px;
+}   
+.failure-video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
 .machine-card {
   border: 1px solid var(--line);
 
@@ -1308,6 +1328,16 @@ color: #000;
 /* =========================
    HISTORY
 ========================= */
+.no-history {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--green);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
 
 .history-list {
     font-size: 15px;
@@ -1914,6 +1944,30 @@ color: #000;
    TABLET
 ========================= */
 
+/* ---------- PROJECT HEADER RESPONSIVE ---------- */
+
+@media (max-width: 1254px) {
+
+    .project-title {
+      white-space: nowrap;
+        font-size: clamp(30px, 3vw, 36px);
+    }
+
+    .brand p {
+        font-size: clamp(12px, 1.3vw, 16px);
+    }
+
+}
+@media (max-width: 1230px) {
+    .project-title {
+      white-space: nowrap;
+        font-size: clamp(26px, 2.8vw, 34px);
+    }
+
+    .brand p {
+        font-size: clamp(10px, 1.2vw, 15px);
+    }
+}
 @media (max-width: 1200px) {
 
   .dashboard {
@@ -1927,7 +1981,36 @@ color: #000;
 
 }
 
+@media (max-width: 1149px) {
+  .project-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 3vw;
+          width: 100%;
+      }
 
+      .project-info-content {
+          flex: 0 1 auto;
+          min-width: 0;
+      }
+
+      .static-nav {
+          width: 52vw;
+          max-width: 600px;
+          min-width: 0;
+          flex: 0 1 52vw;
+      }
+
+      .project-title {
+          white-space: nowrap;
+          font-size: clamp(26px, 2.8vw, 34px);
+      }
+
+      .authorized {
+          font-size: clamp(10px, 1.2vw, 15px);
+      }
+    }
 /* =========================
    GUIDE TABLET
 ========================= */
@@ -1940,11 +2023,127 @@ color: #000;
   }
 
 }
+@media (max-width: 900px) {
+  #home-page .home-content {
+        width: 100%;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+        min-height: auto;
+    }
 
+    #home-page .home-vaultboy {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #home-page .home-status-column {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #home-page .home-system-log {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+    #home-page .home-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+
+    #home-page .home-vaultboy {
+        justify-self: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #home-page .home-status-column {
+        justify-self: center;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
 
 /* =========================
    MOBILE
 ========================= */
+@media (max-width: 930px) {
+    .project-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2vw;
+        width: 100%;
+    }
+
+    .project-info-content {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .static-nav {
+        width: 48vw;
+        max-width: 500px;
+        min-width: 0;
+        flex: 0 1 48vw;
+    }
+
+    .project-title {
+        white-space: nowrap;
+        font-size: clamp(23px, 2.7vw, 30px);
+    }
+
+    .authorized {
+        font-size: clamp(9px, 1.15vw, 13px);
+    }
+}
+
+
+@media (max-width: 864px) {
+    .project-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2vw;
+        width: 100%;
+    }
+
+    .project-info-content {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .static-nav {
+        width: 46vw;
+        max-width: 450px;
+        min-width: 0;
+        flex: 0 1 46vw;
+    }
+
+    .project-title {
+        white-space: nowrap;
+        font-size: clamp(21px, 2.6vw, 27px);
+    }
+
+    .authorized {
+        font-size: clamp(8px, 1.1vw, 12px);
+    }
+}
 
 @media (max-width: 800px) {
 
@@ -2822,7 +3021,29 @@ body.screen-glitch .crt {
    The HOME content is split into:
    VAULT BOY | STATUS/CLOCK | SYSTEM LOG
 ========================================================= */
+#home-page .home-log-list .log-warning {
+    color: #ffd000;
+}
 
+#home-page .home-log-list .log-critical {
+    color: #ff7a00;
+}
+
+#home-page .home-log-list .log-emergency {
+    color: #ff3030;
+}
+
+#home-page .home-log-list .log-failed {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+#home-page .home-log-list .log-info {
+    color: #d0d0d0;
+}
+#home-page .home-log-list .log-completed {
+    color: #00ff66;
+}
 #home-page.home-page {
     width: 100%;
     min-width: 0;
@@ -3765,3 +3986,40 @@ CASOS ESPECÍFICOS)
   }
 }
 
+@media (max-width: 902px) {
+
+    #home-page .home-content {
+        display: grid;
+        grid-template-columns: 40% 40%;
+        justify-content: center;
+        gap: 40px;
+        width: 100%;
+        min-height: auto;
+    }
+
+    #home-page .home-vaultboy {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #home-page .home-status-column {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+    }
+
+    #home-page .lab-status,
+    #home-page .clock {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    #home-page .home-system-log {
+        grid-column: 1 / -1;
+    }
+}

@@ -1,9 +1,4 @@
 
-TODO: LIVE:pop up based on the values sent by telemetry
-TODO: LOGS: send logs of the warning, critical emergency with different colors
-TODO: HISTORY: mudar no history pra mostrar a data que acabou nao que comecou. 
-TODO: HISTORY: colo0car mensagem estatica pra quando nao tiver nenhum hisotyr
-TODO: LOGS: drop logs quando tudo reiniciar a pagina e nao tiver mais nenhum experiment rodando. 
 TODO: LOGS: concertar logs estaticos que nao aparecem mais por algum motivo 
 
 
