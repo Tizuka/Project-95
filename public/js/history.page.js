@@ -68,7 +68,11 @@ historyPageButton.addEventListener("click", async ()=>{
   historyItem.innerHTML = '';
       const experimentRun = await loadAllExperimentRuns();
   if (experimentRun.length === 0) {
-    historyItem.textContent = "-- NO HISTORY AVAILABLE --";
+    historyItem.innerHTML = `
+        <div class="no-history">
+            <span>--- NO EXPERIMENT HISTORY AVAILABLE ---</span>
+        </div>
+    `;
     return;
 }
   index = 0;
