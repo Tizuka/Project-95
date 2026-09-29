@@ -2,7 +2,7 @@
 // 1.1 "SELECT MACHINE" e SELECT EXPERIMENT
 import { loadIdleMachines, updateStatus, loadMachines } from '../../5-fetch/machine.fetch.js';
 import { loadExperiments } from '../../5-fetch/experiments.fetch.js';
-import { stopExperimentRun,startExperiment,loadAllExperimentRuns, statusComplete,statusFailed,loadSystemLogs } from '../../5-fetch/experiment.run.fetch.js';
+import { createTelemetryLog,stopExperimentRun,startExperiment,loadAllExperimentRuns, statusComplete,statusFailed,loadSystemLogs } from '../../5-fetch/experiment.run.fetch.js';
 import { showWarning } from './warning.modal.js';
 import {startTelemetry,stopTelemetry} from './telemetry.js';
 
@@ -35,7 +35,10 @@ const addExperimentButton =
 let machineSelected = '';    
 let experimentSelected = '';
 let selectedMachineId = '';
-
+const WARNING_COUNT = 10;
+const CRITICAL_COUNT = 7;
+const EMERGENCY_COUNT = 5;
+let failureVideoPlaying = false;
 
 function renderMachines() {
 //  console.log("5 dentro de renderMachines")
@@ -599,8 +602,18 @@ function updateTelemetryChart(
         .setAttribute("y", valueToY(telemetry.critical) + 3);
 
     }
-function showFailureVideo(telemetry, experimentRunId,experimentName) {
+function showFailureVideo(
+    telemetry,
+    experimentRunId,
+    experimentName
+) {
 
+    if (failureVideoPlaying) {
+        console.log("⚠ FAILURE VIDEO ALREADY PLAYING");
+        return;
+    }
+
+    failureVideoPlaying = true;
     const modal = document.createElement("div");
 
     modal.classList.add("failure-video-modal");
@@ -608,15 +621,13 @@ function showFailureVideo(telemetry, experimentRunId,experimentName) {
     modal.innerHTML = `
         <div class="failure-video-content">
 
-            <h2>⚠ EXPERIMENT FAILURE</h2>
-
             <video
                 class="failure-video"
                 autoplay
                 playsinline
             >
                 <source
-                    src="/videos/experiment-failure.mp4"
+                    src="/public/videos/Fallout.mp4"
                     type="video/mp4"
                 >
             </video>
@@ -631,14 +642,20 @@ function showFailureVideo(telemetry, experimentRunId,experimentName) {
 
     video.addEventListener("ended", async () => {
 
-        modal.remove();
+        console.log("🔥 FAILURE VIDEO ENDED");
 
-        await failExperiment(
-            experimentRunId,
-            experimentName
-        );
+            modal.remove();
+            failureVideoPlaying = false;
 
-    });
+            console.log("🔥 CALLING FAIL EXPERIMENT");
+
+            await failExperiment(
+                experimentRunId,
+                experimentName
+            );
+
+
+            });
 
     video.play().catch(error => {
 
@@ -648,8 +665,8 @@ function showFailureVideo(telemetry, experimentRunId,experimentName) {
         );
 
     });
-}    
-function evaluateTelemetry(
+}  
+async function evaluateTelemetry(
     experimentRunId,
     experimentName,
     telemetry
@@ -689,9 +706,6 @@ function evaluateTelemetry(
     // ==========================================
     // EVENT 1 — WARNING
     // ==========================================
-    const WARNING_COUNT = 10;
-    const CRITICAL_COUNT = 10;
-    const EMERGENCY_COUNT = 10;
 
     if (state.eventCount === 0) {
 
@@ -716,7 +730,10 @@ function evaluateTelemetry(
                 "TELEMETRY EVENT 1 — WARNING:",
                 value
             );
-
+            await createTelemetryLog(
+                `${experimentName}: WARNING - ${telemetry.sensor.toUpperCase()} ${telemetry.value} ${telemetry.unit}`,
+                "WARNING"
+            );
            showTelemetryWarning(telemetry, experimentName);
 
         }
@@ -753,7 +770,10 @@ function evaluateTelemetry(
                 "TELEMETRY EVENT 2 — CRITICAL:",
                 value
             );
-
+            await createTelemetryLog(
+            `${experimentName}: CRITICAL - ${telemetry.sensor.toUpperCase()} ${telemetry.value} ${telemetry.unit}`,
+            "CRITICAL"
+);
             showTelemetryCritical(telemetry, experimentName);
 
         }
@@ -762,52 +782,68 @@ function evaluateTelemetry(
     }
 
 
-    // ==========================================
-    // EVENT 3 — EMERGENCY
-    // ==========================================
 
-    if (state.eventCount === 2) {
+// ==========================================
+// EVENT 3 — EMERGENCY
+// ==========================================
+if (state.eventCount === 2) {
 
-        if (
-            value > state.previousEventValue
-        ) {
+    if (value > state.previousEventValue) {
 
-            state.emergencyCount++;
+        state.emergencyCount++;
+
+    } else {
+
+        state.emergencyCount = 0;
+
+    }
+
+    if (state.emergencyCount >= EMERGENCY_COUNT) {
+
+        state.eventCount = 3;
+        state.emergencyCount = 0;
+
+        const previousCriticalValue =
+            state.previousEventValue;
+
+        state.previousEventValue = value;
+
+        console.log(
+            "TELEMETRY EVENT 3 — ESCALATION:",
+            value
+        );
+
+        await createTelemetryLog(
+            `${experimentName}: EMERGENCY - ${telemetry.sensor.toUpperCase()} ${telemetry.value} ${telemetry.unit}`,
+            "EMERGENCY"
+        );
+
+        showTelemetryEmergency(
+            telemetry,
+            experimentName,
+            previousCriticalValue
+        );
+
+        if (!failureVideoPlaying) {
+
+            showFailureVideo(
+                telemetry,
+                experimentRunId,
+                experimentName
+            );
 
         } else {
 
-            state.emergencyCount = 0;
-
-        }
-
-
-        if (state.emergencyCount >= EMERGENCY_COUNT) {
-
-            state.eventCount = 3;
-
-            state.emergencyCount = 0;
-
-            const previousCriticalValue =
-            state.previousEventValue;
-            state.previousEventValue = value;
-            console.log(
-                "TELEMETRY EVENT 3 — ESCALATION:",
-                value
-            );
-
-            showTelemetryEmergency(telemetry, experimentName, previousCriticalValue);
-
-            showFailureVideo(
-                telemetry,  
+            await failExperiment(
                 experimentRunId,
                 experimentName
             );
 
         }
-
-        return;
     }
 
+    return;
+}
 }
 function showTelemetryWarning(telemetry, experimentName) {
 
@@ -818,7 +854,7 @@ function showTelemetryWarning(telemetry, experimentName) {
         "telemetry-warning"
     );
 
-    modal.innerHTML = `
+modal.innerHTML = `
         <div class="telemetry-alert-box">
 
             <div class="telemetry-alert-header">
@@ -827,14 +863,25 @@ function showTelemetryWarning(telemetry, experimentName) {
 
             <div class="telemetry-alert-content">
 
-                <div>> EXPERIMENT: ${experimentName} | SENSOR: ${telemetry.sensor.toUpperCase()}</div>
-                <div>> WARNING SIGNALS: 7 / 7</div>
+                <div>> EXPERIMENT: ${experimentName}</div>
+
+                <div>> SENSOR: ${telemetry.sensor.toUpperCase()}</div>
+
+                <div>> CURRENT VALUE: ${telemetry.value} ${telemetry.unit}</div>
+
+                <div>> WARNING SIGNALS: ${WARNING_COUNT}/${WARNING_COUNT}CONSECUTIVE</div>
+
+                <div>> THRESHOLD: ${telemetry.warning} ${telemetry.unit}</div>
 
                 <br>
 
                 <div>> HAZARD ASSESSMENT:</div>
+
                 <div>> ABNORMAL CONDITIONS DETECTED.</div>
-                <div>> CONTINUED OPERATION MAY ESCALATE CONDITIONS.</div>
+
+                <div>> CONTINUED OPERATION MAY LEAD TO</div>
+
+                <div>> ESCALATION OF EXPERIMENTAL CONDITIONS.</div>
 
             </div>
 
@@ -867,8 +914,8 @@ function showTelemetryCritical(telemetry, experimentName) {
 
                 <div>> CURRENT VALUE: ${telemetry.value} ${telemetry.unit}</div>
 
-                <div>> CRITICAL SIGNALS: 5 / 5 CONSECUTIVE</div>
 
+                <div>> CRITICAL SIGNALS: ${CRITICAL_COUNT}/${CRITICAL_COUNT}</div>
                 <div>> THRESHOLD: ${telemetry.critical} ${telemetry.unit}</div>
 
                 <br>
@@ -909,7 +956,7 @@ function showTelemetryEmergency(telemetry, experimentName,previousEventValue) {
             <div class="telemetry-alert-content">
 
                 <div>> EXPERIMENT: ${experimentName} | SENSOR: ${telemetry.sensor.toUpperCase()}</div>
-                <div>> ESCALATION SIGNALS: 3 / 3</div>
+                <div>> ESCALATION SIGNALS: ${EMERGENCY_COUNT}/${EMERGENCY_COUNT}</div>
                 <div>> PREVIOUS CRITICAL: ${previousEventValue} ${telemetry.unit}</div>
 
                 <br>
