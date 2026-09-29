@@ -5,9 +5,7 @@ const router = express.Router();
 
 
 router.post('/startExperiment', experimentRunController.startExperimentController);
-
 router.get('/loadAllExperimentRuns', experimentRunController.loadAllExperimentRunsController);
-
 router.patch('/:experimentId/:experimentName/complete',
     (req, res, next) => {
         console.log("PATCH ROUTE REACHED");
@@ -16,14 +14,17 @@ router.patch('/:experimentId/:experimentName/complete',
     },
     experimentRunController.completeExperimentController);
 
-    router.patch(
+router.patch(
 '/:experimentId/:experimentName/stop',
 experimentRunController.stopExperimentController
 );
-
 router.patch(
     '/:experimentId/:experimentName/failed',
     experimentRunController.failedExperimentController
+);
+router.post(
+    '/telemetry-log',
+    experimentRunController.createTelemetryLogController
 );
 
 module.exports = router;

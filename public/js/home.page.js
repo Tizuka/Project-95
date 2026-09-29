@@ -40,7 +40,7 @@ window.loadSystemLogs = async function () {
 
         const log = logs[i];
 
-        const p = document.createElement("p");
+       const p = document.createElement("p");
         const span = document.createElement("span");
 
         const date = new Date();
@@ -51,6 +51,19 @@ window.loadSystemLogs = async function () {
 
         p.appendChild(span);
         p.append(` ${log.message}`);
+
+        if (log.level) {
+            p.classList.add(`log-${log.level.toLowerCase()}`);
+        }
+
+        if (log.message.includes("FAILED.")) {
+            p.classList.add("log-failed");
+        }
+
+        if (log.message.includes("completed successfully.")) {
+            p.classList.add("log-completed");
+        }
+
 
         homeLogList.appendChild(p);
     }

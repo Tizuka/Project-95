@@ -11,7 +11,6 @@ async function startExperimentController(req, res) {
         });
     }
 }
-
 async function completeExperimentController(req, res) {
     try {
         const experimentComplete = await experimentRunService.completeExperiment(req.params.experimentId,req.params.experimentName);
@@ -24,7 +23,6 @@ async function completeExperimentController(req, res) {
         });
     }
 }
-
 async function stopExperimentController(req, res) {
     try {
 
@@ -46,7 +44,6 @@ async function stopExperimentController(req, res) {
 
     }
 }
-
 // Getall Experimnet runs
 async function loadAllExperimentRunsController(req, res) {
     try {
@@ -80,8 +77,28 @@ async function failedExperimentController(req, res) {
 
     }
 }
+async function createTelemetryLogController(req, res) {
+    try {
 
+        const telemetryLog =
+            await experimentRunService.createTelemetryLog(
+                req.body.message,
+                req.body.level
+            );
+
+        res.json(telemetryLog);
+
+    } catch (error) {
+
+        console.error("ERRO NO TELEMETRY LOG:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+}
 
 module.exports = {
-    startExperimentController,loadAllExperimentRunsController,completeExperimentController,stopExperimentController,failedExperimentController
+    startExperimentController,loadAllExperimentRunsController,completeExperimentController,stopExperimentController,failedExperimentController,createTelemetryLogController
 };

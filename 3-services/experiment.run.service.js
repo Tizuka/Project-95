@@ -1,7 +1,6 @@
 const experimentRun = require('../4-models/experiment.run.model.js');
 const machine = require('../4-models/machine.model.js');
 const systemLog = require('../4-models/system.log.model.js');
-
 var experimentName = "";
 
 async function startExperiment(experimentRunData) {
@@ -15,8 +14,6 @@ async function startExperiment(experimentRunData) {
     experimentName = experimentRunData.experimentName;
     return savedExperiment;
 }
-
-
 async function completeExperiment(experimentId, machineName) {
 
     console.log("completeExperiment service");
@@ -63,7 +60,6 @@ async function completeExperiment(experimentId, machineName) {
         machine: findMachine
     };
 }
-
 async function stopExperiment(experimentId, machineName) {
 
     console.log("stopExperiment service");
@@ -113,7 +109,6 @@ async function stopExperiment(experimentId, machineName) {
         machine: findMachine
     };
 }
-
 async function loadAllExperimentRuns() {
 
     return await experimentRun.aggregate([
@@ -137,8 +132,6 @@ async function loadAllExperimentRuns() {
     ]);
 
 }
-
-
 async function loadSystemLogs() {
 
     return await systemLog.find()
@@ -185,7 +178,8 @@ async function failedExperiment(experimentId, machineName) {
 
         await systemLog.create({
             message:
-                `${machineName}: ${updatedExperiment.experimentName} failed.`
+                `${machineName}: ${updatedExperiment.experimentName} FAILED.`,
+            level: "EMERGENCY"
         });
 
     }
@@ -195,6 +189,14 @@ async function failedExperiment(experimentId, machineName) {
         machine: findMachine
     };
 }
+async function createTelemetryLog(message, level) {
+
+    return await systemLog.create({
+        message,
+        level
+    });
+
+}
 
 module.exports = {
     startExperiment,
@@ -202,7 +204,8 @@ module.exports = {
     completeExperiment,
     stopExperiment,
     failedExperiment,
-    loadSystemLogs,
+    loadSystemLogs,     
+    createTelemetryLog
     
 };
 
